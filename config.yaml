@@ -1,0 +1,15 @@
+token: "MTE4MjAxNzEwMTg5NzE1NDYyMQ.GlI-_9.HLWsEfvWFwtn0xb9bqmgpuN2k4lPJxORvLw1Ic"
+developers:
+    - 455678466793144320   # ainawastaken
+    - 686120923039793179   # _kalibr
+    - 1142560634421133413  # kalibr_2
+    - 1059851063584358491  # malorussia
+    - 643945264868098049   # ?
+    - 1149761243800928458  # martoonka
+    - 1004332890542329886  # martoonishka
+commands:
+    "reload": "Reload tanks (requires developer)"
+    "getcfg": "Gets config of current guild (requires developer)"
+    "trigger": "Triggers a spawn (requires developer)"
+    "activate": "Activate the bot"
+    "disable": "Disable the bot"

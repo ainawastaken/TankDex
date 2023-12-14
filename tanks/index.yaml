@@ -1,0 +1,245 @@
+replace:
+    "-": ""
+    " ": ""
+    ".": ""
+
+tanks:
+    "#000001":
+        names:
+            - "2S38"
+        file: "2s38.jpg"
+    "#000002":
+        names:
+            - "A7V"
+            - "Mephisto"
+            - "Sturmpanzerwagen A7V"
+        file: "a7v.jpg"
+    "#000003":
+        names:
+            - "AbramsX"
+        file: "abrams.jpg"
+    "#000004":
+        names:
+            - "Altay"
+            - "Altay T1"
+        file: "altay.jpg"
+    "#000005":
+        names:
+            - "AMC 34"
+        file: "amc34.jpg"
+    "#000006":
+        names:
+            - "AMX 10 RC"
+        file: "amx10rc.jpg"
+    "#000007":
+        names:
+            - "AMX 13"
+        file: "amx13.jpg"
+    "#000008":
+        names:
+            - "AMX 13 HOT"
+            - "AMX 13 (HOT)"
+        file: "amx13hot.jpg"
+    "#000009":
+        names:
+            - "AMX 13 SS11"
+            - "AMX 13 SS.11"
+            - "AMX 13 SS 11"
+            - "AMX 13 (SS11)"
+            - "AMX 13 (SS.11)"
+            - "AMX 13 (SS 11)"
+        file: "amx13ss11.jpg"
+    "#000010":
+        names:
+            - "AMX 30"
+        file: "amx30.jpg"
+    "#000011":
+        names:
+            - "AMX 50"
+        file: "amx50.jpg"
+    "#000012":
+        names:
+            - "Ariete 2"
+        file: "ariete2.jpg"
+    "#000013":
+        names:
+            - "Arjun MK2"
+            - "Arjun 2"
+        file: "arjun_l3.jpg"
+    "#000014":
+        names:
+            - "B1 Bis"
+        file: "b1bis.png"
+    "#000016":
+        names:
+            - "B1 Ter"
+        file: "b1ter.jpg"
+    "#000017":
+        names:
+            - "Black Eagle"
+            - "Object 640"
+        file: "blackeagle.jpg"
+    "#000018":
+        names:
+            - "K2 Black Panther"
+            - "K2"
+            - "K2 BP"
+            - "Black Panther"
+        file: "blackpanther.jpg"
+    "#000019":
+        names:
+            - "BMPT"
+            - "Terminator"
+            - "BMPT Terminator"
+            - "BMPT 72"
+        file: "bmpth.jpg"
+    "#000020":
+        names:
+            - "BT 7A F32"
+            - "BT7AF32"
+            - "BT7A F32"
+        file: "bt7af32"
+    "#000021":
+        names:
+            - "BT 7M"
+            - "BT7M"
+            - "BT7 M"
+            - "BT 7 M"
+        file: "bt7m.jpg"
+    "#000022":
+        names:
+            - "Celere Sahariano"
+            - "Carro Armato Celere Sahariano"
+            - "Carro Armato M Celere Sahariano (M16/43)"
+            - "Carro Armato M Celere Sahariano (M16 43)"
+            - "Carro Armato M Celere Sahariano M16/43"
+            - "Carro Armato M Celere Sahariano M16 43"
+            - "Carro Armato M Celere Sahariano"
+            - "M16/43"
+            - "M16 43"
+        file: "celeresaharioano.jpg"
+    "#000023":
+        names:
+            - "Centurion Mk.1"
+            - "Centurion Mk 1"
+            - "Centurion 1"
+        file: "centurion.jpg"
+    "#000024":  
+        names:
+            - "Challanger"
+        file: "challanger.jpg"
+    "#000025":
+        names:
+            - "Challanger 2 Black Night"
+            - "Challanger 2 Black Knight"
+            - "Challanger 2 BN"
+            - "Challanger 2 BK"
+        file: "challanger2bn.jpg"
+    "#000026":
+        names:
+            - "Challanger Mk 3"
+            - "Challanger Mk.3"
+            - "Challanger 3"
+        file: "challangermk3.jpg"
+    "#000027":
+        names:
+            - "T90 Burlak"
+            - "Burlak"
+        file: "Burlak90.png"
+    "#000028":
+        names:
+            - "Chieftain Mk1"
+            - "Chieftain Mk 1"
+            - "Chieftain Mk.1"
+            - "Chieftain 1"
+        file: "chieftainmk1.jpg"
+    "#000029":
+        names:
+            - "Chieftain Mk10"
+            - "Chieftain Mk 10"
+            - "Chieftain Mk.10"
+            - "Chieftain 10"
+        file: "chieftainmk10.jpg"
+    "#000030":
+        names:
+            - "Churchill Mk1"
+            - "Churchill Mk 1"
+            - "Churchill Mk.1"
+            - "Churchill 1"
+        file: "churchillmk1.jpg"
+    "#000031":
+        names:
+            - "Cromwell"
+            - "A27M"
+        file: "cromwell.jpg"
+    "#000032":
+        names:
+            - "FT 17"
+            - "Renault FT"
+        file: "ft17.jpg"
+    "#000033":
+        names:
+            - "FV 4005"
+            - "Fighting Vehicle 4005"
+        file: "fv4005.jpg"
+    "#000034":
+        names:
+            - "FV 4005 P"
+            - "FV 4005 Proto"
+            - "FV 4005 Prototype"
+        file: "fv4005proto.jpg"
+    "#000035":
+        names:
+            - "Golan 1000"
+        file: "golan1000.jpg"
+    "#000036":
+        names:
+            - "Ha Go"
+        file: "hago.jpg"
+    "#000037":
+        names:
+            - "Hrizantema S"
+            - "Hrizantema"
+        file: "Hrizantema-S.jpg"
+    "#000038":
+        names:
+            - "Independent"
+            - "Vickers A1E1"
+            - "A1E1"
+            - "Vickers A1E1 Independent"
+        file: "independent.jpg"
+    "#000039":
+        names:
+            - "IS-2"
+        file: "is2.jpg"
+    "#000040":
+        names:
+            - "IS-3"
+        file: "is3.jpg"
+    "#000041":
+        names:
+            - "IS-7"
+        file: "is7.jpg"
+    "#000042":
+        names:
+            - "ISU 152"
+        file: "isu152.jpg"
+    "#000043":
+        names:
+            - "Jagdpanther"
+            - "Sd.Kfz. 173"
+        file: "jagdpanther.jpg"
+    "#000044":
+        names:
+            - "Jagdtiger"
+            - "Panzerjäger Tiger Ausf. B"
+            - "Sd.Kfz. 186"
+        file: "jagdtiger.jpeg"
+    "#000045":
+        names:
+            - "Ka Mi"
+        file: "kami.jpg"
+    "#000046":
+        names:
+            - "Karrar"
+        file: "karrar.jpg"
