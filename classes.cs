@@ -1,5 +1,22 @@
 ﻿using Discord;
+using Discord.Audio;
+using Discord.Audio.Streams;
+using Discord.Commands;
+using Discord.Commands.Builders;
+using Discord.Interactions;
+using Discord.Interactions.Builders;
+using Discord.Net;
+using Discord.Net.Converters;
+using Discord.Net.ED25519;
+using Discord.Net.ED25519.Ed25519Ref10;
+using Discord.Net.Queue;
+using Discord.Net.Rest;
+using Discord.Net.Udp;
+using Discord.Net.WebSockets;
 using Discord.Rest;
+using Discord.Utils;
+using Discord.Webhook;
+using Discord.WebSocket;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -152,6 +169,37 @@ namespace TankDex
         public string tankid;
         public DateTime expirationtime;
     }
+    public class activequestion
+    {
+        public activequestion(RestUserMessage ms, tank t)
+        {
+            this.msg = ms;
+            this.tank = t;
+        }
+        public static bool Contains(ulong msid, activequestion[] target)
+        {
+            foreach (activequestion qst in target)
+            {
+                if (qst.msg.Id == msid)
+                    return true;
+            }
+            return false;
+        }
+        public static int Find(ulong msid, activequestion[] target)
+        {
+            int ind = 0;
+            foreach (activequestion qst in target)
+            {
+                if (qst.msg.Id == msid)
+                    return ind;
+                else
+                    ind++;
+            }
+            return -1;
+        }
+        public RestUserMessage? msg;
+        public tank? tank;
+    }
     public static class util
     {
         private static readonly DateTimeOffset UnixEpoch = new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero);
@@ -161,6 +209,20 @@ namespace TankDex
             TimeSpan duration = timestamp - UnixEpoch;
             // There are 10 ticks per microsecond.
             return duration.Ticks;
+        }
+        public static bool CheckValidity(string guess, tank t, index i)
+        {
+            foreach (string name in t.names)
+            {
+                string actual = guess.ToLower();
+                foreach (KeyValuePair<string, string> kvp in i.replace)
+                {
+                    actual = actual.Replace(kvp.Key[0], kvp.Value[0]);
+                }
+                if (guess == actual)
+                    return true;
+            }
+            return false;
         }
     }
 }

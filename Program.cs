@@ -42,7 +42,8 @@ namespace TankDex
         private config cfg = new config();
         private index index = new index();
 
-        private static List<activebtn> activebuttons = new List<activebtn>();
+        private volatile static List<activebtn> activebuttons = new List<activebtn>();
+        private volatile static List<activequestion> activequestions = new List<activequestion>();
 
         private System.Timers.Timer buttonTimer;
 
@@ -98,6 +99,14 @@ namespace TankDex
                 gldcfg.write(guilds.ToArray());
             }
 
+            var commands = guild.GetApplicationCommandsAsync().Result;
+            foreach (SocketApplicationCommand command in commands)
+            {
+                if (!cfg.Commands.Keys.Contains(command.Name))
+                {
+                    await command.DeleteAsync();
+                }
+            }
             foreach (KeyValuePair<string, string> kvp in cfg.Commands)
             {
                 var guildCommand = new Discord.SlashCommandBuilder();
@@ -165,14 +174,29 @@ namespace TankDex
 
             IGuild guild = (userMessage.Channel as IGuildChannel)?.Guild;
 
+            var msg2 = message as IUserMessage;
+
             Random rnd = new Random(DateTime.Now.Millisecond);
             gldcfg curcfg = guilds[gldcfg.find(guilds.ToArray(), guild.Id)];
             var a = rnd.Next(0, 50);
 
+            try
+            {
+                if (activequestion.Contains(msg2.ReferencedMessage.Id, activequestions.ToArray()) && curcfg.active)
+                {
+                    if (util.CheckValidity(message.CleanContent, activequestions[activequestion.Find(message.Reference.MessageId.Value, activequestions.ToArray())].tank, index))
+                    {
+                        await msg2.ReplyAsync("you guessed it right yuo fag");
+                    }
+                }
+            }
+            catch{}
+            
             if (a == 1 && curcfg.active)
             {
                 await Spawn(message.Channel, rnd.Next(0, index.tanks.Count));
             }
+            
         }
         private async Task Spawn(ISocketMessageChannel? channel, int randtank)
         {
@@ -187,17 +211,19 @@ namespace TankDex
                 ButtonStyle.Success);
             RestUserMessage msg = await channel.SendFileAsync(
                 $@"tanks\images\{index.tanks[index.tanks.Keys.ToArray()[randtank]].file}",
-                $"**A tank has appeared!** *Expires <t:{unixTimestamp}:R>*",
-                components: builder.Build());
-            ButtonComponent btn = msg.Components.ToArray()[0].Components.ToArray()[0] as ButtonComponent;
+                $"**A tank has appeared!** *Expires <t:{unixTimestamp}:R>*"/*,
+                components: builder.Build()*/);
+            // ButtonComponent btn = msg.Components.ToArray()[0].Components.ToArray()[0] as ButtonComponent;
 
             IGuild guild = (channel as IGuildChannel)?.Guild;
-            activebuttons.Add(new activebtn(btn,
+            /*activebuttons.Add(new activebtn(btn,
                 msg,
                 channel.Id,
                 guild.Id,
                 index.tanks.Keys.ToArray()[randtank],
-                expiry));
+                expiry));*/
+            tank t = index.tanks[index.tanks.Keys.ToArray()[randtank]];
+            activequestions.Add(new activequestion(msg, t));
         }
         private async Task ButtonExecuted(SocketMessageComponent component)
         {
@@ -211,7 +237,7 @@ namespace TankDex
                 {
                     btn.msg.ModifyAsync(properties =>
                     {
-                        properties.Content = "**A tank has appeared!**";
+                        properties.Content = "A tank has appeared! ***Expired***";
                         properties.Components = (new ComponentBuilder().WithButton(
                             "Guess",
                             btn.btn.CustomId,
@@ -225,17 +251,16 @@ namespace TankDex
                 }
             }
         }
-        private async Task InteractionCreated(object sender, object e)
+        private async Task InteractionCreated(SocketInteraction si)
         {
-            if (e is SocketMessageComponent interaction)
-            {
-                activebtn b = activebtn.find(activebuttons.ToArray(), interaction.Data.CustomId);
-                var tb = new TextInputBuilder()
-                    .WithLabel("Name or Designation:")
-                    .WithCustomId($"{interaction.Data.CustomId}text_input")
-                textInp 
-            }
-            
+            Console.WriteLine(si.Data);
+
+            var mb = new Discord.ModalBuilder()
+                .WithTitle("Fav Food")
+                .WithCustomId("food_menu")
+                .AddTextInput("What??", "food_name", placeholder: "Pizza")
+                .AddTextInput("Why??", "food_reason", TextInputStyle.Paragraph,
+                    "Kus it's so tasty");
         }
     }
 }

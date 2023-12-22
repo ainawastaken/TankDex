@@ -17,7 +17,7 @@ tanks:
     "#000003":
         names:
             - "AbramsX"
-        file: "abrams.jpg"
+        file: "abramsx.jpg"
     "#000004":
         names:
             - "Altay"
@@ -117,7 +117,7 @@ tanks:
             - "Carro Armato M Celere Sahariano"
             - "M16/43"
             - "M16 43"
-        file: "celeresaharioano.jpg"
+        file: "celeresahariano.jpg"
     "#000023":
         names:
             - "Centurion Mk.1"
@@ -191,6 +191,9 @@ tanks:
     "#000035":
         names:
             - "Golan 1000"
+            - "Golan"
+            - "Gulan"
+            - "Gulan 1000"
         file: "golan1000.jpg"
     "#000036":
         names:
