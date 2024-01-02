@@ -1,4 +1,5 @@
 token: "MTE4MjAxNzEwMTg5NzE1NDYyMQ.GlI-_9.HLWsEfvWFwtn0xb9bqmgpuN2k4lPJxORvLw1Ic"
+link: "https://discord.com/api/oauth2/authorize?client_id=1182017101897154621&permissions=380104985664&scope=bot+applications.commands"
 developers:
     - 455678466793144320   # ainawastaken
     - 686120923039793179   # _kalibr
@@ -13,3 +14,5 @@ commands:
     "trigger": "Triggers a spawn (requires developer)"
     "activate": "Activate the bot"
     "disable": "Disable the bot"
+    "completion": "Shows your tank completion"
+    "setcdn": "Sets CDN channel of bot"

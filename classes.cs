@@ -19,18 +19,169 @@ using Discord.Webhook;
 using Discord.WebSocket;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using YamlDotNet.Serialization;
 
+#pragma warning disable CS1998
+#pragma warning disable CS8600
+#pragma warning disable CS8602
+#pragma warning disable CS8603
+#pragma warning disable CS8604
+#pragma warning disable CS8618
+#pragma warning disable CS8622
+#pragma warning disable CS8629
+
 namespace TankDex
 {
+    public class data
+    {
+        public Dictionary<ulong, Dictionary<tank,uint>>? _data;
+        public data()
+        {
+            this._data = new Dictionary<ulong, Dictionary<tank, uint>>();
+        }
+        public void load(index ind, string path = "data.txt")
+        {
+            string[] lines = File.ReadAllLines(path);
+
+            foreach (string line in lines)
+            {
+                try
+                {
+                    ulong id = ulong.Parse(line.Split(';')[0]);
+                    Dictionary<tank, uint> tanks = new Dictionary<tank, uint>();
+                    foreach (string tank in line.Split(';')[1].Split('/'))
+                    {
+                        tanks.Add(ind.fromId(tank.Split('^')[0]), uint.Parse(tank.Split('^')[1]));
+                    }
+                    this._data.Add(id, tanks);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
+                }
+            }
+        }
+        public void write(index ind, string path = "data.txt")
+        {
+            List<string> lines = new List<string>();
+            foreach (KeyValuePair<ulong, Dictionary<tank,uint>> kvp in this._data)
+            {
+                string line = "";
+                line += $"{kvp.Key};";
+                foreach(KeyValuePair<tank, uint> tank in kvp.Value)
+                {
+                    line += $"{ind.fromTank(tank.Key)}^{tank.Value}/";
+                }
+                if (line[line.Length - 1] == '/')
+                {
+                    line = line.Substring(0, line.Length - 1);
+                }
+                lines.Add(line);
+            }
+            File.WriteAllLines(path, lines.ToArray());
+        }
+        public void add(ulong id, tank t)
+        {
+            if (this._data.ContainsKey(id))
+            {
+                Dictionary<tank, uint> tanks = this._data[id];
+                if (tanks.ContainsKey(t))
+                {
+                    tanks[t]++;
+                }
+                else
+                {
+                    tanks.Add(t,1);
+                }
+                this._data[id] = tanks;
+            }
+            else
+            {
+                var a = new Dictionary<tank, uint>();
+                a.Add(t,1);
+                this._data.Add(id, a);
+            }
+        }
+        public void rem(ulong id, tank t)
+        {
+            if (this._data.ContainsKey(id))
+            {
+                Dictionary<tank, uint> tanks = this._data[id];
+                if (tanks.ContainsKey(t))
+                {
+                    if (tanks[t] == 1)
+                    {
+                        tanks.Remove(t);
+                    }
+                    else
+                    {
+                        tanks[t]--;
+                    }
+                }
+                else
+                {
+                    return;
+                }
+                this._data[id] = tanks;
+            }
+            else
+            {
+                return;
+            }
+        }
+        public uint amt(ulong id, tank t)
+        {
+            if (!this._data.ContainsKey(id)) return 0;
+            return _data[id][t];
+        }
+        public int ama(ulong id)
+        {
+            if (!this._data.ContainsKey(id)) return 0;
+            return _data[id].Count;
+        }
+        public uint tot(ulong id)
+        {
+            if (!this._data.ContainsKey(id)) return 0;
+            uint amount = 0;
+            foreach (var tank in this._data[id])
+            {
+                amount += tank.Value;
+            }
+            return amount;
+        }
+        public uint pow(ulong id)
+        {
+            if (!this._data.ContainsKey(id)) return 0;
+            uint amount = 0;
+            foreach (var tank in this._data[id])
+            {
+                amount += (uint)tank.Key.offence;
+            }
+            return amount;
+        }
+        public uint def(ulong id)
+        {
+            if (!this._data.ContainsKey(id)) return 0;
+            uint amount = 0;
+            foreach (var tank in this._data[id])
+            {
+                amount += (uint)tank.Key.defence;
+            }
+            return amount;
+        }
+    }
     public class config
     {
         [YamlMember(Alias = "token")]
         public string? Token { get; set; }
+        [YamlMember(Alias = "link")]
+        public string? Link { get; set; }
 
         [YamlMember(Alias = "developers")]
         public ulong[]? Developers { get; set; }
@@ -55,15 +206,17 @@ namespace TankDex
     }
     public class gldcfg
     {
-        public gldcfg(ulong guildid, ulong channelid, bool active)
+        public gldcfg(ulong guildid, ulong channelid, bool active, ulong cdnid, ulong cdnchid)
         {
             this.guildid = guildid;
             this.channelid = channelid;
             this.active = active;
+            this.cdnid = cdnid;
+            this.cdnchid = cdnchid;
         }
         public override string ToString()
         {
-            return $"{this.guildid};{this.channelid};{this.active}";
+            return $"{this.guildid};{this.channelid};{this.active};{this.cdnid};{this.cdnchid}";
         }
         public static gldcfg[] load(string path = "guilds.txt")
         {
@@ -72,9 +225,9 @@ namespace TankDex
             foreach (string line in lines)
             {
                 string[] a = line.Split(';');
-                if (a.Length == 3)
+                if (a.Length == 5)
                 {
-                    output.Add(new gldcfg(ulong.Parse(a[0]), ulong.Parse(a[1]), bool.Parse(a[2])));
+                    output.Add(new gldcfg(ulong.Parse(a[0]), ulong.Parse(a[1]), bool.Parse(a[2]), ulong.Parse(a[3]), ulong.Parse(a[4])));
                 }
             }
 
@@ -91,7 +244,7 @@ namespace TankDex
             }
             return false;
         }
-        public static void write(gldcfg[] list, string path = "guild.txt")
+        public static void write(gldcfg[] list, string path = "guilds.txt")
         {
             List<string> strs = new List<string>();
             foreach (gldcfg gld in list)
@@ -117,6 +270,8 @@ namespace TankDex
         public ulong guildid { get; set; }
         public ulong channelid { get; set; }
         public bool active { get; set; }
+        public ulong cdnid { get; set; }
+        public ulong cdnchid { get; set; }
     }
     public class index
     {
@@ -127,6 +282,28 @@ namespace TankDex
             index tokenData = deserializer.Deserialize<index>(yamlstr);
             cfg = tokenData;
         }
+        public tank fromId(string id)
+        {
+            foreach (KeyValuePair<string, tank> kvp in this.tanks)
+            {
+                if (kvp.Key == id)
+                {
+                    return kvp.Value;
+                }
+            }
+            return null;
+        }
+        public string fromTank(tank t)
+        {
+            foreach (KeyValuePair<string, tank> kvp in this.tanks)
+            {
+                if (kvp.Value == t)
+                {
+                    return kvp.Key;
+                }
+            }
+            return null;
+        }
 
         [YamlMember(Alias = "replace")]
         public Dictionary<string, string>? replace { get; set; }
@@ -135,6 +312,10 @@ namespace TankDex
     }
     public class tank
     {
+        [YamlMember(Alias = "offence")]
+        public int? offence { get; set; }
+        [YamlMember(Alias = "defence")]
+        public int? defence { get; set; }
         [YamlMember(Alias = "names")]
         public List<string>? names { get; set; }
         [YamlMember(Alias = "file")]
@@ -152,6 +333,14 @@ namespace TankDex
                 }
             }
             return null;
+        }
+        public activebtn(RestUserMessage rm, ulong ci, ulong gi, string ti, DateTime expirationtime)
+        {
+            this.channelid = ci;
+            this.guildid = gi;
+            this.tankid = ti;
+            this.expirationtime = expirationtime;
+            this.msg = rm;
         }
         public activebtn(ButtonComponent bc, RestUserMessage rm, ulong ci, ulong gi, string ti, DateTime expirationtime)
         {
@@ -176,6 +365,12 @@ namespace TankDex
             this.msg = ms;
             this.tank = t;
         }
+        public activequestion(RestUserMessage ms, tank t, activebtn btn)
+        {
+            this.msg = ms;
+            this.tank = t;
+            this.btn = btn;
+        }
         public static bool Contains(ulong msid, activequestion[] target)
         {
             foreach (activequestion qst in target)
@@ -199,6 +394,7 @@ namespace TankDex
         }
         public RestUserMessage? msg;
         public tank? tank;
+        public activebtn? btn;
     }
     public static class util
     {
@@ -210,19 +406,34 @@ namespace TankDex
             // There are 10 ticks per microsecond.
             return duration.Ticks;
         }
-        public static bool CheckValidity(string guess, tank t, index i)
+        public static bool CheckValidity(string guess, tank t, index i, activequestion qst)
         {
             foreach (string name in t.names)
             {
-                string actual = guess.ToLower();
+                if (DateTime.Compare(qst.btn.expirationtime, DateTime.UtcNow) < 0)
+                    return false;
+
+                string actualg = name.ToLower();
                 foreach (KeyValuePair<string, string> kvp in i.replace)
-                {
-                    actual = actual.Replace(kvp.Key[0], kvp.Value[0]);
-                }
-                if (guess == actual)
+                    actualg = actualg.Replace(kvp.Key, kvp.Value);
+                string guessg = guess.ToLower();
+                foreach (KeyValuePair<string, string> kvp in i.replace)
+                    guessg = guessg.Replace(kvp.Key, kvp.Value);
+                if (guessg == actualg)
                     return true;
             }
             return false;
+        }
+        public static bool isAdmin(SocketGuildUser user)
+        {
+            return user.GuildPermissions.Administrator;
+        }
+        public static string cdnget(string file, ulong cdngld, ulong channelid, DiscordSocketClient client)
+        {
+            SocketGuild cdn = client.GetGuild(cdngld);
+            SocketTextChannel cdnchn = cdn.GetTextChannel(channelid);
+            RestUserMessage msg = cdnchn.SendFileAsync(file).Result;
+            return msg.Attachments.ToArray()[0].Url;
         }
     }
 }
