@@ -48,6 +48,9 @@ namespace TankDex
         private config cfg = new config();
         private index index = new index();
 
+        private ulong cdnid = ulong.MaxValue;
+        private ulong cdnchid = ulong.MaxValue;
+
         private volatile static List<activebtn> activebuttons = new List<activebtn>();
         private volatile static List<activequestion> activequestions = new List<activequestion>();
 
@@ -61,16 +64,24 @@ namespace TankDex
 
         public async Task RunBotAsync()
         {
-            _client = new DiscordSocketClient();
+            _client = new DiscordSocketClient(
+            new DiscordSocketConfig
+            {
+                GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent
+            });
             _commands = new CommandService();
             cfg.load(out cfg);
             index.load(out index);
             guilds = gldcfg.load().ToList();
             data.load(index);
-
+            string[] cdnstr = File.ReadAllText("cdn.txt").Split(';');
+            cdnid = ulong.Parse(cdnstr[0]);
+            cdnchid = ulong.Parse(cdnstr[1]);
+            
             _client.Log += Log;
             _client.Ready += Client_Ready;
             _client.SlashCommandExecuted += SlashCommandHandler;
+            _client.GuildAvailable += GuildAvailable;
             _client.GuildAvailable += GuildAvailable;
             _client.MessageReceived += MessageReceived;
             
@@ -81,7 +92,6 @@ namespace TankDex
             buttonTimer.Elapsed += OnButtonTimedEvent;
             buttonTimer.AutoReset = true;
             buttonTimer.Enabled = true;
-            
 
             await _client.LoginAsync(TokenType.Bot, cfg.Token);
             await _client.StartAsync();
@@ -213,12 +223,9 @@ namespace TankDex
                 case "setcdn":
                     if (cfg.Developers.Contains(command.User.Id) & util.isAdmin(_client.GetGuild((ulong)command.GuildId).GetUser(command.User.Id)))
                     {
-                        int gldi2 = gldcfg.find(guilds.ToArray(), command.GuildId);
-                        gldcfg gld2 = guilds[gldi2];
-                        gld2.cdnid = (ulong)command.GuildId;
-                        gld2.cdnchid = (ulong)command.ChannelId;
-                        guilds[gldi2] = gld2;
-                        gldcfg.write(guilds.ToArray());
+                        File.WriteAllText("cdn.txt", $"{command.GuildId};{command.ChannelId}");
+                        cdnid = (ulong)command.GuildId;
+                        cdnchid = (ulong)command.ChannelId;
                         await command.RespondAsync("CDN set!", null, false, true);
                     }
                     else
@@ -240,8 +247,7 @@ namespace TankDex
 
             Random rnd = new Random(DateTime.Now.Millisecond);
             gldcfg curcfg = guilds[gldcfg.find(guilds.ToArray(), guild.Id)];
-            var a = rnd.Next(0, 50);
-
+            Console.WriteLine($"Message received {{{msg2.CleanContent}}}");
             try
             {
                 if (msg2.ReferencedMessage != null)
@@ -250,25 +256,21 @@ namespace TankDex
                     {
                         activequestion qst = activequestions[activequestion.Find(message.Reference.MessageId.Value, activequestions.ToArray())];
                         if (util.CheckValidity(
-                            message.CleanContent, 
+                            msg2.CleanContent, 
                             qst.tank, 
                             index, 
                             qst))
                         {
+
                             data.add(message.Author.Id, qst.tank);
                             data.write(index);
                             await msg2.ReplyAsync($"<@{message.Author.Id}> guessed \"*{qst.tank.names[0]}*\"!\nYou now own **{data.amt(message.Author.Id, qst.tank)}**, \"*{qst.tank.names[0]}'s*\"!");
-                            await msg2.AddReactionAsync(new Emoji("✔️"));
-                            await qst.btn.msg.ModifyAsync(properties =>
+                            await msg2.AddReactionAsync(new Emoji("✅"));
+                            EmbedBuilder oldEmbed = qst.btn.msg.Embeds.FirstOrDefault().ToEmbedBuilder();
+                            oldEmbed.WithTitle($"~~A tank has appeared!~~ *{qst.tank.names[0]}* ***Captured***");
+                            await qst.btn.msg.ModifyAsync(msg =>
                             {
-                                properties.Content = $"~~A tank has appeared!~~ *{qst.tank.names[0]}* ***Captured***";
-                                /*properties.Components = (new ComponentBuilder().WithButton(
-                                    "Guess",
-                                    btn.btn.CustomId,
-                                    ButtonStyle.Danger,
-                                    null,
-                                    null,
-                                    true)).Build();*/
+                                msg.Embed = oldEmbed.Build();
                             });
                             activebuttons.Remove(qst.btn);
                             activequestions.Remove(qst);
@@ -278,14 +280,25 @@ namespace TankDex
                             await msg2.AddReactionAsync(new Emoji("❌"));
                         }
                     }
+                    else
+                    {
+                        Console.WriteLine("Suicide");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("no ref");
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
+                await msg2.AddReactionAsync(new Emoji("❗"));
             }
-            
+
+            Console.WriteLine(curcfg.active);
+            var a = rnd.Next(0, 50);
             if (a == 1 && curcfg.active)
             {
                 await Spawn(message.Channel, rnd.Next(0, index.tanks.Count));
@@ -308,7 +321,7 @@ namespace TankDex
 
             EmbedBuilder eb = new EmbedBuilder();
             eb.Title = $"**A tank has appeared!** *Expires <t:{unixTimestamp}:R>*";
-            eb.WithImageUrl(util.cdnget($@"tanks\images\{index.tanks[index.tanks.Keys.ToArray()[randtank]].file}", cfg.cdnid, cfg.cdnchid, _client));
+            eb.WithImageUrl(util.cdnget($@"tanks\images\{index.tanks[index.tanks.Keys.ToArray()[randtank]].file}", cdnid, cdnchid, _client));
 
             RestUserMessage msg = await channel.SendMessageAsync(embed:eb.Build());
 
@@ -333,33 +346,25 @@ namespace TankDex
         
         private void OnButtonTimedEvent(Object source, ElapsedEventArgs e)
         {
-            foreach (activebtn btn in activebuttons)
-            {
-                if (DateTime.Compare(btn.expirationtime, DateTime.UtcNow) < 0)
+            foreach (activequestion qst in activequestions)
+            { 
+                if (DateTime.Compare(qst.btn.expirationtime, DateTime.UtcNow) < 0)
                 {
-                    btn.msg.ModifyAsync(properties =>
+                    EmbedBuilder oldEmbed = qst.btn.msg.Embeds.FirstOrDefault().ToEmbedBuilder();
+                    oldEmbed.WithTitle($"~~A tank has appeared!~~ ***Expired***");
+                    qst.btn.msg.ModifyAsync(msg =>
                     {
-                        properties.Content = "~~A tank has appeared!~~ ***Expired***";
+                        msg.Embed = oldEmbed.Build();
                     });
-                    activequestions.Remove(activequestions[activequestion.Find(btn.msg.Id, activequestions.ToArray())]);
-                    activebuttons.Remove(btn);
+                    foreach (activequestion d in activequestions)
+                    {
+                        Console.WriteLine(d.msg.Id);
+                    }
+                    Console.WriteLine(qst.btn.msg.Id);
+                    activequestions.Remove(activequestions[activequestion.Find(qst.btn.msg.Id, activequestions.ToArray())]);
+                    activebuttons.Remove(qst.btn);
                 }
             }
         }
-        /* cutout
-        private async Task ButtonExecuted(SocketMessageComponent component)
-        {
-            
-        }
-        private async Task InteractionCreated(SocketInteraction si)
-        {
-            var mb = new Discord.ModalBuilder()
-                .WithTitle("Fav Food")
-                .WithCustomId("food_menu")
-                .AddTextInput("What??", "food_name", placeholder: "Pizza")
-                .AddTextInput("Why??", "food_reason", TextInputStyle.Paragraph,
-                    "Kus it's so tasty");
-        }
-        */
     }
 }

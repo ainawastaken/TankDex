@@ -1,4 +1,6 @@
-﻿replace:
+﻿relativeImagePath: "images\\"
+
+replace:
     "-": ""
     " ": ""
     ".": ""
@@ -65,11 +67,11 @@ tanks:
         offence: 75
         defence: 35
         names:
+            - "AMX 13 (SS.11)"
             - "AMX 13 SS11"
             - "AMX 13 SS.11"
             - "AMX 13 SS 11"
             - "AMX 13 (SS11)"
-            - "AMX 13 (SS.11)"
             - "AMX 13 (SS 11)"
         file: "amx13ss11.jpg"
     "#000010":
@@ -142,7 +144,7 @@ tanks:
             - "BT 7A F32"
             - "BT7AF32"
             - "BT7A F32"
-        file: "bt7af32"
+        file: "bt7af32.jpg"
     "#000021":
         offence: 50
         defence: 20
@@ -364,8 +366,11 @@ tanks:
         offence: 200
         defence: 200
         names:
-            - " كرار"
+            - "كرار (Karrar)"
+            - "كرار"
             - "Karrar"
             - "Attacker"
             - "Striker"
         file: "karrar.jpg"
+
+

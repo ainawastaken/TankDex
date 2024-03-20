@@ -1,0 +1,1596 @@
+{
+  "relativeImagePath": "images\\",
+  "replace": {
+    "-": "",
+    " ": "",
+    ".": "",
+    "/": ""
+  },
+  "tanks": {
+    "#000001": {
+      "offence": 200,
+      "defence": 100,
+      "names": [
+        "2S38 \"Derivatsiya-PVO\"",
+        "2S38",
+        "Derivatsiya-PVO",
+        "Derivatsiya"
+      ],
+      "file": "2s38.jpg"
+    },
+    "#000002": {
+      "offence": 10,
+      "defence": 20,
+      "names": [
+        "Sturmpanzerwagen A7V \"Mephisto\"",
+        "A7V",
+        "Mephisto",
+        "Sturmpanzerwagen A7V",
+        "Sturmpanzerwagen"
+      ],
+      "file": "a7v.jpg"
+    },
+    "#000003": {
+      "offence": 700,
+      "defence": 800,
+      "names": [
+        "AbramsX"
+      ],
+      "file": "abramsx.jpg"
+    },
+    "#000004": {
+      "offence": 500,
+      "defence": 450,
+      "names": [
+        "Altay",
+        "Altay T1"
+      ],
+      "file": "altay.jpg"
+    },
+    "#000005": {
+      "offence": 5,
+      "defence": 15,
+      "names": [
+        "AMC 34",
+        "AMC 34 YR"
+      ],
+      "file": "amc34.jpg"
+    },
+    "#000006": {
+      "offence": 90,
+      "defence": 30,
+      "names": [
+        "AMX 10 RC"
+      ],
+      "file": "amx10rc.jpg"
+    },
+    "#000007": {
+      "offence": 70,
+      "defence": 35,
+      "names": [
+        "AMX 13"
+      ],
+      "file": "amx13.jpg"
+    },
+    "#000008": {
+      "offence": 90,
+      "defence": 35,
+      "names": [
+        "AMX 13 HOT",
+        "AMX 13 (HOT)"
+      ],
+      "file": "amx13hot.jpg"
+    },
+    "#000009": {
+      "offence": 75,
+      "defence": 35,
+      "names": [
+        "AMX 13 (SS.11)",
+        "AMX 13 SS11",
+        "AMX 13 SS.11",
+        "AMX 13 SS 11",
+        "AMX 13 (SS11)",
+        "AMX 13 (SS 11)"
+      ],
+      "file": "amx13ss11.jpg"
+    },
+    "#000010": {
+      "offence": 100,
+      "defence": 80,
+      "names": [
+        "AMX 30"
+      ],
+      "file": "amx30.jpg"
+    },
+    "#000011": {
+      "offence": 100,
+      "defence": 110,
+      "names": [
+        "AMX 50"
+      ],
+      "file": "amx50.jpg"
+    },
+    "#000012": {
+      "offence": 550,
+      "defence": 350,
+      "names": [
+        "Ariete 2"
+      ],
+      "file": "ariete2.jpg"
+    },
+    "#000013": {
+      "offence": 450,
+      "defence": 350,
+      "names": [
+        "Arjun MK2",
+        "Arjun 2"
+      ],
+      "file": "arjun_l3.jpg"
+    },
+    "#000014": {
+      "offence": 20,
+      "defence": 80,
+      "names": [
+        "B1 Bis"
+      ],
+      "file": "b1bis.png"
+    },
+    "#000016": {
+      "offence": 30,
+      "defence": 80,
+      "names": [
+        "B1 Ter"
+      ],
+      "file": "b1ter.jpg"
+    },
+    "#000017": {
+      "offence": 500,
+      "defence": 450,
+      "names": [
+        "Black Eagle (Object 640)",
+        "Black Eagle",
+        "Object 640"
+      ],
+      "file": "blackeagle.jpg"
+    },
+    "#000018": {
+      "offence": 490,
+      "defence": 450,
+      "names": [
+        "K2 Black Panther",
+        "K2",
+        "K2 BP",
+        "Black Panther"
+      ],
+      "file": "blackpanther.jpg"
+    },
+    "#000019": {
+      "offence": 300,
+      "defence": 250,
+      "names": [
+        "BMPT",
+        "Terminator",
+        "BMPT Terminator",
+        "BMPT 72"
+      ],
+      "file": "bmpt.jpg"
+    },
+    "#000020": {
+      "offence": 75,
+      "defence": 20,
+      "names": [
+        "BT 7A F32",
+        "BT7AF32",
+        "BT7A F32"
+      ],
+      "file": "bt7af32.jpg"
+    },
+    "#000021": {
+      "offence": 50,
+      "defence": 20,
+      "names": [
+        "BT 7M",
+        "BT7M",
+        "BT7 M",
+        "BT 7 M"
+      ],
+      "file": "bt7m.jpg"
+    },
+    "#000022": {
+      "offence": 50,
+      "defence": 45,
+      "names": [
+        "Carro Armato M Celere Sahariano (M16/43)",
+        "Celere Sahariano",
+        "Carro Armato Celere Sahariano",
+        "Carro Armato M Celere Sahariano (M16 43)",
+        "Carro Armato M Celere Sahariano M16/43",
+        "Carro Armato M Celere Sahariano M16 43",
+        "Carro Armato M Celere Sahariano",
+        "M16/43",
+        "M16 43"
+      ],
+      "file": "celeresahariano.jpg"
+    },
+    "#000023": {
+      "offence": 140,
+      "defence": 100,
+      "names": [
+        "FV4013 Centurion ARV Mk 1",
+        "Centurion Mk.1",
+        "Centurion Mk 1",
+        "Centurion 1",
+        "FV4013"
+      ],
+      "file": "centurion.jpg"
+    },
+    "#000024": {
+      "offence": 110,
+      "defence": 80,
+      "names": [
+        "Tank, Cruiser Mk VIII Challenger (A30)",
+        "Challanger",
+        "Challenger"
+      ],
+      "file": "challanger.jpg"
+    },
+    "#000025": {
+      "offence": 550,
+      "defence": 600,
+      "names": [
+        "Challanger 2 Black Night (FV4034)",
+        "Challanger 2 Black Night",
+        "Challanger 2 Black Knight",
+        "Challanger 2 BN",
+        "Challanger 2 BK",
+        "FV4034"
+      ],
+      "file": "challanger2bn.jpg"
+    },
+    "#000026": {
+      "offence": 500,
+      "defence": 400,
+      "names": [
+        "Challanger Mk 3",
+        "Challanger Mk.3",
+        "Challanger 3",
+        "CR3"
+      ],
+      "file": "challangermk3.jpg"
+    },
+    "#000027": {
+      "offence": 500,
+      "defence": 400,
+      "names": [
+        "T90 Burlak",
+        "Burlak"
+      ],
+      "file": "Burlak90.png"
+    },
+    "#000028": {
+      "offence": 400,
+      "defence": 300,
+      "names": [
+        "Chieftain Mk1 (FV4201)",
+        "Chieftain Mk1",
+        "Chieftain Mk 1",
+        "Chieftain Mk.1",
+        "Chieftain 1",
+        "FV4201",
+        "Fighting Vehicle 4201"
+      ],
+      "file": "chieftainmk1.jpg"
+    },
+    "#000029": {
+      "offence": 300,
+      "defence": 250,
+      "names": [
+        "Chieftain Mk10 (FV4201)",
+        "Chieftain Mk10",
+        "Chieftain Mk 10",
+        "Chieftain Mk.10",
+        "Chieftain 10",
+        "FV4201",
+        "Fighting Vehicle 4201"
+      ],
+      "file": "chieftainmk10.jpg"
+    },
+    "#000030": {
+      "offence": 90,
+      "defence": 100,
+      "names": [
+        "Tank, Infantry, Mk IV (A22) Churchill MK 1",
+        "Churchill Mk1",
+        "Churchill Mk 1",
+        "Churchill Mk.1",
+        "Churchill 1"
+      ],
+      "file": "churchillmk1.jpg"
+    },
+    "#000031": {
+      "offence": 90,
+      "defence": 100,
+      "names": [
+        "Tank, Cruiser, Mk VIII, Cromwell (A27M)",
+        "Cromwell",
+        "A27M"
+      ],
+      "file": "cromwell.jpg"
+    },
+    "#000032": {
+      "offence": 10,
+      "defence": 5,
+      "names": [
+        "Renault FT/FT17",
+        "Renault FT",
+        "FT 17"
+      ],
+      "file": "ft17.jpg"
+    },
+    "#000033": {
+      "offence": 700,
+      "defence": 50,
+      "names": [
+        "FV 4005",
+        "Fighting Vehicle 4005"
+      ],
+      "file": "fv4005.jpg"
+    },
+    "#000034": {
+      "offence": 500,
+      "defence": 3,
+      "names": [
+        "FV 4005 Prototype",
+        "FV 4005 P",
+        "FV 4005 Proto"
+      ],
+      "file": "fv4005proto.jpg"
+    },
+    "#000035": {
+      "offence": 500,
+      "defence": 50,
+      "names": [
+        "Golan 1000",
+        "Golan",
+        "Gulan",
+        "Gulan 1000"
+      ],
+      "file": "golan1000.jpg"
+    },
+    "#000036": {
+      "offence": 25,
+      "defence": 20,
+      "names": [
+        "Type 95 Ha-Gō (九五式軽戦車 ハ号, kyūgo-shiki kei-sensha Ha-Gō, Ke-Go)",
+        "Ha-Go",
+        "Type 95",
+        "Ha-Gō",
+        "Ke-Go"
+      ],
+      "file": "hago.jpg"
+    },
+    "#000037": {
+      "offence": 300,
+      "defence": 50,
+      "names": [
+        "Hrizantema S",
+        "Hrizantema",
+        "Khrizantema S",
+        "Khrizantema"
+      ],
+      "file": "Hrizantema-S.jpg"
+    },
+    "#000038": {
+      "offence": 20,
+      "defence": 30,
+      "names": [
+        "Vickers A1E1 Independent",
+        "Independent",
+        "Vickers A1E1",
+        "A1E1"
+      ],
+      "file": "independent.png"
+    },
+    "#000039": {
+      "offence": 250,
+      "defence": 200,
+      "names": [
+        "IS-2"
+      ],
+      "file": "is2.jpg"
+    },
+    "#000040": {
+      "offence": 300,
+      "defence": 250,
+      "names": [
+        "IS-3"
+      ],
+      "file": "is3.jpg"
+    },
+    "#000041": {
+      "offence": 350,
+      "defence": 350,
+      "names": [
+        "IS-7"
+      ],
+      "file": "is7.jpg"
+    },
+    "#000042": {
+      "offence": 450,
+      "defence": 250,
+      "names": [
+        "ISU 152"
+      ],
+      "file": "isu152.jpg"
+    },
+    "#000043": {
+      "offence": 150,
+      "defence": 250,
+      "names": [
+        "Sd.Kfz. 173 Jagdpanther",
+        "Jagdpanther",
+        "Sd.Kfz. 173"
+      ],
+      "file": "jagdpanther.jpg"
+    },
+    "#000044": {
+      "offence": 150,
+      "defence": 300,
+      "names": [
+        "Sd.Kfz. 186 Panzerjäger Tiger Ausf. B Jagdtiger",
+        "Jagdtiger",
+        "Panzerjäger Tiger Ausf. B",
+        "Sd.Kfz. 186"
+      ],
+      "file": "jagdtiger.jpeg"
+    },
+    "#000045": {
+      "offence": 10,
+      "defence": 10,
+      "names": [
+        "特二式内火艇　カミ Special Type 2 Launch Ka-Mi (Toku-ni-shiki uchibitei kami)",
+        "Ka Mi",
+        "Special Type 2 Launch Ka-Mi",
+        "Type 2"
+      ],
+      "file": "kami.jpg"
+    },
+    "#000046": {
+      "offence": 200,
+      "defence": 200,
+      "names": [
+        "كرار (Karrar)",
+        "كرار",
+        "Karrar",
+        "Attacker",
+        "Striker"
+      ],
+      "file": "karrar.jpg"
+    },
+    "#000047": {
+      "offence": 110,
+      "defence": 30,
+      "names": [
+        "2S14 \"Zhalos\"",
+        "2S14",
+        "Zhalos"
+      ],
+      "file": "2s14zhalos.png"
+    },
+    "#000048": {
+      "offence": 15,
+      "defence": 10,
+      "names": [
+        "39M \"Csaba\"",
+        "39M",
+        "Csaba"
+      ],
+      "file": "39mcsaba.png"
+    },
+    "#000049": {
+      "offence": 150,
+      "defence": 40,
+      "names": [
+        "Bofors Vagnkanon 155 mm L/50 (VK 155 L/50)",
+        "Bkan 1",
+        "Bkan 1A",
+        "Bkan"
+      ],
+      "file": "bkan1.png"
+    },
+    "#000050": {
+      "offence": 600,
+      "defence": 500,
+      "names": [
+        "Rheinmetall Panther Kettenfahrzeug 51",
+        "KF51",
+        "Panther"
+      ],
+      "file": "kf51panther.jpg"
+    },
+    "#000051": {
+      "offence": 150,
+      "defence": 150,
+      "names": [
+        "Kampfpanzer-70",
+        "kpz 70"
+      ],
+      "file": "kpz70.jpg"
+    },
+    "#000052": {
+      "offence": 50,
+      "defence": 90,
+      "names": [
+        "KV-1 (Model 1939)",
+        "KV 1"
+      ],
+      "file": "kv1m1939.jpg"
+    },
+    "#000053": {
+      "offence": 200,
+      "defence": 200,
+      "names": [
+        "KV-2"
+      ],
+      "file": "kv2.jpg"
+    },
+    "#000054": {
+      "offence": 20,
+      "defence": 15,
+      "names": [
+        "Carro Veloce CV-35 (L3/35)",
+        "l3",
+        "l3 33",
+        "l3 35"
+      ],
+      "file": "l3.jpg"
+    },
+    "#000055": {
+      "offence": 45,
+      "defence": 30,
+      "names": [
+        "Landsverk L-60 S/I (Stridsvagn Modell 1938)",
+        "L-60"
+      ],
+      "file": "landsverkl60.png"
+    },
+    "#000056": {
+      "offence": 500,
+      "defence": 550,
+      "names": [
+        "Leclerc XXI",
+        "Leclerc",
+        "XXI"
+      ],
+      "file": "leclerc.jpg"
+    },
+    "#000057": {
+      "offence": 250,
+      "defence": 100,
+      "names": [
+        "Kampfpanzer Leopard 1 Ausführung 5",
+        "leo 1a5",
+        "1a5",
+        "leopard 1a5"
+      ],
+      "file": "leopard1a5.jpg"
+    },
+    "#000058": {
+      "offence": 400,
+      "defence": 350,
+      "names": [
+        "Kampfpanzer Leopard 2 Ausführung 4",
+        "leopard 2a4",
+        "leo 2a4",
+        "2a4"
+      ],
+      "file": "leopard2a4.jpg"
+    },
+    "#000059": {
+      "offence": 500,
+      "defence": 600,
+      "names": [
+        "Kampfpanzer Leopard 2 Ausführung \"Polski\"",
+        "leopard 2pl",
+        "leo 2pl",
+        "2pl",
+        ""
+      ],
+      "file": "leopard2pl.jpg"
+    },
+    "#000060": {
+      "offence": 100,
+      "defence": 20,
+      "names": [
+        "Leopard 40/70 (Bofors L/70)",
+        "Leo 40/70",
+        "leopard 40/70"
+      ],
+      "file": "leopardbofors.jpg"
+    },
+    "#000061": {
+      "offence": 200,
+      "defence": 250,
+      "names": [
+        "Kettenfahrzeug 41 \"Lynx\"",
+        "Lynx",
+        "KF 41"
+      ],
+      "file": "lynx.jpg"
+    },
+    "#000062": {
+      "offence": 400,
+      "defence": 350,
+      "names": [
+        "M-84A",
+        "m84"
+      ],
+      "file": "M-84_VS.jpg"
+    },
+    "#000063": {
+      "offence": 500,
+      "defence": 390,
+      "names": [
+        "M1 Abrams \"Krasnovian Variant Tank\"",
+        "M1 Abrams KVT",
+        "M1 KVT"
+      ],
+      "file": "m1-kvt.jpg"
+    },
+    "#000064": {
+      "offence": 250,
+      "defence": 250,
+      "names": [
+        "120mm Gun, Combat, Tank, M103 (T43)",
+        "M103",
+        "T43"
+      ],
+      "file": "m103.jpg"
+    },
+    "#000065": {
+      "offence": 500,
+      "defence": 550,
+      "names": [
+        "M1A1 Abrams",
+        "m1a1",
+        "abrams"
+      ],
+      "file": "m1a1.jpg"
+    },
+    "#000066": {
+      "offence": 500,
+      "defence": 600,
+      "names": [
+        "M1A2 Abrams \"System enhancement packages\"(SEP) Version 1",
+        "M1A2 Abrams SEP v1",
+        "m1a2 sep",
+        "m1a2 sep v1",
+        "abrams sep",
+        "abrams sep v1"
+      ],
+      "file": "m1a2_sep.jpg"
+    },
+    "#000067": {
+      "offence": 100,
+      "defence": 150,
+      "names": [
+        "M26 Pershing",
+        "m26",
+        "pershing"
+      ],
+      "file": "m26.jpg"
+    },
+    "#000068": {
+      "offence": 190,
+      "defence": 200,
+      "names": [
+        "M47 Patton",
+        "M47"
+      ],
+      "file": "m47.jpg"
+    },
+    "#000069": {
+      "offence": 200,
+      "defence": 200,
+      "names": [
+        "M48 Patton",
+        "M48"
+      ],
+      "file": "m48.jpg"
+    },
+    "#000070": {
+      "offence": 90,
+      "defence": 95,
+      "names": [
+        "M4A1 Sherman",
+        "M4A1"
+      ],
+      "file": "m4a1.jpg"
+    },
+    "#000071": {
+      "offence": 120,
+      "defence": 95,
+      "names": [
+        "M4A1 Sherman \"Calliope\"",
+        "Calliope",
+        "m4a1 calliope"
+      ],
+      "file": "m4a1calliope.jpg"
+    },
+    "#000072": {
+      "offence": 120,
+      "defence": 100,
+      "names": [
+        "M4A2E8"
+      ],
+      "file": "m4a2e8.jpg"
+    },
+    "#000073": {
+      "offence": 150,
+      "defence": 160,
+      "names": [
+        "Tank, Combat, Full Tracked: 105-mm Gun, M60",
+        "M60"
+      ],
+      "file": "m60.jpg"
+    },
+    "#000074": {
+      "offence": 450,
+      "defence": 500,
+      "names": [
+        "M-95 Degman",
+        "Degman",
+        "M-95"
+      ],
+      "file": "m95.jpg"
+    },
+    "#000075": {
+      "offence": 400,
+      "defence": 500,
+      "names": [
+        "Magach 7C (7 Gimel)",
+        "Gimel",
+        "Magach 7C"
+      ],
+      "file": "magach7c.jpg"
+    },
+    "#000076": {
+      "offence": 500,
+      "defence": 500,
+      "names": [
+        "Mendeleev tank",
+        "Mendeleev"
+      ],
+      "file": "mandileev.jpg"
+    },
+    "#000077": {
+      "offence": 50,
+      "defence": 70,
+      "names": [
+        "A12 Infantry Tank Mark II \"Matilda\"",
+        "Matilda",
+        "Matilda mk2"
+      ],
+      "file": "matilda.jpg"
+    },
+    "#000078": {
+      "offence": 400,
+      "defence": 600,
+      "names": [
+        "Mark 4 Meil Ru'ach (Mark 4M) \"Windbreaker\"",
+        "Merkava mk4m"
+      ],
+      "file": "merkavamk4m.jpg"
+    },
+    "#000079": {
+      "offence": 500,
+      "defence": 50,
+      "names": [
+        "SU-152 (Objekt 120) \"Taran\"",
+        "Taran",
+        "Battering ram",
+        "Su-152",
+        "Object 120",
+        "objekt 120",
+        "obj 120",
+        "ram",
+        "battering"
+      ],
+      "file": "object120.jpg"
+    },
+    "#000080": {
+      "offence": 350,
+      "defence": 350,
+      "names": [
+        "Objekt 140",
+        "object 140",
+        "obj 140"
+      ],
+      "file": "object140.jpg"
+    },
+    "#000081": {
+      "offence": 600,
+      "defence": 450,
+      "names": [
+        "T-95 (Objekt 195)",
+        "T-95",
+        "Objekt 195",
+        "Object 195",
+        "obj 195"
+      ],
+      "file": "object195.jpeg"
+    },
+    "#000082": {
+      "offence": 30,
+      "defence": 30,
+      "names": [
+        "PPG tankette (Objekt 217) \"Podvizhnoye Pulemyotnoye Gnezdo:",
+        "PPG",
+        "Objekt 217",
+        "Object 217",
+        "obj 217"
+      ],
+      "file": "object217.png"
+    },
+    "#000083": {
+      "offence": 450,
+      "defence": 600,
+      "names": [
+        "Objekt 279",
+        "Object 279",
+        "obj 279"
+      ],
+      "file": "object279.jpg"
+    },
+    "#000084": {
+      "offence": 300,
+      "defence": 300,
+      "names": [
+        "Objekt 287",
+        "Object 287",
+        "obj 287"
+      ],
+      "file": "object287.png"
+    },
+    "#000085": {
+      "offence": 450,
+      "defence": 100,
+      "names": [
+        "Objekt 327"
+      ],
+      "file": "object327.png"
+    },
+    "#000086": {
+      "offence": 600,
+      "defence": 650,
+      "names": [
+        "Objekt 490 \"Poplar\"",
+        "Objekt 490",
+        "Object 490",
+        "obj 490",
+        "Poplar"
+      ],
+      "file": "object490.jpg"
+    },
+    "#000087": {
+      "offence": 150,
+      "defence": 220,
+      "names": [
+        "Objekt 757",
+        "Object 757",
+        "obj 757"
+      ],
+      "file": "object757.png"
+    },
+    "#000088": {
+      "offence": 150,
+      "defence": 50,
+      "names": [
+        "Objekt 911",
+        "Object 911"
+      ],
+      "file": "object911.png"
+    },
+    "#000089": {
+      "offence": 400,
+      "defence": 310,
+      "names": [
+        "OTO Melara, Fiat - 40 Mark 2 \"OF-40\"",
+        "OF-40 Mk2",
+        ""
+      ],
+      "file": "of40mk2.jpg"
+    },
+    "#000090": {
+      "offence": 300,
+      "defence": 300,
+      "names": [
+        "Olifant Mark 2",
+        "Olifant mk 2",
+        "Olifant 2"
+      ],
+      "file": "olifantmk1.jpg"
+    },
+    "#000091": {
+      "offence": 500,
+      "defence": 450,
+      "names": [
+        "T-84 \"Oplot\"",
+        "T-84",
+        "Oplot"
+      ],
+      "file": "oplot.jpg"
+    },
+    "#000092": {
+      "offence": 300,
+      "defence": 300,
+      "names": [
+        "Engesa EE-T1 Osorio",
+        "EE-T1",
+        "Osorio"
+      ],
+      "file": "osorioeet1.jpg"
+    },
+    "#000093": {
+      "offence": 110,
+      "defence": 130,
+      "names": [
+        "Panzerkampfwagen V Panther (Sd.Kfz. 171) G"
+      ],
+      "file": "pantherg.jpg"
+    },
+    "#000094": {
+      "offence": 50,
+      "defence": 60,
+      "names": [
+        "Panzerkampfwagen II (Sd.Kfz 121)",
+        "Panzerkampfwagen 2",
+        "PzKpfw II",
+        "PzKpfw 2",
+        "Panzer 2",
+        "pz 2",
+        "Sd.Kfz 121",
+        "SdKfz 121"
+      ],
+      "file": "panzer2.jpg"
+    },
+    "#000095": {
+      "offence": 450,
+      "defence": 70,
+      "names": [
+        "PTL-02 Assault Gun",
+        "PTL-02"
+      ],
+      "file": "ptl02.jpg"
+    },
+    "#000096": {
+      "offence": 110,
+      "defence": 400,
+      "names": [
+        "Schützenpanzer \"Puma\"",
+        "Puma",
+        "SPz Puma"
+      ],
+      "file": "puma.jpg"
+    },
+    "#000097": {
+      "offence": 100,
+      "defence": 80,
+      "names": [
+        "Panzerkampfwagen IV (Sd.Kfz. 161)",
+        "Panzer IV",
+        "Panzer 4",
+        "pz 4",
+        "SdKfz 161",
+        "pzkpfw iv",
+        "pzkpfw 4"
+      ],
+      "file": "pz4.jpg"
+    },
+    "#000098": {
+      "offence": 100,
+      "defence": 30,
+      "names": [
+        "OTO R3 Capraia T20",
+        "R3 T20"
+      ],
+      "file": "r3t20.jpg"
+    },
+    "#000099": {
+      "offence": 90,
+      "defence": 200,
+      "names": [
+        "M4A3E2 Sherman \"Jumbo\"",
+        "M4A3E2",
+        "Jumbo"
+      ],
+      "file": "shermanjumbo.jpg"
+    },
+    "#000100": {
+      "offence": 150,
+      "defence": 40,
+      "names": [
+        "Stormpjäs försöksmodell år/1943-1944 (Fast-Haubits)",
+        "Spj fm/43-44"
+      ],
+      "file": "spjfm4344.jpg"
+    },
+    "#000101": {
+      "offence": 500,
+      "defence": 60,
+      "names": [
+        "2S25 Sprut-SD",
+        "2S25",
+        "Sprut-SD",
+        "Sprut",
+        "2S25 Sprut",
+        "2S25 SD"
+      ],
+      "file": "sprut.jpg"
+    },
+    "#000102": {
+      "offence": 60,
+      "defence": 75,
+      "names": [
+        "Saint-Chamond",
+        "StChamond"
+      ],
+      "file": "StChamond.jpg"
+    },
+    "#000103": {
+      "offence": 350,
+      "defence": 250,
+      "names": [
+        "Stridsvagn 102R - REMO \"Prickskytt centurion\"",
+        "Strv 102R",
+        "Strv 102",
+        "Strv 102 REMO"
+      ],
+      "file": "Stridsvagn102.jpg"
+    },
+    "#000104": {
+      "offence": 500,
+      "defence": 650,
+      "names": [
+        "Stridsvagn 122B (Panoramic low signature sight SAAB)",
+        "Strv 122B PLSS",
+        "Stridsvagn 122B PLSS"
+      ],
+      "file": "stridsvagn122bplss.jpg"
+    },
+    "#000105": {
+      "offence": 350,
+      "defence": 550,
+      "names": [
+        "Stridsvagn 103C (S-Tank)",
+        "Strv 103C"
+      ],
+      "file": "strv103c.jpg"
+    },
+    "#000106": {
+      "offence": 600,
+      "defence": 600,
+      "names": [
+        "Projekt Stridsvagn 2000 T140/40",
+        "Strv 2000",
+        "Stridsvagn 2000"
+      ],
+      "file": "strv2000.png"
+    },
+    "#000107": {
+      "offence": 35,
+      "defence": 30,
+      "names": [
+        "Stridsvagn Årsmodell/1921-1929",
+        "Strv m2129",
+        "Stridsvagn m2129"
+      ],
+      "file": "strvm2129.png"
+    },
+    "#000108": {
+      "offence": 90,
+      "defence": 100,
+      "names": [
+        "Sturmgeschütz III",
+        "Stug 3",
+        "stug III"
+      ],
+      "file": "stug3.jpg"
+    },
+    "#000109": {
+      "offence": 120,
+      "defence": 100,
+      "names": [
+        "SU-100"
+      ],
+      "file": "su100.jpg"
+    },
+    "#000110": {
+      "offence": 200,
+      "defence": 50,
+      "names": [
+        "SU-14"
+      ],
+      "file": "su14.jpg"
+    },
+    "#000111": {
+      "offence": 300,
+      "defence": 100,
+      "names": [
+        "SU-14-2"
+      ],
+      "file": "su142.png"
+    },
+    "#000112": {
+      "offence": 350,
+      "defence": 120,
+      "names": [
+        "SU-152"
+      ],
+      "file": "su152.jpg"
+    },
+    "#000113": {
+      "offence": 90,
+      "defence": 35,
+      "names": [
+        "SU-26"
+      ],
+      "file": "su26.png"
+    },
+    "#000114": {
+      "offence": 400,
+      "defence": 450,
+      "names": [
+        "T-72A \"Ural\" (Objekt 176)",
+        "T-72A",
+        "T-72 Ural"
+      ],
+      "file": "T-72A.jpg"
+    },
+    "#000115": {
+      "offence": 500,
+      "defence": 600,
+      "names": [
+        "T-72M4 Czechia",
+        "T-72M4 CZ",
+        "T-72M4",
+        ""
+      ],
+      "file": "T-72M4CZ.jpg"
+    },
+    "#000116": {
+      "offence": 20,
+      "defence": 15,
+      "names": [
+        "T-15"
+      ],
+      "file": "t15.jpg"
+    },
+    "#000117": {
+      "offence": 200,
+      "defence": 90,
+      "names": [
+        "T-14 BMP"
+      ],
+      "file": "t14bmp.png"
+    },
+    "#000118": {
+      "offence": 200,
+      "defence": 210,
+      "names": [
+        "T29"
+      ],
+      "file": "t29.jpg"
+    },
+    "#000119": {
+      "offence": 65,
+      "defence": 50,
+      "names": [
+        "T-29"
+      ],
+      "file": "t29.png"
+    },
+    "#000120": {
+      "offence": 120,
+      "defence": 80,
+      "names": [
+        "T-34-85"
+      ],
+      "file": "t3485.jpg"
+    },
+    "#000121": {
+      "offence": 15,
+      "defence": 20,
+      "names": [
+        "T-38"
+      ],
+      "file": "t38.jpg"
+    },
+    "#000122": {
+      "offence": 30,
+      "defence": 20,
+      "names": [
+        "T-38 Finland",
+        "T-38 Fin"
+      ],
+      "file": "t38fin.jpg"
+    },
+    "#000123": {
+      "offence": 150,
+      "defence": 150,
+      "names": [
+        "T-44"
+      ],
+      "file": "t44.png"
+    },
+    "#000124": {
+      "offence": 350,
+      "defence": 300,
+      "names": [
+        "T54E1"
+      ],
+      "file": "t54e1.jpg"
+    },
+    "#000125": {
+      "offence": 350,
+      "defence": 400,
+      "names": [
+        "T-55"
+      ],
+      "file": "t55.jpg"
+    },
+    "#000126": {
+      "offence": 350,
+      "defence": 500,
+      "names": [
+        "T-55M8-A2 Tifon II (T-55AGM)",
+        "T-55 AGM",
+        "T-55M8-A2",
+        "Tifon II",
+        "Tifon 2",
+        "T-55M8-A2 Tifon 2"
+      ],
+      "file": "t55agm.jpg"
+    },
+    "#000127": {
+      "offence": 300,
+      "defence": 350,
+      "names": [
+        "T-55 AM2"
+      ],
+      "file": "t55am2.jpg"
+    },
+    "#000128": {
+      "offence": 400,
+      "defence": 350,
+      "names": [
+        "T-62"
+      ],
+      "file": "t62.jpeg"
+    },
+    "#000129": {
+      "offence": 400,
+      "defence": 400,
+      "names": [
+        "T-62M"
+      ],
+      "file": "t62m.jpg"
+    },
+    "#000130": {
+      "offence": 400,
+      "defence": 350,
+      "names": [
+        "T-64"
+      ],
+      "file": "t64.jpg"
+    },
+    "#000131": {
+      "offence": 400,
+      "defence": 420,
+      "names": [
+        "T-64 BVK"
+      ],
+      "file": "t64bvk.jpg"
+    },
+    "#000132": {
+      "offence": 400,
+      "defence": 450,
+      "names": [
+        "T-72 AMT"
+      ],
+      "file": "t72amt.jpg"
+    },
+    "#000133": {
+      "offence": 400,
+      "defence": 400,
+      "names": [
+        "T-72B3"
+      ],
+      "file": "t72b3.jpg"
+    },
+    "#000134": {
+      "offence": 500,
+      "defence": 550,
+      "names": [
+        "T-72M2 Moderna",
+        "T-72M2",
+        "T-72 Moderna"
+      ],
+      "file": "t72m2.jpeg"
+    },
+    "#000135": {
+      "offence": 400,
+      "defence": 400,
+      "names": [
+        "T-80BV"
+      ],
+      "file": "t80bv.jpg"
+    },
+    "#000136": {
+      "offence": 400,
+      "defence": 500,
+      "names": [
+        "T-80BVM"
+      ],
+      "file": "t80bvm.jpg"
+    },
+    "#000137": {
+      "offence": 450,
+      "defence": 500,
+      "names": [
+        "T-80U"
+      ],
+      "file": "t80u.jpg"
+    },
+    "#000138": {
+      "offence": 450,
+      "defence": 600,
+      "names": [
+        "T-90A"
+      ],
+      "file": "t90a.jpg"
+    },
+    "#000139": {
+      "offence": 450,
+      "defence": 500,
+      "names": [
+        "T-90M \"Proryv-3\"",
+        "T-90M",
+        "Proryv-3",
+        "Proryv"
+      ],
+      "file": "t90m.jpeg"
+    },
+    "#000140": {
+      "offence": 500,
+      "defence": 600,
+      "names": [
+        "T-90MS"
+      ],
+      "file": "t90ms.jpg"
+    },
+    "#000141": {
+      "offence": 500,
+      "defence": 600,
+      "names": [
+        "T-90S"
+      ],
+      "file": "t90s.jpg"
+    },
+    "#000142": {
+      "offence": 250,
+      "defence": 500,
+      "names": [
+        "105 mm Gun Motor Carriage T95/T28 Super heavy",
+        "T95",
+        "T29"
+      ],
+      "file": "t95.jpg"
+    },
+    "#000143": {
+      "offence": 120,
+      "defence": 100,
+      "names": [
+        "Panzerkampfwagen VI Ausführung H1 (Tiger H1)",
+        "Tiger H1"
+      ],
+      "file": "tiger1h.jpeg"
+    },
+    "#000144": {
+      "offence": 350,
+      "defence": 400,
+      "names": [
+        "TO-55"
+      ],
+      "file": "to55.png"
+    },
+    "#000145": {
+      "offence": 100,
+      "defence": 250,
+      "names": [
+        "TOG-2 Prototype",
+        "TOG-2 P",
+        "TOG-2"
+      ],
+      "file": "tog2protype.jpg"
+    },
+    "#000146": {
+      "offence": 300,
+      "defence": 400,
+      "names": [
+        "Tank, Heavy Assault, Tortoise (A39)"
+      ],
+      "file": "tortoise.jpg"
+    },
+    "#000147": {
+      "offence": 75,
+      "defence": 60,
+      "names": [
+        "Tsar tank (Netopyr'/Lebedenko tank)"
+      ],
+      "file": "tsartank.jpg"
+    },
+    "#000148": {
+      "offence": 500,
+      "defence": 600,
+      "names": [
+        "Type 10 (10式戦車, Hitomaru-shiki sensha)",
+        "Type 10"
+      ],
+      "file": "type10.jpg"
+    },
+    "#000149": {
+      "offence": 350,
+      "defence": 300,
+      "names": [
+        "Type 61 (61式戦車, Roku-ichi Shiki sensha)",
+        "Type 61"
+      ],
+      "file": "type61.jpg"
+    },
+    "#000150": {
+      "offence": 300,
+      "defence": 250,
+      "names": [
+        "Type 74 (74式戦車, nana-yon-shiki-sensha)",
+        "Type 74"
+      ],
+      "file": "type74.jpg"
+    },
+    "#000151": {
+      "offence": 500,
+      "defence": 500,
+      "names": [
+        "Type 90 (90式戦車, Kyū-maru-shiki-sensha)",
+        "Type 90"
+      ],
+      "file": "type90.jpg"
+    },
+    "#000152": {
+      "offence": 200,
+      "defence": 210,
+      "names": [
+        "Underlagsgrupp Direkt Eld Stridsfordon 03 (UDES)",
+        "UDES 03"
+      ],
+      "file": "udes03.png"
+    },
+    "#000153": {
+      "offence": 400,
+      "defence": 400,
+      "names": [
+        "Underlagsgrupp Direkt Eld Stridsfordon 15/16 (UDES)",
+        "UDES 15/16"
+      ],
+      "file": "udes1516.png"
+    },
+    "#000154": {
+      "offence": 450,
+      "defence": 650,
+      "names": [
+        "Underlagsgrupp Direkt Eld Stridsfordon 19 (UDES)",
+        "UDES 19"
+      ],
+      "file": "udes19.png"
+    },
+    "#000155": {
+      "offence": 400,
+      "defence": 550,
+      "names": [
+        "Underlagsgrupp Direkt Eld Stridsfordon XX-20 (UDES)",
+        "UDES XX-20"
+      ],
+      "file": "udesxx20.png"
+    },
+    "#000156": {
+      "offence": 65,
+      "defence": 70,
+      "names": [
+        "Tank, Infantry, MK III, Valentine",
+        "Valentine MK III",
+        "Valentine MK 3",
+        "Valentine"
+      ],
+      "file": "valentine.jpg"
+    },
+    "#000157": {
+      "offence": 500,
+      "defence": 550,
+      "names": [
+        "VT-4"
+      ],
+      "file": "vt4.jpg"
+    },
+    "#000158": {
+      "offence": 420,
+      "defence": 390,
+      "names": [
+        "WZ-122A",
+        "WZ-122"
+      ],
+      "file": "wz122.jpg"
+    },
+    "#000159": {
+      "offence": 350,
+      "defence": 400,
+      "names": [
+        "Tank, Combat, Full-Tracked, 105-mm Gun XM1 (GM)",
+        "XM1 GM",
+        "XM 1"
+      ],
+      "file": "xm1gm.png"
+    },
+    "#000160": {
+      "offence": 300,
+      "defence": 350,
+      "names": [
+        "MBT-70"
+      ],
+      "file": "mbt70.jpg"
+    },
+    "#000161": {
+      "offence": 250,
+      "defence": 80,
+      "names": [
+        "Zachlam Tager"
+      ],
+      "file": "zachlamtager.jpg"
+    },
+    "#000162": {
+      "offence": 50,
+      "defence": 35,
+      "names": [
+        "ZSU-37"
+      ],
+      "file": "zsu37.png"
+    },
+    "#000163": {
+      "offence": 450,
+      "defence": 500,
+      "names": [
+        "ZTZ-96",
+        "Type 96"
+      ],
+      "file": "ztz96.jpg"
+    },
+    "#000164": {
+      "offence": 500,
+      "defence": 550,
+      "names": [
+        "ZTZ-99A",
+        "Type 99A"
+      ],
+      "file": "ztz99a.jpg"
+    },
+    "#000165": {
+      "offence": 350,
+      "defence": 350,
+      "names": [
+        "ذوالفقار (Zulfiqar 1)",
+        "Zulfiqar",
+        "Zulfiqar 1"
+      ],
+      "file": "zulfiqar1.jpg"
+    }
+  }
+}

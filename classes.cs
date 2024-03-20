@@ -275,7 +275,7 @@ namespace TankDex
     }
     public class index
     {
-        public void load(out index cfg, string path = @"tanks\index.yaml")
+        public void load(out index cfg, string path)
         {
             string yamlstr = File.ReadAllText(path);
             var deserializer = new DeserializerBuilder().Build();
@@ -305,10 +305,14 @@ namespace TankDex
             return null;
         }
 
+        [YamlMember(Alias = "relativeImagePath")]
+        public string relativeImagePath { get; set; }
+        [YamlMember(Alias = "_imagePath")]
+        public string imagePath { get; set; } // Debug only
         [YamlMember(Alias = "replace")]
-        public Dictionary<string, string>? replace { get; set; }
+        public Dictionary<string, string> replace { get; set; }
         [YamlMember(Alias = "tanks")]
-        public Dictionary<string, tank>? tanks { get; set; }
+        public Dictionary<string, tank> tanks { get; set; }
     }
     public class tank
     {
