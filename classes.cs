@@ -45,6 +45,12 @@ namespace TankDex
         {
             this._data = new Dictionary<ulong, Dictionary<tank, uint>>();
         }
+        /// <Summary>
+        /// Loads the data from a file in to this object.
+        /// </Summary>
+        /// <param name="ind">The index object for the bot</param>
+        /// <param name="path">The path to the data file. By default its data.txt</param>
+        /// <returns>void</returns>
         public void load(index ind, string path = "data.txt")
         {
             string[] lines = File.ReadAllLines(path);
@@ -68,6 +74,12 @@ namespace TankDex
                 }
             }
         }
+        /// <Summary>
+        /// Writes the data to the data file
+        /// </Summary>
+        /// <param name="ind">The index object for the bot</param>
+        /// <param name="path">The path to the data file. By default its data.txt</param>
+        /// <returns>void</returns>
         public void write(index ind, string path = "data.txt")
         {
             List<string> lines = new List<string>();
@@ -87,6 +99,12 @@ namespace TankDex
             }
             File.WriteAllLines(path, lines.ToArray());
         }
+        /// <Summary>
+        /// Adds tank to the specified user ID
+        /// </Summary>
+        /// <param name="id">The ID of the target user</param>
+        /// <param name="t">The tank object you are about to add</param>
+        /// <returns>void</returns>
         public void add(ulong id, tank t)
         {
             if (this._data.ContainsKey(id))
@@ -109,6 +127,12 @@ namespace TankDex
                 this._data.Add(id, a);
             }
         }
+        /// <Summary>
+        /// Removes a tank from the specified user ID
+        /// </Summary>
+        /// <param name="id">The ID of the target user</param>
+        /// <param name="t">The tank object you are about to remove</param>
+        /// <returns>void</returns>
         public void rem(ulong id, tank t)
         {
             if (this._data.ContainsKey(id))
@@ -136,16 +160,32 @@ namespace TankDex
                 return;
             }
         }
+        /// <Summary>
+        /// Gets the amount of a certain tank owned by the specified user
+        /// </Summary>
+        /// <param name="id">The ID of the target user</param>
+        /// <param name="t">The tank object you are about to check</param>
+        /// <returns>The amount of tanks in UINT</returns>
         public uint amt(ulong id, tank t)
         {
             if (!this._data.ContainsKey(id)) return 0;
             return _data[id][t];
         }
+        /// <Summary>
+        /// Gets the amount of tanks owned by the specified user
+        /// </Summary>
+        /// <param name="id">The ID of the target user</param>
+        /// <returns>The amount of owned tanks in INT</returns>
         public int ama(ulong id)
         {
             if (!this._data.ContainsKey(id)) return 0;
             return _data[id].Count;
         }
+        /// <Summary>
+        /// Gets the total amount of tanks owned by the specified user
+        /// </Summary>
+        /// <param name="id">The ID of the target user</param>
+        /// <returns>The total amount of owned tanks in UINT</returns>
         public uint tot(ulong id)
         {
             if (!this._data.ContainsKey(id)) return 0;
@@ -156,23 +196,33 @@ namespace TankDex
             }
             return amount;
         }
+        /// <Summary>
+        /// Gets the total offence power of the specified user
+        /// </Summary>
+        /// <param name="id">The ID of the target user</param>
+        /// <returns>The total offence power of owned tanks in UINT</returns>
         public uint pow(ulong id)
         {
             if (!this._data.ContainsKey(id)) return 0;
             uint amount = 0;
             foreach (var tank in this._data[id])
             {
-                amount += (uint)tank.Key.offence;
+                amount += (uint)tank.Key.offence * tank.Value;
             }
             return amount;
         }
+        /// <Summary>
+        /// Gets the total defence power of the specified user
+        /// </Summary>
+        /// <param name="id">The ID of the target user</param>
+        /// <returns>The total power of owned tanks in UINT</returns>
         public uint def(ulong id)
         {
             if (!this._data.ContainsKey(id)) return 0;
             uint amount = 0;
             foreach (var tank in this._data[id])
             {
-                amount += (uint)tank.Key.defence;
+                amount += (uint)tank.Key.defence * tank.Value;
             }
             return amount;
         }
@@ -190,6 +240,12 @@ namespace TankDex
         [YamlMember(Alias = "commands")]
         public Dictionary<string, string>? Commands { get; set; }
 
+        /// <Summary>
+        /// Loads the config file
+        /// </Summary>
+        /// <param name="cfg">The target config object</param>
+        /// <param name="path">The target config file path</param>
+        /// <returns>void</returns>
         public void load(out config cfg, string path = "config.yaml")
         {
             string yamlstr = File.ReadAllText(path);
@@ -197,7 +253,11 @@ namespace TankDex
             config tokenData = deserializer.Deserialize<config>(yamlstr);
             cfg = tokenData;
         }
-        
+        /// <Summary>
+        /// Saves the config file
+        /// </Summary>
+        /// <param name="path">The target config file path</param>
+        /// <returns>void</returns>
         public void save(string path = "config.yaml")
         {
             var serializer = new SerializerBuilder().Build();
@@ -219,6 +279,11 @@ namespace TankDex
         {
             return $"{this.guildid};{this.channelid};{this.active};{this.cdnid};{this.cdnchid}";
         }
+        /// <Summary>
+        /// Loads the configs for the guilds
+        /// </Summary>
+        /// <param name="path">The target config file path. By default its guilds.txt</param>
+        /// <returns>Array of all the guild configs</returns>
         public static gldcfg[] load(string path = "guilds.txt")
         {
             List<gldcfg> output = new List<gldcfg>();
@@ -234,6 +299,12 @@ namespace TankDex
 
             return output.ToArray();
         }
+        /// <Summary>
+        /// Checks if array of guilds contain certain guild ID
+        /// </Summary>
+        /// <param name="target">The target guild config array</param>
+        /// <param name="guildid">The guild ID to search for</param>
+        /// <returns>True if found</returns>
         public static bool contains(gldcfg[] target, ulong guildid)
         {
             foreach (gldcfg gld in target)
@@ -245,6 +316,12 @@ namespace TankDex
             }
             return false;
         }
+        /// <Summary>
+        /// Writes guild config to target file
+        /// </Summary>
+        /// <param name="list">The target list of guild configs to write</param>
+        /// <param name="path">Path to the target file. By default its guild.txt</param>
+        /// <returns>void</returns>
         public static void write(gldcfg[] list, string path = "guilds.txt")
         {
             List<string> strs = new List<string>();
@@ -254,6 +331,12 @@ namespace TankDex
             }
             File.WriteAllLines(path, strs.ToArray());
         }
+        /// <Summary>
+        /// Locates index of guild config you are looking for
+        /// </Summary>
+        /// <param name="list">The target list of guild configs to search in</param>
+        /// <param name="id">The ID to look for in the list of guild configs.</param>
+        /// <returns>The index of the located config in INT</returns>
         public static int find(gldcfg[] list, ulong? id)
         {
             int ind = 0;
