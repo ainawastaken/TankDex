@@ -17,6 +17,7 @@ using Discord.Rest;
 using Discord.Utils;
 using Discord.Webhook;
 using Discord.WebSocket;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -275,13 +276,6 @@ namespace TankDex
     }
     public class index
     {
-        public void load(out index cfg, string path)
-        {
-            string yamlstr = File.ReadAllText(path);
-            var deserializer = new DeserializerBuilder().Build();
-            index tokenData = deserializer.Deserialize<index>(yamlstr);
-            cfg = tokenData;
-        }
         public tank fromId(string id)
         {
             foreach (KeyValuePair<string, tank> kvp in this.tanks)
@@ -304,26 +298,25 @@ namespace TankDex
             }
             return null;
         }
-
-        [YamlMember(Alias = "relativeImagePath")]
         public string relativeImagePath { get; set; }
-        [YamlMember(Alias = "_imagePath")]
-        public string imagePath { get; set; } // Debug only
-        [YamlMember(Alias = "replace")]
         public Dictionary<string, string> replace { get; set; }
-        [YamlMember(Alias = "tanks")]
         public Dictionary<string, tank> tanks { get; set; }
+
+        public static string Serialize(index obj)
+        {
+            return JsonConvert.SerializeObject(obj, Formatting.Indented);
+        }
+        public static index Deserialize(string json)
+        {
+            return JsonConvert.DeserializeObject<index>(json);
+        }
     }
     public class tank
     {
-        [YamlMember(Alias = "offence")]
         public int? offence { get; set; }
-        [YamlMember(Alias = "defence")]
         public int? defence { get; set; }
-        [YamlMember(Alias = "names")]
-        public List<string>? names { get; set; }
-        [YamlMember(Alias = "file")]
-        public string? file { get; set; }
+        public List<string> names { get; set; }
+        public string file { get; set; }
     }
     public class activebtn
     {
@@ -375,6 +368,13 @@ namespace TankDex
             this.tank = t;
             this.btn = btn;
         }
+        public activequestion(RestUserMessage ms, tank t, activebtn btn, string tkey)
+        {
+            this.msg = ms;
+            this.tank = t;
+            this.btn = btn;
+            this.tkey = tkey;
+        }
         public static bool Contains(ulong msid, activequestion[] target)
         {
             foreach (activequestion qst in target)
@@ -399,9 +399,51 @@ namespace TankDex
         public RestUserMessage? msg;
         public tank? tank;
         public activebtn? btn;
+        public string? tkey;
+    }
+    public class activequery
+    {
+        public int page;
+        public ulong? userid;
+        public ulong? channelid;
+        public ulong? guildid;
+        public RestUserMessage msg;
+        public DateTime expirationtime;
     }
     public static class util
     {
+        public static int CalculateItemsOnPage(int totalItems, int itemsPerPage, int pageNumber)
+        {
+            // Calculate the total pages needed
+            int totalPages = totalItems / itemsPerPage;
+
+            // If there are remaining items, add one more page
+            if (totalItems % itemsPerPage != 0)
+            {
+                totalPages++;
+            }
+
+            // Ensure pageNumber is within valid range
+            pageNumber = Math.Max(1, Math.Min(totalPages, pageNumber));
+
+            // Calculate the number of items on the specified page
+            int itemsOnPage = Math.Min(itemsPerPage, totalItems - (pageNumber - 1) * itemsPerPage);
+
+            return itemsOnPage;
+        }
+        public static int CalculatePagesNeeded(int totalItems, int itemsPerPage)
+        {
+            // Calculate the total pages needed
+            int pagesNeeded = totalItems / itemsPerPage;
+
+            // If there are remaining items, add one more page
+            if (totalItems % itemsPerPage != 0)
+            {
+                pagesNeeded++;
+            }
+
+            return pagesNeeded;
+        }
         private static readonly DateTimeOffset UnixEpoch = new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
         public static long ToUnixTime(this DateTimeOffset timestamp)
@@ -436,7 +478,10 @@ namespace TankDex
         {
             SocketGuild cdn = client.GetGuild(cdngld);
             SocketTextChannel cdnchn = cdn.GetTextChannel(channelid);
-            RestUserMessage msg = cdnchn.SendFileAsync(file).Result;
+            string temp_path = Path.Combine(Directory.GetParent(file).ToString(), $"tank{Path.GetExtension(file)}");
+            File.Copy(file, temp_path);
+            RestUserMessage msg = cdnchn.SendFileAsync(temp_path).Result;
+            File.Delete(temp_path);
             return msg.Attachments.ToArray()[0].Url;
         }
     }

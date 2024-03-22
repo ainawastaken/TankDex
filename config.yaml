@@ -16,3 +16,4 @@ commands:
     "disable": "Disable the bot"
     "completion": "Shows your tank completion"
     "setcdn": "Sets CDN channel of bot"
+    "info": "Gets the info of all your tanks"

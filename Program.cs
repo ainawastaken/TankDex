@@ -25,6 +25,7 @@ using System.Threading;
 using System.Threading.Channels;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Security.AccessControl;
 
 
 #pragma warning disable CS1998
@@ -53,6 +54,7 @@ namespace TankDex
 
         private volatile static List<activebtn> activebuttons = new List<activebtn>();
         private volatile static List<activequestion> activequestions = new List<activequestion>();
+        private volatile static List<activequery> activequeries = new List<activequery>();
 
         private System.Timers.Timer buttonTimer;
 
@@ -67,17 +69,20 @@ namespace TankDex
             _client = new DiscordSocketClient(
             new DiscordSocketConfig
             {
-                GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent
-            });
+                GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent,
+                UseInteractionSnowflakeDate = false
+            }) ;
             _commands = new CommandService();
             cfg.load(out cfg);
-            index.load(out index);
+            index = index.Deserialize(File.ReadAllText("tanks\\index.json"));
             guilds = gldcfg.load().ToList();
             data.load(index);
             string[] cdnstr = File.ReadAllText("cdn.txt").Split(';');
             cdnid = ulong.Parse(cdnstr[0]);
             cdnchid = ulong.Parse(cdnstr[1]);
-            
+            Directory.CreateDirectory("tanks\\temp");
+
+
             _client.Log += Log;
             _client.Ready += Client_Ready;
             _client.SlashCommandExecuted += SlashCommandHandler;
@@ -111,12 +116,11 @@ namespace TankDex
         }
         public async Task GuildAvailable(SocketGuild guild)
         {
-            if (!gldcfg.contains(guilds.ToArray(), guild.Id))
+            /*if (!gldcfg.contains(guilds.ToArray(), guild.Id))
             {
                 guilds.Add(new gldcfg(guild.Id, ulong.MaxValue, false, ulong.MaxValue, ulong.MaxValue));
                 gldcfg.write(guilds.ToArray());
             }
-            /*
             var commands = guild.GetApplicationCommandsAsync().Result;
             foreach (SocketApplicationCommand command in commands)
             {
@@ -139,8 +143,7 @@ namespace TankDex
                 {
                     var json = JsonConvert.SerializeObject(exception.Errors, Formatting.Indented);
                 }
-            }
-            */
+            }*/
         }
         private async Task SlashCommandHandler(SocketSlashCommand command)
         {
@@ -170,9 +173,9 @@ namespace TankDex
                 case "trigger":
                     if (cfg.Developers.Contains(command.User.Id) & util.isAdmin(_client.GetGuild((ulong)command.GuildId).GetUser(command.User.Id)))
                     {
-                        Random rnd = new Random(DateTime.Now.Millisecond);
-                        await command.RespondAsync($"Triggered! ||(Developer only)||", null, false, true);
-                        await Spawn(command.Channel, rnd.Next(0, index.tanks.Count));
+                        await command.RespondAsync($"Triggered! ||(Developer only)||", null, false, true); 
+                        Random rnd = new Random(DateTime.Now.Millisecond); 
+                        await Spawn(command.Channel, rnd.Next(0, index.tanks.Count)); 
                     }
                     else
                     {
@@ -233,6 +236,36 @@ namespace TankDex
                         await command.RespondAsync("You're not a developer!", null, false, true);
                     }
                     break;
+                case "info":
+                    EmbedBuilder _eb = new EmbedBuilder();
+                    DateTime expiry = DateTime.UtcNow.AddSeconds(30);
+                    //Int32 unixTimestamp = (int)expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                    activequery aq = new activequery();
+                    _eb.Title = $"Tank info for {command.User.GlobalName}";
+                    _eb.Description = $"Page {aq.page}/{util.CalculatePagesNeeded(data.ama(command.User.Id), 25)}\n{util.CalculateItemsOnPage(data.ama(command.User.Id), 25, 0)}/25 per page" +
+                        $"\nType \"next\" for next page. \"previous\" for previous page. And tank ID for info";
+                    aq.page = 0;
+                    aq.expirationtime = expiry;
+                    aq.userid = command.User.Id;
+                    aq.channelid = command.ChannelId;
+                    aq.guildid = command.GuildId;
+
+                    int depth = 0;
+                    foreach (KeyValuePair<tank, uint> t in data._data[command.User.Id])
+                    {
+                        if (depth == 25) break;
+                        EmbedFieldBuilder efb = new EmbedFieldBuilder();
+                        efb.WithName($"{index.fromTank(t.Key)} x{t.Value}");
+                        efb.WithValue(t.Key.names[0]);
+                        efb.IsInline = true;
+                        _eb.AddField(efb);
+                        depth++;
+                    }
+
+                    await command.RespondAsync(embed:_eb.Build());
+                    
+
+                    break;
             }
         }
         private async Task MessageReceived(SocketMessage message)
@@ -264,7 +297,7 @@ namespace TankDex
 
                             data.add(message.Author.Id, qst.tank);
                             data.write(index);
-                            await msg2.ReplyAsync($"<@{message.Author.Id}> guessed \"*{qst.tank.names[0]}*\"!\nYou now own **{data.amt(message.Author.Id, qst.tank)}**, \"*{qst.tank.names[0]}'s*\"!");
+                            await msg2.ReplyAsync($"<@{message.Author.Id}> guessed \"*{qst.tank.names[0]}*\"!\nYou now own **{data.amt(message.Author.Id, qst.tank)}**, \"*{qst.tank.names[0]}'s*\" ***({qst.tkey})***!");
                             await msg2.AddReactionAsync(new Emoji("✅"));
                             EmbedBuilder oldEmbed = qst.btn.msg.Embeds.FirstOrDefault().ToEmbedBuilder();
                             oldEmbed.WithTitle($"~~A tank has appeared!~~ *{qst.tank.names[0]}* ***Captured***");
@@ -307,20 +340,20 @@ namespace TankDex
         }
         private async Task Spawn(ISocketMessageChannel? channel, int randtank)
         {
-            Random rnd = new Random(DateTime.Now.Millisecond);
-            ComponentBuilder builder = new ComponentBuilder();
-            DateTime expiry = DateTime.UtcNow.AddMinutes(1);
-            Int32 unixTimestamp = (int)expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-            IGuild guild = (channel as IGuildChannel)?.Guild;
-            gldcfg cfg = guilds[gldcfg.find(guilds.ToArray(), guild.Id)];
+            Random rnd = new Random(DateTime.Now.Millisecond); 
+            ComponentBuilder builder = new ComponentBuilder(); 
+            DateTime expiry = DateTime.UtcNow.AddMinutes(1); 
+            Int32 unixTimestamp = (int)expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds; 
+            IGuild guild = (channel as IGuildChannel)?.Guild; 
+            gldcfg cfg = guilds[gldcfg.find(guilds.ToArray(), guild.Id)]; 
 
             builder.WithButton(
                 "Guess", 
                 $"{rnd.Next(-10000, 10000)}", 
-                ButtonStyle.Success);
+                ButtonStyle.Success); 
 
             EmbedBuilder eb = new EmbedBuilder();
-            eb.Title = $"**A tank has appeared!** *Expires <t:{unixTimestamp}:R>*";
+            eb.Title = $"**A tank has appeared!** *Expires <t:{unixTimestamp}:R>*"; 
             eb.WithImageUrl(util.cdnget($@"tanks\images\{index.tanks[index.tanks.Keys.ToArray()[randtank]].file}", cdnid, cdnchid, _client));
 
             RestUserMessage msg = await channel.SendMessageAsync(embed:eb.Build());
@@ -334,14 +367,18 @@ namespace TankDex
                 channel.Id,
                 guild.Id,
                 index.tanks.Keys.ToArray()[randtank],
-                expiry));
+                expiry)); 
             tank t = index.tanks[index.tanks.Keys.ToArray()[randtank]];
-            activequestions.Add(new activequestion(msg, t, new activebtn(
-                msg,
-                channel.Id,
-                guild.Id,
-                index.tanks.Keys.ToArray()[randtank],
-                expiry)));
+            activequestions.Add(
+                new activequestion(msg, 
+                t, 
+                new activebtn(
+                    msg,
+                    channel.Id,
+                    guild.Id,
+                    index.tanks.Keys.ToArray()[randtank],
+                    expiry),
+                index.fromTank(t)));
         }
         
         private void OnButtonTimedEvent(Object source, ElapsedEventArgs e)
