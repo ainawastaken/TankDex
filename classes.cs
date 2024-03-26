@@ -34,6 +34,7 @@ using YamlDotNet.Serialization;
 #pragma warning disable CS8604
 #pragma warning disable CS8618
 #pragma warning disable CS8622
+#pragma warning disable CS8625
 #pragma warning disable CS8629
 
 namespace TankDex
@@ -57,21 +58,13 @@ namespace TankDex
 
             foreach (string line in lines)
             {
-                try
+                ulong id = ulong.Parse(line.Split(';')[0]);
+                Dictionary<tank, uint> tanks = new Dictionary<tank, uint>();
+                foreach (string tank in line.Split(';')[1].Split('/'))
                 {
-                    ulong id = ulong.Parse(line.Split(';')[0]);
-                    Dictionary<tank, uint> tanks = new Dictionary<tank, uint>();
-                    foreach (string tank in line.Split(';')[1].Split('/'))
-                    {
-                        tanks.Add(ind.fromId(tank.Split('^')[0]), uint.Parse(tank.Split('^')[1]));
-                    }
-                    this._data.Add(id, tanks);
+                    tanks.Add(ind.fromId(tank.Split('^')[0]), uint.Parse(tank.Split('^')[1]));
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    Console.WriteLine(ex.StackTrace);
-                }
+                this._data.Add(id, tanks);
             }
         }
         /// <Summary>
@@ -226,6 +219,57 @@ namespace TankDex
             }
             return amount;
         }
+        /// <Summary>
+        /// Returns true if user owns a certain tank
+        /// </Summary>
+        /// <param name="id">The ID of the target user</param>
+        /// <param name="t">The tank to check</param>
+        /// <returns>True if the tank is owned</returns>
+        public bool has(ulong id, tank t)
+        {
+            if (this._data[id].ContainsKey(t)) return true;
+            else return false;
+        }
+        /// <Summary>
+        /// Returns the tank completion
+        /// </Summary>
+        /// <param name="id">The ID of the target user</param>
+        /// <param name="ind">The target index</param>
+        /// <returns>The completion in%<returns>
+        public float cml(ulong id, index ind)
+        {
+            string[] allIds = ind.tanks.Keys.ToArray();
+            List<string> _ownedIds = new List<string>();
+            foreach (tank t in _data[id].Keys)
+            {
+                string _id = ind.fromTank(t);
+                _ownedIds.Add(_id);
+                if (!allIds.Contains(_id))
+                {
+                    Console.WriteLine(_id);
+                }
+            }
+            string[] ownedIds = _ownedIds.ToArray();
+            // Check for empty arrays or null references
+            if (allIds == null || allIds.Length == 0 || ownedIds == null || ownedIds.Length == 0)
+            {
+                throw new ArgumentException("Array of IDs cannot be null or empty.");
+            }
+
+            // Convert arrays to HashSet for faster lookup
+            HashSet<string> allIdsSet = new HashSet<string>(allIds);
+            HashSet<string> ownedIdsSet = new HashSet<string>(ownedIds);
+
+            // Count the number of owned IDs that are also valid
+            int ownedValidCount = ownedIdsSet.Count(id => allIdsSet.Contains(id));
+
+            // Calculate percentage
+            float percentage = (float)Math.Round(((float)ownedValidCount / allIdsSet.Count) * 100,1);
+
+
+
+            return percentage;
+        }
     }
     public class config
     {
@@ -368,6 +412,7 @@ namespace TankDex
                     return kvp.Value;
                 }
             }
+            Console.WriteLine(id);
             return null;
         }
         public string fromTank(tank t)
@@ -486,6 +531,27 @@ namespace TankDex
     }
     public class activequery
     {
+        public static bool Contains(ulong msid, activequery[] target)
+        {
+            foreach (activequery qst in target)
+            {
+                if (qst.msg.Id == msid)
+                    return true;
+            }
+            return false;
+        }
+        public static int Find(ulong msid, activequery[] target)
+        {
+            int ind = 0;
+            foreach (activequery qst in target)
+            {
+                if (qst.msg.Id == msid)
+                    return ind;
+                else
+                    ind++;
+            }
+            return -1;
+        }
         public int page;
         public ulong? userid;
         public ulong? channelid;
@@ -493,8 +559,106 @@ namespace TankDex
         public RestUserMessage msg;
         public DateTime expirationtime;
     }
+    public class activegiving
+    {
+        public string tkey;
+        public ulong user;
+        public ulong subject;
+        public RestUserMessage msg;
+        public DateTime expirationtime;
+    }
+    public class tryParseResponse
+    {
+        public tryParseResponse(object r, bool s)
+        {
+            this.success = s;
+            this.response = r;
+        }
+        public bool success;
+        public object response;
+    }
     public static class util
     {
+        public static string[] GetItemsOnPage(string[] allItems, int itemsPerPage, int pageNumber)
+        {
+            // Calculate the starting index of the items on the specified page
+            int startIndex = pageNumber * itemsPerPage;
+
+            // Calculate the ending index of the items on the specified page
+            int endIndex = Math.Min(startIndex + itemsPerPage, allItems.Length);
+
+            // Extract the items on the specified page from the array
+            string[] itemsOnPage = new string[endIndex - startIndex];
+            Array.Copy(allItems, startIndex, itemsOnPage, 0, endIndex - startIndex);
+
+            return itemsOnPage;
+        }
+        public static bool IsValidId(string id)
+        {
+            if (id.Length == 7 && id.StartsWith("#"))
+            {
+                for (int i = 1; i < id.Length; i++)
+                {
+                    if (!char.IsDigit(id[i]))
+                    {
+                        return false;
+                    }
+                }
+
+                string numberString = id.Substring(1);
+                int number = int.Parse(numberString);
+                if (number < 100000)
+                {
+                    for (int i = 1; i < numberString.Length; i++)
+                    {
+                        if (numberString[i] != '0')
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static tryParseResponse ExctractNumberFromId(string id)
+        {
+            if (id.StartsWith("#"))
+            {
+                string numberString = id.Substring(1);
+                if (int.TryParse(numberString, out int number))
+                {
+                    return new tryParseResponse(number, true);
+                }
+                else
+                {
+                    Console.WriteLine("Invalid ID format: cannot parse number.");
+                    return new tryParseResponse(null, false);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid ID format: must start with \"#\"");
+                return new tryParseResponse(null, false);
+            }
+        }
+        public static tryParseResponse convertNumberToId(int number)
+        {
+            if (number >= 0 && number <= 999999)
+            {
+                string id = number.ToString("D6");
+                return new tryParseResponse($"#{id}", true);
+            }
+            else
+            {
+                Console.WriteLine("Invalid number range. Must be between 0 and 999999.");
+                return new tryParseResponse("", true);
+            }
+        }
         public static int CalculateItemsOnPage(int totalItems, int itemsPerPage, int pageNumber)
         {
             // Calculate the total pages needed

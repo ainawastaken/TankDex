@@ -1,5 +1,5 @@
 token: "MTE4MjAxNzEwMTg5NzE1NDYyMQ.GlI-_9.HLWsEfvWFwtn0xb9bqmgpuN2k4lPJxORvLw1Ic"
-link: "https://discord.com/api/oauth2/authorize?client_id=1182017101897154621&permissions=380104985664&scope=bot+applications.commands"
+link: "https://discord.com/api/oauth2/authorize?client_id=1182017101897154621&permissions=277025778752&scope=bot+applications.commands"
 developers:
     - 455678466793144320   # ainawastaken
     - 686120923039793179   # _kalibr
@@ -17,3 +17,4 @@ commands:
     "completion": "Shows your tank completion"
     "setcdn": "Sets CDN channel of bot"
     "info": "Gets the info of all your tanks"
+    "give": "Gives tank to target user"

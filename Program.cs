@@ -26,16 +26,21 @@ using System.Threading.Channels;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
+using Microsoft.VisualBasic;
 
 
 #pragma warning disable CS1998
 #pragma warning disable CS8600
+#pragma warning disable CS8601
 #pragma warning disable CS8602
 #pragma warning disable CS8603
 #pragma warning disable CS8604
 #pragma warning disable CS8618
 #pragma warning disable CS8622
 #pragma warning disable CS8629
+
+// Perm: 277025778752
+// link: https://discord.com/oauth2/authorize?client_id=1182017101897154621&permissions=277025778752&scope=bot+applications.commands
 
 namespace TankDex
 {
@@ -55,6 +60,7 @@ namespace TankDex
         private volatile static List<activebtn> activebuttons = new List<activebtn>();
         private volatile static List<activequestion> activequestions = new List<activequestion>();
         private volatile static List<activequery> activequeries = new List<activequery>();
+        private volatile static List<activegiving> activegivings = new List<activegiving>();
 
         private System.Timers.Timer buttonTimer;
 
@@ -103,47 +109,22 @@ namespace TankDex
 
             await Task.Delay(-1);
         }
-
         private Task Log(LogMessage arg)
         {
             Console.WriteLine(arg);
             return Task.CompletedTask;
         }
-
         public async Task Client_Ready()
         {
             await _client.SetGameAsync($"{index.tanks.Count} tanks!", null, ActivityType.Watching);
         }
         public async Task GuildAvailable(SocketGuild guild)
         {
-            /*if (!gldcfg.contains(guilds.ToArray(), guild.Id))
+            if (!gldcfg.contains(guilds.ToArray(), guild.Id))
             {
                 guilds.Add(new gldcfg(guild.Id, ulong.MaxValue, false, ulong.MaxValue, ulong.MaxValue));
                 gldcfg.write(guilds.ToArray());
             }
-            var commands = guild.GetApplicationCommandsAsync().Result;
-            foreach (SocketApplicationCommand command in commands)
-            {
-                if (!cfg.Commands.Keys.Contains(command.Name))
-                {
-                    await command.DeleteAsync();
-                }
-            }
-            foreach (KeyValuePair<string, string> kvp in cfg.Commands)
-            {
-                var guildCommand = new Discord.SlashCommandBuilder();
-                guildCommand.WithName(kvp.Key);
-                guildCommand.WithDescription(kvp.Value);
-
-                try
-                {
-                    await guild.CreateApplicationCommandAsync(guildCommand.Build());
-                }
-                catch (HttpException exception)
-                {
-                    var json = JsonConvert.SerializeObject(exception.Errors, Formatting.Indented);
-                }
-            }*/
         }
         private async Task SlashCommandHandler(SocketSlashCommand command)
         {
@@ -218,6 +199,7 @@ namespace TankDex
                     eb.Title = $"Tank completion of {command.User.GlobalName}";
                     eb.Description = $"{command.User.GlobalName} owns {data.ama(command.User.Id)} unique tanks.\n" +
                         $"And {data.tot(command.User.Id)} tanks in total.\n";
+                    eb.AddField("Completion", $"%{data.cml(command.User.Id, index)}\n{data.ama(command.User.Id)}/{index.tanks.Count}", false);
                     eb.AddField("Offence", data.pow(command.User.Id), true);
                     eb.AddField("Defence", data.def(command.User.Id), true);
                     eb.ThumbnailUrl = command.User.GetAvatarUrl();
@@ -238,12 +220,13 @@ namespace TankDex
                     break;
                 case "info":
                     EmbedBuilder _eb = new EmbedBuilder();
-                    DateTime expiry = DateTime.UtcNow.AddSeconds(30);
-                    //Int32 unixTimestamp = (int)expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                    DateTime expiry = DateTime.UtcNow.AddMinutes(1);
+                    Int32 unixTimestamp = (int)expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                     activequery aq = new activequery();
                     _eb.Title = $"Tank info for {command.User.GlobalName}";
                     _eb.Description = $"Page {aq.page}/{util.CalculatePagesNeeded(data.ama(command.User.Id), 25)}\n{util.CalculateItemsOnPage(data.ama(command.User.Id), 25, 0)}/25 per page" +
-                        $"\nType \"next\" for next page. \"previous\" for previous page. And tank ID for info";
+                        $"\nType \"next\" for next page. \"previous\" for previous page, or page number. And tank ID for info\n" +
+                        $"Will timeout <t:{unixTimestamp}:R>";
                     aq.page = 0;
                     aq.expirationtime = expiry;
                     aq.userid = command.User.Id;
@@ -261,9 +244,34 @@ namespace TankDex
                         _eb.AddField(efb);
                         depth++;
                     }
+                    await command.RespondAsync(embed: _eb.Build());
+                    var messages = await command.Channel.GetMessagesAsync(1).FlattenAsync();
+                    var response = messages.FirstOrDefault(m => m.Author.Id == _client.CurrentUser.Id);
 
-                    await command.RespondAsync(embed:_eb.Build());
-                    
+                    aq.msg = (RestUserMessage)response;
+
+                    activequeries.Add( aq );
+
+                    break;
+                case "give":
+                    EmbedBuilder __eb = new EmbedBuilder();
+                    activegiving ag = new activegiving();
+                    DateTime _expiry = DateTime.UtcNow.AddMinutes(1);
+                    Int32 _unixTimestamp = (int)_expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                    ag.expirationtime = _expiry;
+                    ag.user = command.User.Id;
+                    EmbedBuilder ___eb = new EmbedBuilder();
+                    ___eb.WithAuthor(command.User.GlobalName, command.User.GetDisplayAvatarUrl());
+                    ___eb.WithTitle("Who would you like to gift a tank to?");
+                    ___eb.WithDescription($"@ the user and the ID of the tank, like this: \"<@{_client.CurrentUser.Id}> #000001\"\nMind the space!");
+                    ___eb.WithFooter($"You can do this from the info menu if you would like to see the tank before you trade it\nExpires: <t:{_unixTimestamp}:R>");
+
+                    await command.RespondAsync(embed: ___eb.Build());
+                    var _messages = await command.Channel.GetMessagesAsync(1).FlattenAsync();
+                    var _response = _messages.FirstOrDefault(m => m.Author.Id == _client.CurrentUser.Id);
+
+                    ag.msg = (RestUserMessage)_response;
+                    activegivings.Add(ag);
 
                     break;
             }
@@ -277,6 +285,20 @@ namespace TankDex
 
             var msg2 = message as IUserMessage;
             var msg3 = message as SocketUserMessage;
+
+            if (message.CleanContent == "$$loadcoms$$" && cfg.Developers.Contains(message.Author.Id))
+            {
+                await message.AddReactionAsync(new Emoji("⏳"));
+                foreach (KeyValuePair<string, string> coms in cfg.Commands)
+                {
+                    var guildCommand = new Discord.SlashCommandBuilder();
+                    guildCommand.WithName(coms.Key);
+                    guildCommand.WithDescription(coms.Value);
+                    await guild.CreateApplicationCommandAsync(guildCommand.Build());
+                }
+                await message.AddReactionAsync(new Emoji("✅"));
+                return;
+            }
 
             Random rnd = new Random(DateTime.Now.Millisecond);
             gldcfg curcfg = guilds[gldcfg.find(guilds.ToArray(), guild.Id)];
@@ -307,6 +329,161 @@ namespace TankDex
                             });
                             activebuttons.Remove(qst.btn);
                             activequestions.Remove(qst);
+                        }
+                        else
+                        {
+                            await msg2.AddReactionAsync(new Emoji("❌"));
+                        }
+                    }
+                    else if (activequery.Contains(msg2.ReferencedMessage.Id, activequeries.ToArray()))
+                    {
+                        if (Int32.TryParse(msg2.CleanContent, out int number))
+                        {
+                            int i = activequery.Find(msg2.ReferencedMessage.Id, activequeries.ToArray());
+                            activequery acq = activequeries[i];
+                            if (number > 0 && number <= util.CalculatePagesNeeded(data.ama((ulong)acq.userid), 25))
+                            {
+                                activequeries[i].page = number;
+                                acq = activequeries[i];
+                                EmbedBuilder _eb = new EmbedBuilder();
+                                DateTime expiry = DateTime.UtcNow.AddMinutes(1);
+                                Int32 unixTimestamp = (int)expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                                activequery aq = new activequery();
+                                _eb.Title = $"Tank info for {message.Author.GlobalName}";
+                                _eb.Description = $"Page {acq.page}/{util.CalculatePagesNeeded(data.ama(message.Author.Id), 25)}\n{util.CalculateItemsOnPage(data.ama(message.Author.Id), 25, acq.page)}/25 per page" +
+                                    $"\nType \"next\" for next page. \"previous\" for previous page, or page number. And tank ID for info\n" +
+                                    $"Will timeout <t:{unixTimestamp}:R>";
+                                List<string> allItems = new List<string>();
+                                foreach (tank t in data._data[message.Author.Id].Keys)
+                                {
+                                    allItems.Add(index.fromTank(t));
+                                }
+
+                                int depth = 0;
+                                foreach (string item in util.GetItemsOnPage(allItems.ToArray(), 25, acq.page))
+                                {
+                                    if (depth == 25) break;
+                                    EmbedFieldBuilder efb = new EmbedFieldBuilder();
+                                    efb.WithName($"{item} x{data.amt(message.Author.Id, index.fromId(item))}");
+                                    efb.WithValue(index.fromId(item).names[0]);
+                                    efb.IsInline = true;
+                                    _eb.AddField(efb);
+                                    depth++;
+                                }
+                                await acq.msg.ModifyAsync(msg =>
+                                {
+                                    msg.Embed = _eb.Build();
+                                });
+                                await message.DeleteAsync();
+                            }
+                            
+                        }
+                        else if (index.tanks.ContainsKey(msg2.CleanContent))
+                        {
+                            if (data.has(message.Author.Id, index.tanks[msg2.CleanContent]))
+                            {
+                                activequery acq = activequeries[activequery.Find(msg2.ReferencedMessage.Id, activequeries.ToArray())];
+                                tank t = index.tanks[msg2.CleanContent];
+                                EmbedBuilder eb = new EmbedBuilder();
+                                eb.ImageUrl = util.cdnget($@"tanks\images\{t.file}", cdnid, cdnchid, _client);
+                                eb.Title = t.names[0];
+                                eb.AddField("Offence", t.offence, true);
+                                eb.AddField("Defence", t.defence, true);
+                                eb.Description = "Valid names:";
+                                foreach (string name in t.names)
+                                {
+                                    eb.Description += $"\n*{name}*";
+                                }
+                                eb.WithFooter($"File name: {t.file}\nID: {msg2.CleanContent}");
+                                await acq.msg.ModifyAsync(msg =>
+                                {
+                                    msg.Embed = eb.Build();
+                                });
+                                await message.DeleteAsync();
+                                activequeries.Remove(acq);
+                            }
+                            else
+                            {
+                                await msg2.ReplyAsync("You dont own this tank!");
+                            }
+                        }
+                        else if (msg2.CleanContent.ToLower().Replace(" ", "") == "previous" || msg2.CleanContent.ToLower().Replace(" ", "") == "next" || Int32.TryParse(msg2.CleanContent, out int n))
+                        {
+                            int i = activequery.Find(msg2.ReferencedMessage.Id, activequeries.ToArray());
+                            if (msg2.CleanContent.ToLower().Replace(" ", "") == "previous" && activequeries[i].page > 0)
+                            {
+                                activequeries[i].page--;
+                                activequery acq = activequeries[i];
+                                EmbedBuilder _eb = new EmbedBuilder();
+                                DateTime expiry = DateTime.UtcNow.AddMinutes(1);
+                                Int32 unixTimestamp = (int)expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                                //Int32 unixTimestamp = (int)expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                                activequery aq = new activequery();
+                                _eb.Title = $"Tank info for {message.Author.GlobalName}";
+                                _eb.Description = $"Page {acq.page}/{util.CalculatePagesNeeded(data.ama(message.Author.Id), 25)}\n{util.CalculateItemsOnPage(data.ama(message.Author.Id), 25, acq.page)}/25 per page" +
+                                    $"\nType \"next\" for next page. \"previous\" for previous page, or page number. And tank ID for info\n" +
+                                    $"Will timeout <t:{unixTimestamp}:R>";
+                                List<string> allItems = new List<string>();
+                                foreach (tank t in data._data[message.Author.Id].Keys)
+                                {
+                                    allItems.Add(index.fromTank(t));
+                                }
+                                
+                                int depth = 0;
+                                foreach (string item in util.GetItemsOnPage(allItems.ToArray(), 25, acq.page))
+                                {
+                                    if (depth == 25) break;
+                                    EmbedFieldBuilder efb = new EmbedFieldBuilder();
+                                    efb.WithName($"{item} x{data.amt(message.Author.Id, index.fromId(item))}");
+                                    efb.WithValue(index.fromId(item).names[0]);
+                                    efb.IsInline = true;
+                                    _eb.AddField(efb);
+                                    depth++;
+                                }
+                                await acq.msg.ModifyAsync(msg =>
+                                {
+                                    msg.Embed = _eb.Build();
+                                });
+                            }
+                            else if (msg2.CleanContent.ToLower().Replace(" ", "") == "next" && activequeries[i].page < util.CalculatePagesNeeded(data.ama(message.Author.Id),25))
+                            {
+                                activequeries[i].page++;
+                                activequery acq = activequeries[i];
+                                EmbedBuilder _eb = new EmbedBuilder();
+                                DateTime expiry = DateTime.UtcNow.AddMinutes(1);
+                                Int32 unixTimestamp = (int)expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                                activequery aq = new activequery();
+                                _eb.Title = $"Tank info for {message.Author.GlobalName}";
+                                _eb.Description = $"Page {acq.page}/{util.CalculatePagesNeeded(data.ama(message.Author.Id), 25)}\n{util.CalculateItemsOnPage(data.ama(message.Author.Id), 25, acq.page)}/25 per page" +
+                                    $"\nType \"next\" for next page. \"previous\" for previous page, or page number. And tank ID for info\n" +
+                                    $"Will timeout <t:{unixTimestamp}:R>";
+                                List<string> allItems = new List<string>();
+                                foreach (tank t in data._data[message.Author.Id].Keys)
+                                {
+                                    allItems.Add(index.fromTank(t));
+                                }
+
+                                int depth = 0;
+                                foreach (string item in util.GetItemsOnPage(allItems.ToArray(), 25, acq.page))
+                                {
+                                    if (depth == 25) break;
+                                    EmbedFieldBuilder efb = new EmbedFieldBuilder();
+                                    efb.WithName($"{item} x{data.amt(message.Author.Id, index.fromId(item))}");
+                                    efb.WithValue(index.fromId(item).names[0]);
+                                    efb.IsInline = true;
+                                    _eb.AddField(efb);
+                                    depth++;
+                                }
+                                await acq.msg.ModifyAsync(msg =>
+                                {
+                                    msg.Embed = _eb.Build();
+                                });
+                                await message.DeleteAsync();
+                            }
+                            else
+                            {
+                                await msg2.AddReactionAsync(new Emoji("❌"));
+                            }
                         }
                         else
                         {
@@ -393,13 +570,24 @@ namespace TankDex
                     {
                         msg.Embed = oldEmbed.Build();
                     });
-                    foreach (activequestion d in activequestions)
-                    {
-                        Console.WriteLine(d.msg.Id);
-                    }
-                    Console.WriteLine(qst.btn.msg.Id);
                     activequestions.Remove(activequestions[activequestion.Find(qst.btn.msg.Id, activequestions.ToArray())]);
                     activebuttons.Remove(qst.btn);
+                }
+            }
+            foreach (activequery acq in activequeries)
+            {
+                if (DateTime.Compare(acq.expirationtime, DateTime.UtcNow) < 0)
+                {
+                    EmbedBuilder oldEmbed = acq.msg.Embeds.FirstOrDefault().ToEmbedBuilder();
+                    oldEmbed.WithDescription(
+                        $"~~Page {acq.page}/{util.CalculatePagesNeeded(data.ama((ulong)acq.userid), 25)}\n{util.CalculateItemsOnPage(data.ama((ulong)acq.userid), 25, 0)}/25 per page~~" +
+                        $"\n~~Type \"next\" for next page. \"previous\" for previous page, or page number. And tank ID for info~~\n" +
+                        $"# __Timed Out__");
+                    acq.msg.ModifyAsync(msg =>
+                    {
+                        msg.Embed = oldEmbed.Build();
+                    });
+                    activequeries.Remove(acq);
                 }
             }
         }
