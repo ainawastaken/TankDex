@@ -1,5 +1,5 @@
 {
-  "relativeImagePath": "images\\",
+  "relativeImagePath": "images/",
   "replace": {
     "-": "",
     " ": "",
@@ -7,7 +7,8 @@
     "/": "",
     "(": "",
     ")": "",
-    "\"": ""
+    "\"": "",
+    "\\": ""
   },
   "tanks": {
     "#000001": {
@@ -45,8 +46,8 @@
       "offence": 500,
       "defence": 450,
       "names": [
-        "Altay",
-        "Altay T1"
+        "Altay T1",
+        "Altay"
       ],
       "file": "altay.jpg"
     },
@@ -54,8 +55,8 @@
       "offence": 5,
       "defence": 15,
       "names": [
-        "AMC 34",
-        "AMC 34 YR"
+        "AMC 34 YR",
+        "AMC 34"
       ],
       "file": "amc34.jpg"
     },
@@ -79,7 +80,6 @@
       "offence": 90,
       "defence": 35,
       "names": [
-        "AMX 13 HOT",
         "AMX 13 (HOT)"
       ],
       "file": "amx13hot.jpg"
@@ -88,12 +88,7 @@
       "offence": 75,
       "defence": 35,
       "names": [
-        "AMX 13 (SS.11)",
-        "AMX 13 SS11",
-        "AMX 13 SS.11",
-        "AMX 13 SS 11",
-        "AMX 13 (SS11)",
-        "AMX 13 (SS 11)"
+        "AMX 13 (SS.11)"
       ],
       "file": "amx13ss11.jpg"
     },
@@ -126,7 +121,8 @@
       "defence": 350,
       "names": [
         "Arjun MK2",
-        "Arjun 2"
+        "Arjun 2",
+        "Arjun II"
       ],
       "file": "arjun_l3.jpg"
     },
@@ -152,7 +148,8 @@
       "names": [
         "Black Eagle (Object 640)",
         "Black Eagle",
-        "Object 640"
+        "Object 640",
+        "Objekt 640"
       ],
       "file": "blackeagle.jpg"
     },
@@ -182,9 +179,7 @@
       "offence": 75,
       "defence": 20,
       "names": [
-        "BT 7A F32",
-        "BT7AF32",
-        "BT7A F32"
+        "BT-7A (F32)"
       ],
       "file": "bt7af32.jpg"
     },
@@ -192,10 +187,7 @@
       "offence": 50,
       "defence": 20,
       "names": [
-        "BT 7M",
-        "BT7M",
-        "BT7 M",
-        "BT 7 M"
+        "BT-7M"
       ],
       "file": "bt7m.jpg"
     },
@@ -204,14 +196,11 @@
       "defence": 45,
       "names": [
         "Carro Armato M Celere Sahariano (M16/43)",
+        "Carro Armato Celere Sahariano (M16/43)",
         "Celere Sahariano",
         "Carro Armato Celere Sahariano",
-        "Carro Armato M Celere Sahariano (M16 43)",
-        "Carro Armato M Celere Sahariano M16/43",
-        "Carro Armato M Celere Sahariano M16 43",
         "Carro Armato M Celere Sahariano",
-        "M16/43",
-        "M16 43"
+        "M16/43"
       ],
       "file": "celeresahariano.jpg"
     },
@@ -219,9 +208,8 @@
       "offence": 140,
       "defence": 100,
       "names": [
-        "FV4013 Centurion ARV Mk 1",
+        "FV4013 Centurion ARV Mk.1",
         "Centurion Mk.1",
-        "Centurion Mk 1",
         "Centurion 1",
         "FV4013"
       ],
@@ -233,7 +221,8 @@
       "names": [
         "Tank, Cruiser Mk VIII Challenger (A30)",
         "Challanger",
-        "Challenger"
+        "Challenger",
+        "A30"
       ],
       "file": "challanger.jpg"
     },
@@ -254,7 +243,6 @@
       "offence": 500,
       "defence": 400,
       "names": [
-        "Challanger Mk 3",
         "Challanger Mk.3",
         "Challanger 3",
         "CR3"
@@ -265,19 +253,17 @@
       "offence": 500,
       "defence": 400,
       "names": [
-        "T90 Burlak",
+        "T-90 \"Burlak\"",
         "Burlak"
       ],
-      "file": "Burlak90.png"
+      "file": "burlak90.png"
     },
     "#000028": {
       "offence": 400,
       "defence": 300,
       "names": [
-        "Chieftain Mk1 (FV4201)",
+        "Chieftain Mk.1 (FV4201)",
         "Chieftain Mk1",
-        "Chieftain Mk 1",
-        "Chieftain Mk.1",
         "Chieftain 1",
         "FV4201",
         "Fighting Vehicle 4201"
@@ -288,9 +274,7 @@
       "offence": 300,
       "defence": 250,
       "names": [
-        "Chieftain Mk10 (FV4201)",
-        "Chieftain Mk10",
-        "Chieftain Mk 10",
+        "Chieftain Mk.10 (FV4201)",
         "Chieftain Mk.10",
         "Chieftain 10",
         "FV4201",
@@ -303,8 +287,6 @@
       "defence": 100,
       "names": [
         "Tank, Infantry, Mk IV (A22) Churchill MK 1",
-        "Churchill Mk1",
-        "Churchill Mk 1",
         "Churchill Mk.1",
         "Churchill 1"
       ],
@@ -316,6 +298,10 @@
       "names": [
         "Tank, Cruiser, Mk VIII, Cromwell (A27M)",
         "Cromwell",
+        "Cromwell Mk 7",
+        "Cromwell 7",
+        "Cromwell Mk VIII",
+        "Cromwell VIII",
         "A27M"
       ],
       "file": "cromwell.jpg"
@@ -390,6 +376,7 @@
         "Vickers A1E1 Independent",
         "Independent",
         "Vickers A1E1",
+        "Vickers Independent",
         "A1E1"
       ],
       "file": "independent.png"
@@ -525,7 +512,11 @@
       "defence": 90,
       "names": [
         "KV-1 (Model 1939)",
-        "KV 1"
+        "KV-1",
+        "KV-1 1939",
+        "KV-1 39",
+        "KV-1 m1939",
+        "KV-1 m39"
       ],
       "file": "kv1m1939.jpg"
     },
@@ -553,7 +544,15 @@
       "defence": 30,
       "names": [
         "Landsverk L-60 S/I (Stridsvagn Modell 1938)",
-        "L-60"
+        "L-60",
+        "Strv m38",
+        "Strv m1938",
+        "Strv modell 38",
+        "Strv modell 1938",
+        "Stridsvagn m38",
+        "Stridsvagn m1938",
+        "Stridsvagn modell 38",
+        "stridsvagn modell 1938"
       ],
       "file": "landsverkl60.png"
     },
@@ -615,7 +614,11 @@
       "offence": 200,
       "defence": 250,
       "names": [
-        "Kettenfahrzeug 41 \"Lynx\"",
+        "Rheinmetall Kettenfahrzeug 41 \"Lynx\"",
+        "Rheinmetall KF 41 \"Lynx\"",
+        "Rheinmetall Lynx KF 41",
+        "KF 41 Lynx",
+        "Lynx KF 41",
         "Lynx",
         "KF 41"
       ],
@@ -626,9 +629,9 @@
       "defence": 350,
       "names": [
         "M-84A",
-        "m84"
+        "M-84"
       ],
-      "file": "M-84_VS.jpg"
+      "file": "m84.jpg"
     },
     "#000063": {
       "offence": 500,
@@ -859,7 +862,9 @@
       "offence": 450,
       "defence": 100,
       "names": [
-        "Objekt 327"
+        "Objekt 327",
+        "Object 327",
+        "Obj 327"
       ],
       "file": "object327.png"
     },
@@ -890,7 +895,8 @@
       "defence": 50,
       "names": [
         "Objekt 911",
-        "Object 911"
+        "Object 911",
+        "Obj 911"
       ],
       "file": "object911.png"
     },
@@ -918,9 +924,11 @@
       "offence": 500,
       "defence": 450,
       "names": [
+        "T-84 \"Oplot-M\"",
         "T-84 \"Oplot\"",
         "T-84",
-        "Oplot"
+        "Oplot",
+        "Oplot-M"
       ],
       "file": "oplot.jpg"
     },
@@ -930,7 +938,9 @@
       "names": [
         "Engesa EE-T1 Osorio",
         "EE-T1",
-        "Osorio"
+        "Osorio",
+        "Engesa EE-T1",
+        "Engesa Osorio"
       ],
       "file": "osorioeet1.jpg"
     },
@@ -938,7 +948,13 @@
       "offence": 110,
       "defence": 130,
       "names": [
-        "Panzerkampfwagen V Panther (Sd.Kfz. 171) G"
+        "Panzerkampfwagen V Panther (Sd.Kfz. 171) G",
+        "Sd.Kfz 171",
+        "Pz 5",
+        "Pz V",
+        "Panzer 5",
+        "Panzer V",
+        "Panther G"
       ],
       "file": "pantherg.jpg"
     },
@@ -952,8 +968,7 @@
         "PzKpfw 2",
         "Panzer 2",
         "pz 2",
-        "Sd.Kfz 121",
-        "SdKfz 121"
+        "Sd.Kfz 121"
       ],
       "file": "panzer2.jpg"
     },
@@ -1055,7 +1070,7 @@
       "offence": 500,
       "defence": 650,
       "names": [
-        "Stridsvagn 122B (Panoramic low signature sight SAAB)",
+        "Stridsvagn 122B (Panoramic low signature sight, SAAB)",
         "Strv 122B PLSS",
         "Stridsvagn 122B PLSS"
       ],
@@ -1146,7 +1161,10 @@
       "names": [
         "T-72A \"Ural\" (Objekt 176)",
         "T-72A",
-        "T-72 Ural"
+        "T-72 Ural",
+        "Objekt 176",
+        "Object 176",
+        "Obj 176"
       ],
       "file": "T-72A.jpg"
     },
@@ -1156,8 +1174,7 @@
       "names": [
         "T-72M4 Czechia",
         "T-72M4 CZ",
-        "T-72M4",
-        ""
+        "T-72M4"
       ],
       "file": "T-72M4CZ.jpg"
     },
@@ -1378,7 +1395,7 @@
       "names": [
         "105 mm Gun Motor Carriage T95/T28 Super heavy",
         "T95",
-        "T29"
+        "T28"
       ],
       "file": "t95.jpg"
     },
@@ -1387,7 +1404,8 @@
       "defence": 100,
       "names": [
         "Panzerkampfwagen VI Ausführung H1 (Tiger H1)",
-        "Tiger H1"
+        "Tiger H1",
+        "Tiger 1H"
       ],
       "file": "tiger1h.jpeg"
     },
@@ -1413,7 +1431,10 @@
       "offence": 300,
       "defence": 400,
       "names": [
-        "Tank, Heavy Assault, Tortoise (A39)"
+        "Tank, Heavy Assault, Tortoise (A39)",
+        "Tortoise",
+        "A39",
+        "Tortoise A39"
       ],
       "file": "tortoise.jpg"
     },
@@ -1421,7 +1442,13 @@
       "offence": 75,
       "defence": 60,
       "names": [
-        "Tsar tank (Netopyr'/Lebedenko tank)"
+        "Tsar tank (Netopyr'/Lebedenko tank)",
+        "Tsar tank",
+        "Lebedenko tank",
+        "Lebedenko",
+        "Netopyr tank",
+        "Netopyr",
+        "Tsar"
       ],
       "file": "tsartank.jpg"
     },
@@ -1521,7 +1548,10 @@
       "defence": 390,
       "names": [
         "WZ-122A",
-        "WZ-122"
+        "WZ-122",
+        "Object 122",
+        "Objekt 122",
+        "Obj 122"
       ],
       "file": "wz122.jpg"
     },
@@ -1583,9 +1613,1952 @@
       "names": [
         "ذوالفقار (Zulfiqar 1)",
         "Zulfiqar",
-        "Zulfiqar 1"
+        "Zulfiqar 1",
+        "ذوالفقار"
       ],
       "file": "zulfiqar1.jpg"
+    },
+    "#000164": {
+      "offence": 300,
+      "defence": 200,
+      "names": [
+        "Stridsfordon 90/40 C",
+        "Strf 9040C",
+        "CV9040C"
+      ],
+      "file": "cv9040c.png"
+    },
+    "#000167": {
+      "offence": 90,
+      "defence": 300,
+      "names": [
+        "BMPT Azovets",
+        "Azovets"
+      ],
+      "file": "azovets.png"
+    },
+    "#000240": {
+      "offence": 300,
+      "defence": 225,
+      "names": [
+        "BMP-3 \"Kaktus\""
+      ],
+      "file": "bmp3kaktus.png"
+    },
+    "#000239": {
+      "offence": 320,
+      "defence": 150,
+      "names": [
+        "BMP B-19",
+        "B-19"
+      ],
+      "file": "b19.png"
+    },
+    "#000238": {
+      "offence": 300,
+      "defence": 150,
+      "names": [
+        "BMP-3M \"Dragoon\"",
+        "Dragoon",
+        "BMP-3M"
+      ],
+      "file": "bmp3mdragoon.png"
+    },
+    "#000237": {
+      "offence": 400,
+      "defence": 400,
+      "names": [
+        "Tiam"
+      ],
+      "file": "tiam.png"
+    },
+    "#000236": {
+      "offence": 50,
+      "defence": 30,
+      "names": [
+        "Antonov AN-40",
+        "Antonov 40",
+        "AN-40"
+      ],
+      "file": "an40.png"
+    },
+    "#000235": {
+      "offence": 100,
+      "defence": 450,
+      "names": [
+        "1K17 \"Szhatie\"",
+        "Szhatie",
+        "1K17"
+      ],
+      "file": "1k17szhatzie.png"
+    },
+    "#000234": {
+      "offence": 500,
+      "defence": 550,
+      "names": [
+        "Objekt 726",
+        "Object 726",
+        "Obj 726"
+      ],
+      "file": "object726.png"
+    },
+    "#000233": {
+      "offence": 20,
+      "defence": 20,
+      "names": [
+        "Type 92 heavy armoured car/Cavalry tank (九二式重装甲車, Kyū-ni-shiki Jū-sōkōsha)",
+        "Type 92"
+      ],
+      "file": "type92.png"
+    },
+    "#000232": {
+      "offence": 60,
+      "defence": 70,
+      "names": [
+        "PM-1"
+      ],
+      "file": "pm1.png"
+    },
+    "#000231": {
+      "offence": 110,
+      "defence": 90,
+      "names": [
+        "Nahkampfkanone 2"
+      ],
+      "file": "nahkampfkanone2.png"
+    },
+    "#000230": {
+      "offence": 130,
+      "defence": 110,
+      "names": [
+        "10.5 cm leFH 18/3 (Sf.) auf Geschützwagen B2(f)",
+        "Panzerkampfwagen B2 740(f)",
+        "Pz.Kpfw. B2 740(f)",
+        "Pz.Kpfw. B2",
+        "B2"
+      ],
+      "file": "germanb2.png"
+    },
+    "#000229": {
+      "offence": 15,
+      "defence": 5,
+      "names": [
+        "Landsverk 210",
+        "L-210"
+      ],
+      "file": "landsverk 210.png"
+    },
+    "#000228": {
+      "offence": 200,
+      "defence": 80,
+      "names": [
+        "Panzerkleineszertörer \"Rutscher\" E-5",
+        "Rutscher",
+        "E-5"
+      ],
+      "file": "e5.png"
+    },
+    "#000227": {
+      "offence": 200,
+      "defence": 100,
+      "names": [
+        "Comet Research 75",
+        "Comet Research",
+        "Comres 75",
+        "Comres"
+      ],
+      "file": "comres75.png"
+    },
+    "#000226": {
+      "offence": 100,
+      "defence": 20,
+      "names": [
+        "Pz.Sfl. II Hornisse",
+        "Panzer-Selbstfahrlafette II Hornisse ",
+        "Hornisse",
+        "Hornisse 2",
+        "Hornisse II"
+      ],
+      "file": "hornisse.png"
+    },
+    "#000225": {
+      "offence": 100,
+      "defence": 20,
+      "names": [
+        "KSP 76",
+        "GAZ 68"
+      ],
+      "file": "ksp76.jpg"
+    },
+    "#000224": {
+      "offence": 90,
+      "defence": 50,
+      "names": [
+        "Khtz-16"
+      ],
+      "file": "khtz16.png"
+    },
+    "#000223": {
+      "offence": 10,
+      "defence": 10,
+      "names": [
+        "Dyrenkov-8",
+        "D-8"
+      ],
+      "file": "d8.png"
+    },
+    "#000222": {
+      "offence": 750,
+      "defence": 850,
+      "names": [
+        "T-72 \"Arena-M\"",
+        "Arena-M"
+      ],
+      "file": "t72arena.png"
+    },
+    "#000221": {
+      "offence": 350,
+      "defence": 85,
+      "names": [
+        "BMD-4M"
+      ],
+      "file": "bmd4m.png"
+    },
+    "#000220": {
+      "offence": 90,
+      "defence": 45,
+      "names": [
+        "Renault Panzerjäger R35 Panzerkampfwagen 35R 731(f)",
+        "Panzerjager 35r",
+        "Panzerjäger 35r",
+        "Pz.Kpfw.35 r"
+      ],
+      "file": "panzerjager35r.png"
+    },
+    "#000219": {
+      "offence": 800,
+      "defence": 800,
+      "names": [
+        "Objekt 478DU",
+        "Object 478DU",
+        "Obj 478DU"
+      ],
+      "file": "object478du2.png"
+    },
+    "#000218": {
+      "offence": 250,
+      "defence": 50,
+      "names": [
+        "AMX 10P TMC81"
+      ],
+      "file": "amx 10 68.png"
+    },
+    "#000217": {
+      "offence": 700,
+      "defence": 650,
+      "names": [
+        "T-72BK"
+      ],
+      "file": "t72bk.png"
+    },
+    "#000216": {
+      "offence": 100,
+      "defence": 500,
+      "names": [
+        "T-80UD \"Donets\"",
+        "Donets"
+      ],
+      "file": "donets.png"
+    },
+    "#000215": {
+      "offence": 800,
+      "defence": 800,
+      "names": [
+        "European Main Battle Tank",
+        "EMBT"
+      ],
+      "file": "embt.png"
+    },
+    "#000214": {
+      "offence": 250,
+      "defence": 90,
+      "names": [
+        "FV510 warrior ",
+        "fv510",
+        "warrior"
+      ],
+      "file": "fv510.png"
+    },
+    "#000213": {
+      "offence": 300,
+      "defence": 75,
+      "names": [
+        "MLI 84"
+      ],
+      "file": "mli84.png"
+    },
+    "#000212": {
+      "offence": 800,
+      "defence": 600,
+      "names": [
+        "Objekt 477A",
+        "Object 477A",
+        "Obj 477"
+      ],
+      "file": "object477a.png"
+    },
+    "#000211": {
+      "offence": 500,
+      "defence": 500,
+      "names": [
+        "Objekt 277",
+        "Object 277",
+        "Obj 277"
+      ],
+      "file": "object277.png"
+    },
+    "#000210": {
+      "offence": 700,
+      "defence": 600,
+      "names": [
+        "T-72 M1M"
+      ],
+      "file": "t72m1m.png"
+    },
+    "#000209": {
+      "offence": 500,
+      "defence": 100,
+      "names": [
+        "Rooikat Class 3P (TH800)",
+        "TH800",
+        "Class 3P"
+      ],
+      "file": "class3p.png"
+    },
+    "#000208": {
+      "offence": 200,
+      "defence": 50,
+      "names": [
+        "Objekt 1200",
+        "Object 1200",
+        "Obj 1200"
+      ],
+      "file": "object1200.png"
+    },
+    "#000207": {
+      "offence": 60,
+      "defence": 75,
+      "names": [
+        "T-29"
+      ],
+      "file": "t29.png"
+    },
+    "#000206": {
+      "offence": 50,
+      "defence": 40,
+      "names": [
+        "D-38"
+      ],
+      "file": "d38.png"
+    },
+    "#000205": {
+      "offence": 60,
+      "defence": 50,
+      "names": [
+        "T-46-5",
+        "T-46"
+      ],
+      "file": "t46 5.png"
+    },
+    "#000204": {
+      "offence": 350,
+      "defence": 50,
+      "names": [
+        "Objekt 681",
+        "Object 681",
+        "Obj 681"
+      ],
+      "file": "object681.png"
+    },
+    "#000203": {
+      "offence": 110,
+      "defence": 100,
+      "names": [
+        "KV-1K"
+      ],
+      "file": "kv1k212.png"
+    },
+    "#000202": {
+      "offence": 700,
+      "defence": 700,
+      "names": [
+        "Objekt 785",
+        "Object 785",
+        "Obj 785"
+      ],
+      "file": "object785.png"
+    },
+    "#000201": {
+      "offence": 800,
+      "defence": 850,
+      "names": [
+        "T-72KZ \"Shygys\"",
+        "T-72 KZ",
+        "Shygys"
+      ],
+      "file": "t72kz.png"
+    },
+    "#000200": {
+      "offence": 800,
+      "defence": 800,
+      "names": [
+        "T-72 \"Scarab\"",
+        "Scarab"
+      ],
+      "file": "t72scarab.png"
+    },
+    "#000199": {
+      "offence": 450,
+      "defence": 300,
+      "names": [
+        "SK105 \"Kurassier\"",
+        "Kurassier",
+        "Steyr SK105",
+        "Kurassier"
+      ],
+      "file": "sk105.png"
+    },
+    "#000198": {
+      "offence": 800,
+      "defence": 850,
+      "names": [
+        "T-72 KAE"
+      ],
+      "file": "t72kae.png"
+    },
+    "#000197": {
+      "offence": 50,
+      "defence": 50,
+      "names": [
+        "KH50"
+      ],
+      "file": "kh50.png"
+    },
+    "#000196": {
+      "offence": 210,
+      "defence": 60,
+      "names": [
+        "BMP-1-30"
+      ],
+      "file": "bmp130.png"
+    },
+    "#000195": {
+      "offence": 300,
+      "defence": 70,
+      "names": [
+        "BWP-50"
+      ],
+      "file": "bwp40.png"
+    },
+    "#000194": {
+      "offence": 40,
+      "defence": 40,
+      "names": [
+        "T-90"
+      ],
+      "file": "t90.png"
+    },
+    "#000193": {
+      "offence": 250,
+      "defence": 60,
+      "names": [
+        "Objekt 19",
+        "Object 19",
+        "Obj 19"
+      ],
+      "file": "object19.png"
+    },
+    "#000192": {
+      "offence": 250,
+      "defence": 150,
+      "names": [
+        "M41 DK1"
+      ],
+      "file": "m41dk1.png"
+    },
+    "#000191": {
+      "offence": 700,
+      "defence": 600,
+      "names": [
+        "Objekt 172MN",
+        "Object 172MN",
+        "Obj 172MN"
+      ],
+      "file": "object172.png"
+    },
+    "#000190": {
+      "offence": 80,
+      "defence": 75,
+      "names": [
+        "SU-16"
+      ],
+      "file": "su16.png"
+    },
+    "#000189": {
+      "offence": 70,
+      "defence": 65,
+      "names": [
+        "BT-20",
+        "A-20"
+      ],
+      "file": "bt20.png"
+    },
+    "#000188": {
+      "offence": 600,
+      "defence": 650,
+      "names": [
+        "TR-85M1 \"Bizonul\"",
+        "Bizonul",
+        "TR-85M1"
+      ],
+      "file": "tr85m1.png"
+    },
+    "#000187": {
+      "offence": 600,
+      "defence": 600,
+      "names": [
+        "T-64MV"
+      ],
+      "file": "t64mv.png"
+    },
+    "#000186": {
+      "offence": 700,
+      "defence": 650,
+      "names": [
+        "T-72 BME"
+      ],
+      "file": "t7bm3.png"
+    },
+    "#000185": {
+      "offence": 300,
+      "defence": 100,
+      "names": [
+        "BRM-3K \"Lynx\"",
+        "BRM-3K",
+        "Lynx"
+      ],
+      "file": "brm3k.png"
+    },
+    "#000184": {
+      "offence": 350,
+      "defence": 200,
+      "names": [
+        "BM-2T \"Stalker\"",
+        "BM-2T",
+        "Stalker"
+      ],
+      "file": "bm2t.png"
+    },
+    "#000183": {
+      "offence": 500,
+      "defence": 600,
+      "names": [
+        "T-55AD"
+      ],
+      "file": "t55ad.png"
+    },
+    "#000182": {
+      "offence": 500,
+      "defence": 500,
+      "names": [
+        "T-55E Ramses II",
+        "T-55E Ramses 2",
+        "T-55E",
+        "Ramses II",
+        "Ramses 2"
+      ],
+      "file": "t55_ramses_II.png"
+    },
+    "#000181": {
+      "offence": 400,
+      "defence": 400,
+      "names": [
+        "Fighting Vehicle 4601 MBT 80",
+        "FV4601",
+        "MBT 80",
+        "Main Battle tank 80",
+        "fv4601mbt80",
+        "fighting vehicle 4601 main battle tank 80"
+      ],
+      "file": "fv4601.png"
+    },
+    "#000180": {
+      "offence": 500,
+      "defence": 550,
+      "names": [
+        "T-55H"
+      ],
+      "file": "t55h.png"
+    },
+    "#000179": {
+      "offence": 400,
+      "defence": 50,
+      "names": [
+        "BTR-60-100",
+        "BTR-100"
+      ],
+      "file": "btr100.png"
+    },
+    "#000178": {
+      "offence": 500,
+      "defence": 400,
+      "names": [
+        "Mobarez"
+      ],
+      "file": "mobarez.png"
+    },
+    "#000177": {
+      "offence": 700,
+      "defence": 650,
+      "names": [
+        "T-72B1 MS \"White Eagle\"",
+        "White Eagle",
+        "T-72B1 MS"
+      ],
+      "file": "t72b1ms.png"
+    },
+    "#000176": {
+      "offence": 650,
+      "defence": 600,
+      "names": [
+        "Type 85-III",
+        "Type 85 3",
+        "Type 85"
+      ],
+      "file": "type85_3.png"
+    },
+    "#000175": {
+      "offence": 400,
+      "defence": 450,
+      "names": [
+        "Safir-74 Al-Zubair (Type 72Z)",
+        "Type 72Z",
+        "T-72Z",
+        "Safir-74",
+        "Al-Zubair"
+      ],
+      "file": "type72z.png"
+    },
+    "#000174": {
+      "offence": 200,
+      "defence": 60,
+      "names": [
+        "BMP-23"
+      ],
+      "file": "bmp23.png"
+    },
+    "#000173": {
+      "offence": 800,
+      "defence": 800,
+      "names": [
+        "M1 Component Advanced Technology Test Bed (CATTB)",
+        "M1 CATTB"
+      ],
+      "file": "m1cattb.png"
+    },
+    "#000172": {
+      "offence": 200,
+      "defence": 90,
+      "names": [
+        "Kobra-K",
+        "Cobra-K"
+      ],
+      "file": "kobra k.png"
+    },
+    "#000171": {
+      "offence": 300,
+      "defence": 200,
+      "names": [
+        "Combat Vehicle 90/35 NL-DK",
+        "CV 9035",
+        "CV 9035NL",
+        "CV 9035DK",
+        "Combat Vehicle 9035 NL",
+        "Combat Vehicle 9035 DK",
+        "Strf 9035",
+        "Strf 9035NL",
+        "Strf 9035DK",
+        "Stridsfordon 9035 NL",
+        "Stridsfordon 9035 DK"
+      ],
+      "file": "image.png"
+    },
+    "#000170": {
+      "offence": 500,
+      "defence": 350,
+      "names": [
+        "Objekt 416",
+        "Object 416",
+        "Obj 416"
+      ],
+      "file": "object416.png"
+    },
+    "#000169": {
+      "offence": 200,
+      "defence": 80,
+      "names": [
+        "BMP Kevlar-E",
+        "Kevlar-E"
+      ],
+      "file": "kevlar.png"
+    },
+    "#000168": {
+      "offence": 300,
+      "defence": 120,
+      "names": [
+        "BVP M-80AB1"
+      ],
+      "file": "bvpm80ab1.png"
+    },
+    "#000166": {
+      "offence": 200,
+      "defence": 150,
+      "names": [
+        "Schützenpanzer Marder 1 Ausführung 5",
+        "Marder 1A5",
+        "Marder 1"
+      ],
+      "file": "marder1a5a1.png"
+    },
+    "#000165": {
+      "offence": 400,
+      "defence": 200,
+      "names": [
+        "BMPV-64"
+      ],
+      "file": "bmpv64.png"
+    },
+    "#000241": {
+      "offence": 300,
+      "defence": 90,
+      "names": [
+        "Advanced MOrtar System (AMOS)",
+        "AMOS I",
+        "AMOS 1",
+        "AMOS"
+      ],
+      "file": "amos.png"
+    },
+    "#000242": {
+      "offence": 300,
+      "defence": 150,
+      "names": [
+        "Bradley M2A2",
+        "M2A2"
+      ],
+      "file": "bradley m2a2.jpg"
+    },
+    "#000243": {
+      "offence": 300,
+      "defence": 75,
+      "names": [
+        "BMP-1"
+      ],
+      "file": "00057752.jpg"
+    },
+    "#000244": {
+      "offence": 300,
+      "defence": 75,
+      "names": [
+        "BMP-2"
+      ],
+      "file": "bmp2.png"
+    },
+    "#000245": {
+      "offence": 400,
+      "defence": 75,
+      "names": [
+        "BMP-2M \"Berezhok\"",
+        "BMP-2M",
+        "Brezhok"
+      ],
+      "file": "bmp2m.jpg"
+    },
+    "#000246": {
+      "offence": 300,
+      "defence": 90,
+      "names": [
+        "BMP-3"
+      ],
+      "file": "bmp3.jpg"
+    },
+    "#000247": {
+      "offence": 275,
+      "defence": 130,
+      "names": [
+        "ASCOD II (Austrian Spanish Cooperation Development)",
+        "ASCOD II",
+        "ASCOD 2"
+      ],
+      "file": "ASCOD 2.jpg"
+    },
+    "#000248": {
+      "offence": 300,
+      "defence": 150,
+      "names": [
+        "ZBD-04A",
+        "Type 04",
+        "WZ502"
+      ],
+      "file": "ZBD 04A.jpeg"
+    },
+    "#000249": {
+      "offence": 300,
+      "defence": 190,
+      "names": [
+        "AB14 \"Temsah\"",
+        "AB14",
+        "Temsah"
+      ],
+      "file": "AB4 temsah.jpg"
+    },
+    "#000250": {
+      "offence": 280,
+      "defence": 120,
+      "names": [
+        "WPB Anders (Wielozadaniowa Platforma Bojowa Anders)",
+        "WPB Anders",
+        "Anders"
+      ],
+      "file": "anders.jpg"
+    },
+    "#000251": {
+      "offence": 280,
+      "defence": 145,
+      "names": [
+        "Bionix (BX)",
+        "BX",
+        "Bionix"
+      ],
+      "file": "bionix.jpg"
+    },
+    "#000252": {
+      "offence": 700,
+      "defence": 750,
+      "names": [
+        "BMPT-72",
+        "BMT-72"
+      ],
+      "file": "bmt72.png"
+    },
+    "#000253": {
+      "offence": 300,
+      "defence": 150,
+      "names": [
+        "Borsuk"
+      ],
+      "file": "borsuk.jpg"
+    },
+    "#000254": {
+      "offence": 200,
+      "defence": 50,
+      "names": [
+        "CS/VN9"
+      ],
+      "file": "CSVN9.png"
+    },
+    "#000255": {
+      "offence": 190,
+      "defence": 140,
+      "names": [
+        "Lazika (ლაზიკა)",
+        "Lazika"
+      ],
+      "file": "lazika.jpg"
+    },
+    "#000256": {
+      "offence": 700,
+      "defence": 700,
+      "names": [
+        "T-64E"
+      ],
+      "file": "T64-E.jpg"
+    },
+    "#000257": {
+      "offence": 750,
+      "defence": 800,
+      "names": [
+        "T-72 city (городской)",
+        "T-72 city"
+      ],
+      "file": "t72 city.jpg"
+    },
+    "#000258": {
+      "offence": 500,
+      "defence": 100,
+      "names": [
+        "T-34-14"
+      ],
+      "file": "t3414.jpg"
+    },
+    "#000259": {
+      "offence": 200,
+      "defence": 250,
+      "names": [
+        "AMX 10RC Shtora-1",
+        "AMX 10RC Shtora"
+      ],
+      "file": "amxshtora.jpg"
+    },
+    "#000260": {
+      "offence": 450,
+      "defence": 600,
+      "names": [
+        "T-90S"
+      ],
+      "file": "T90-S.jpg"
+    },
+    "#000261": {
+      "offence": 800,
+      "defence": 700,
+      "names": [
+        "T-14 Armata («Армата»)",
+        "T-14",
+        "Armata",
+        ""
+      ],
+      "file": "T-14 Armata.jpg"
+    },
+    "#000262": {
+      "offence": 200,
+      "defence": 30,
+      "names": [
+        "BMD-1"
+      ],
+      "file": "BMD !.jpg"
+    },
+    "#000263": {
+      "offence": 250,
+      "defence": 30,
+      "names": [
+        "BMD-1P"
+      ],
+      "file": "BMD1P.jpg"
+    },
+    "#000264": {
+      "offence": 200,
+      "defence": 30,
+      "names": [
+        "BMD-2"
+      ],
+      "file": "BMD2.jpg"
+    },
+    "#000265": {
+      "offence": 300,
+      "defence": 30,
+      "names": [
+        "BMD-2M"
+      ],
+      "file": "bmd2m.jpg"
+    },
+    "#000266": {
+      "offence": 200,
+      "defence": 45,
+      "names": [
+        "BMD-3"
+      ],
+      "file": "BMD-3.jpg"
+    },
+    "#000277": {
+      "offence": 300,
+      "defence": 40,
+      "names": [
+        "BMD-4"
+      ],
+      "file": "BMD-4.jpg"
+    },
+    "#000267": {
+      "offence": 320,
+      "defence": 210,
+      "names": [
+        "BMP Kurganets-25",
+        "Kurganets-25"
+      ],
+      "file": "BMP kurganets 25.jpeg"
+    },
+    "#000268": {
+      "offence": 210,
+      "defence": 80,
+      "names": [
+        "Marder 1A3"
+      ],
+      "file": "marder 1a3.jpg"
+    },
+    "#000269": {
+      "offence": 200,
+      "defence": 70,
+      "names": [
+        "LVKV 9040"
+      ],
+      "file": "LVKV 9040.jpg"
+    },
+    "#000270": {
+      "offence": 20,
+      "defence": 10,
+      "names": [
+        "BTR-60P"
+      ],
+      "file": "BTR-60P.JPEG"
+    },
+    "#000271": {
+      "offence": 120,
+      "defence": 30,
+      "names": [
+        "BTR-60PB"
+      ],
+      "file": "BTR-60PB.jpg"
+    },
+    "#000272": {
+      "offence": 200,
+      "defence": 40,
+      "names": [
+        "GAZ-50"
+      ],
+      "file": "GAZ-50.JPG"
+    },
+    "#000273": {
+      "offence": 120,
+      "defence": 40,
+      "names": [
+        "BTR-70"
+      ],
+      "file": "BTR-70.jpg"
+    },
+    "#000274": {
+      "offence": 135,
+      "defence": 40,
+      "names": [
+        "BTR-80"
+      ],
+      "file": "BTR-80.jpg"
+    },
+    "#000275": {
+      "offence": 200,
+      "defence": 40,
+      "names": [
+        "BTR-80A"
+      ],
+      "file": "BTR-80A.jpg"
+    },
+    "#000276": {
+      "offence": 200,
+      "defence": 45,
+      "names": [
+        "BTR-82A"
+      ],
+      "file": "BTR-82A.jpg"
+    },
+    "#000278": {
+      "offence": 300,
+      "defence": 55,
+      "names": [
+        "BTR-87"
+      ],
+      "file": "BTR-87.jpg"
+    },
+    "#000279": {
+      "offence": 200,
+      "defence": 45,
+      "names": [
+        "BTR-87"
+      ],
+      "file": "BTR-90.jpg"
+    },
+    "#000280": {
+      "offence": 400,
+      "defence": 50,
+      "names": [
+        "BTR-90M"
+      ],
+      "file": "BTR-90M.jpg"
+    },
+    "#000281": {
+      "offence": 300,
+      "defence": 100,
+      "names": [
+        "Bumerang K-17",
+        "Boomerang K-17",
+        "K-17"
+      ],
+      "file": "Bumerang.jpeg"
+    },
+    "#000282": {
+      "offence": 180,
+      "defence": 45,
+      "names": [
+        "LAV-25"
+      ],
+      "file": "LAV-25.jpg"
+    },
+    "#000283": {
+      "offence": 140,
+      "defence": 70,
+      "names": [
+        "Boxer with FLW-200",
+        "Boxer"
+      ],
+      "file": "Boxer.jpg"
+    },
+    "#000284": {
+      "offence": 180,
+      "defence": 40,
+      "names": [
+        "Coyote"
+      ],
+      "file": "coyote.jpg"
+    },
+    "#000285": {
+      "offence": 190,
+      "defence": 55,
+      "names": [
+        "KTO Rosomak",
+        "Rosomak"
+      ],
+      "file": "KTO-rosomak.jpg"
+    },
+    "#000286": {
+      "offence": 100,
+      "defence": 55,
+      "names": [
+        "VBCI"
+      ],
+      "file": "VBCI.jpg"
+    },
+    "#000287": {
+      "offence": 200,
+      "defence": 80,
+      "names": [
+        "VBCI-2"
+      ],
+      "file": "VBCI-2.jpg"
+    },
+    "#000288": {
+      "offence": 190,
+      "defence": 35,
+      "names": [
+        "AMC 6x6",
+        "AMC"
+      ],
+      "file": "AMC 6x6.jpg"
+    },
+    "#000289": {
+      "offence": 200,
+      "defence": 80,
+      "names": [
+        "AMV XC-360P",
+        "XC-360P"
+      ],
+      "file": "AMV XC360.jpg"
+    },
+    "#000290": {
+      "offence": 230,
+      "defence": 140,
+      "names": [
+        "BMP atom",
+        "Atom"
+      ],
+      "file": "ATOM.jpg"
+    },
+    "#000291": {
+      "offence": 150,
+      "defence": 200,
+      "names": [
+        "BMPT-K-64",
+        "K-64"
+      ],
+      "file": "BMPT K-64.jpg"
+    },
+    "#000292": {
+      "offence": 200,
+      "defence": 40,
+      "names": [
+        "BTR-3E1"
+      ],
+      "file": "BTR-3E!.jpg"
+    },
+    "#000293": {
+      "offence": 200,
+      "defence": 40,
+      "names": [
+        "BTR-3"
+      ],
+      "file": "BTR-3.jpg"
+    },
+    "#000294": {
+      "offence": 210,
+      "defence": 40,
+      "names": [
+        "BTR-4E"
+      ],
+      "file": "BTR-4E.jpg"
+    },
+    "#000295": {
+      "offence": 210,
+      "defence": 40,
+      "names": [
+        "BTR-4"
+      ],
+      "file": "BTR-4.jpg"
+    },
+    "#000296": {
+      "offence": 200,
+      "defence": 60,
+      "names": [
+        "BTR-88"
+      ],
+      "file": "BTR-88.jpg"
+    },
+    "#000297": {
+      "offence": 100,
+      "defence": 80,
+      "names": [
+        "Terrex ICV",
+        "Terrex"
+      ],
+      "file": "TERRREX ICV.JPG"
+    },
+    "#000298": {
+      "offence": 200,
+      "defence": 60,
+      "names": [
+        "Otokar Arma",
+        "Arma"
+      ],
+      "file": "Otokar Arma.jpg"
+    },
+    "#000299": {
+      "offence": 200,
+      "defence": 60,
+      "names": [
+        "Pandur-II",
+        "Pander-2"
+      ],
+      "file": "Pandur-II.jpg"
+    },
+    "#000300": {
+      "offence": 300,
+      "defence": 75,
+      "names": [
+        "BWP-1"
+      ],
+      "file": "BWP-1.jpg"
+    },
+    "#000301": {
+      "offence": 300,
+      "defence": 50,
+      "names": [
+        "2S1 (Gvozdika)",
+        "2S1"
+      ],
+      "file": "gvozdika.jpg"
+    },
+    "#000302": {
+      "offence": 320,
+      "defence": 75,
+      "names": [
+        "2S3 (akatsiya)",
+        "2S3",
+        "Akatsiya"
+      ],
+      "file": "2S3.jpg"
+    },
+    "#000303": {
+      "offence": 450,
+      "defence": 230,
+      "names": [
+        "2S19 MSTA-S",
+        "MSTA-S",
+        "2S19"
+      ],
+      "file": "MSTA-S.jpg"
+    },
+    "#000304": {
+      "offence": 500,
+      "defence": 250,
+      "names": [
+        "2S35 Koalitsiya-SV",
+        "Koalitsiya-SV",
+        "2S35"
+      ],
+      "file": "2S35.jpg"
+    },
+    "#000305": {
+      "offence": 800,
+      "defence": 250,
+      "names": [
+        "2S35-2 Koalitsiya-SV",
+        "Koalitsiya-SV",
+        "2S35-2"
+      ],
+      "file": "2S35 twin barrel.jpg"
+    },
+    "#000306": {
+      "offence": 300,
+      "defence": 60,
+      "names": [
+        "2S23 Nona SVK",
+        "nona SVK",
+        "nona",
+        "2S23"
+      ],
+      "file": "2s23.jpg"
+    },
+    "#000307": {
+      "offence": 500,
+      "defence": 60,
+      "names": [
+        "Shturm-S",
+        "shturm"
+      ],
+      "file": "SHturm S.jpg"
+    },
+    "#000308": {
+      "offence": 400,
+      "defence": 200,
+      "names": [
+        "IT-1"
+      ],
+      "file": "IT-1.jpg"
+    },
+    "#000309": {
+      "offence": 600,
+      "defence": 65,
+      "names": [
+        "2S40 Floks",
+        "Floks",
+        "2S40"
+      ],
+      "file": "2S40 FLOKS.jpg"
+    },
+    "#000310": {
+      "offence": 800,
+      "defence": 80,
+      "names": [
+        "Kornet-T"
+      ],
+      "file": "Kornet-T.jpg"
+    },
+    "#000311": {
+      "offence": 300,
+      "defence": 40,
+      "names": [
+        "M109"
+      ],
+      "file": "M109.jpg"
+    },
+    "#000312": {
+      "offence": 370,
+      "defence": 40,
+      "names": [
+        "M109A6 Paladin",
+        "M109A6"
+      ],
+      "file": "M109A6.jpg"
+    },
+    "#000313": {
+      "offence": 330,
+      "defence": 60,
+      "names": [
+        "Artillery system for the 1990s (AS-90)",
+        "AS-90"
+      ],
+      "file": "AS-90.jpg"
+    },
+    "#000314": {
+      "offence": 350,
+      "defence": 60,
+      "names": [
+        "AHS Krab",
+        "Krab",
+        "Crab"
+      ],
+      "file": "krab.jpg"
+    },
+    "#000315": {
+      "offence": 350,
+      "defence": 85,
+      "names": [
+        "Panzerhaubitze 2000",
+        "PzH 2000"
+      ],
+      "file": "PZH-2000.jpg"
+    },
+    "#000316": {
+      "offence": 350,
+      "defence": 65,
+      "names": [
+        "Type-99"
+      ],
+      "file": "Type-99.jpg"
+    },
+    "#000317": {
+      "offence": 350,
+      "defence": 65,
+      "names": [
+        "AMX-30 AuF1",
+        "AuF1"
+      ],
+      "file": "AMX-30 AuF1.JPG"
+    },
+    "#000318": {
+      "offence": 350,
+      "defence": 65,
+      "names": [
+        "K9 Thunder",
+        "Thunder",
+        "K9"
+      ],
+      "file": "K9.jpg"
+    },
+    "#000319": {
+      "offence": 350,
+      "defence": 65,
+      "names": [
+        "T-155 Firtina",
+        "Firtina ",
+        "T-155"
+      ],
+      "file": "t155 firtina.jpg"
+    },
+    "#000320": {
+      "offence": 360,
+      "defence": 65,
+      "names": [
+        "PLZ-05",
+        "Type-05"
+      ],
+      "file": "PLZ-05.jpg"
+    },
+    "#000321": {
+      "offence": 340,
+      "defence": 50,
+      "names": [
+        "SSPH 1 Primus",
+        "Primus",
+        "SSPh 1",
+        "SSPh"
+      ],
+      "file": "SSPH primus.jpg"
+    },
+    "#000322": {
+      "offence": 355,
+      "defence": 100,
+      "names": [
+        "Merkava Sholef",
+        "Sholef"
+      ],
+      "file": "Sholef.jpg"
+    },
+    "#000323": {
+      "offence": 600,
+      "defence": 700,
+      "names": [
+        "T-80UM1 Bars",
+        "T80UM1",
+        "Bars"
+      ],
+      "file": "T80UM1 bars.jpg"
+    },
+    "#000324": {
+      "offence": 600,
+      "defence": 700,
+      "names": [
+        "T-80UM2"
+      ],
+      "file": "T-80UM1 bars.jpg"
+    },
+    "#000325": {
+      "offence": 600,
+      "defence": 650,
+      "names": [
+        "T-80UD"
+      ],
+      "file": "T-80UD.jpg"
+    },
+    "#000326": {
+      "offence": 600,
+      "defence": 650,
+      "names": [
+        "Objekt-187",
+        "Object 187",
+        "obj 187",
+        ""
+      ],
+      "file": "object 187.jpg"
+    },
+    "#000327": {
+      "offence": 400,
+      "defence": 70,
+      "names": [
+        "2S4 Tyulpan",
+        "Tyulpan ",
+        "2S4"
+      ],
+      "file": "2s4.jpg"
+    },
+    "#000328": {
+      "offence": 350,
+      "defence": 70,
+      "names": [
+        "2S5 Giatsint-S",
+        "Giatsint-S",
+        "Giatsint",
+        "2S5"
+      ],
+      "file": "2S5 Giatsint-S.jpg"
+    },
+    "#000329": {
+      "offence": 350,
+      "defence": 50,
+      "names": [
+        "2S31 Vena",
+        "Vena",
+        "2S31"
+      ],
+      "file": "2s31.jpg"
+    },
+    "#000330": {
+      "offence": 350,
+      "defence": 80,
+      "names": [
+        "2S39 Magnolia",
+        "Magnolia",
+        "2S39"
+      ],
+      "file": "2S£9.jpg"
+    },
+    "#000331": {
+      "offence": 250,
+      "defence": 25,
+      "names": [
+        "2S41 Drok",
+        "Drok",
+        "2S41"
+      ],
+      "file": "2s41.jpg"
+    },
+    "#000332": {
+      "offence": 300,
+      "defence": 40,
+      "names": [
+        "2S42 Lotos",
+        "Lotos",
+        "Lotus",
+        "2S42"
+      ],
+      "file": "2S42.jpg"
+    },
+    "#000334": {
+      "offence": 400,
+      "defence": 24,
+      "names": [
+        "2S43 Malva",
+        "Malva",
+        "2S43",
+        ""
+      ],
+      "file": "malva.jpg"
+    },
+    "#000335": {
+      "offence": 250,
+      "defence": 180,
+      "names": [
+        "TOS-1 Buratino",
+        "Buratino",
+        "TOS-1"
+      ],
+      "file": "Tos-1.jpg"
+    },
+    "#000336": {
+      "offence": 265,
+      "defence": 180,
+      "names": [
+        "TOS-1A Solntsepyok",
+        "Solntsepyok",
+        "TOS-1A"
+      ],
+      "file": "TOS1A.jpg"
+    },
+    "#000337": {
+      "offence": 350,
+      "defence": 35,
+      "names": [
+        "Archer Artillery System",
+        "Archer – FH77BW L52",
+        "Artillerisystem 08",
+        "Archer",
+        "FH77BWL52"
+      ],
+      "file": "Archer.jpg"
+    },
+    "#000338": {
+      "offence": 230,
+      "defence": 40,
+      "names": [
+        "FV433, 105mm, Field Artillery, Self-Propelled \"Abbot\"",
+        "FV433",
+        "Abbot"
+      ],
+      "file": "abbot.jpg"
+    },
+    "#000339": {
+      "offence": 230,
+      "defence": 27,
+      "names": [
+        "Mk 61 105 mm Self-Propelled Howitzer",
+        "Mk 61",
+        "AMX 105",
+        "AMX 105MM"
+      ],
+      "file": "mk61.jpg"
+    },
+    "#000340": {
+      "offence": 260,
+      "defence": 50,
+      "names": [
+        "Palmaria"
+      ],
+      "file": "palmaria.jpg"
+    },
+    "#000341": {
+      "offence": 280,
+      "defence": 50,
+      "names": [
+        "M-55"
+      ],
+      "file": "M-55.JPG"
+    },
+    "#000342": {
+      "offence": 380,
+      "defence": 20,
+      "names": [
+        " M107 175 mm (6.9 in) self-propelled gun",
+        "M107"
+      ],
+      "file": "m107.jpg"
+    },
+    "#000343": {
+      "offence": 200,
+      "defence": 20,
+      "names": [
+        " M108"
+      ],
+      "file": "M-108.jpg"
+    },
+    "#000344": {
+      "offence": 400,
+      "defence": 20,
+      "names": [
+        " 8 inch (203 mm) M110 self-propelled howitze",
+        "M110r"
+      ],
+      "file": "m-110.jpg"
+    },
+    "#000345": {
+      "offence": 20,
+      "defence": 30,
+      "names": [
+        " M113"
+      ],
+      "file": "m113.jpg"
+    },
+    "#000346": {
+      "offence": 25,
+      "defence": 40,
+      "names": [
+        "YPR-765"
+      ],
+      "file": "YPR-765.jpg"
+    },
+    "#000347": {
+      "offence": 15,
+      "defence": 20,
+      "names": [
+        "FV-432"
+      ],
+      "file": "FV-432.jpeg"
+    },
+    "#000348": {
+      "offence": 70,
+      "defence": 20,
+      "names": [
+        "MLVM (Mașina de Luptă a Vânătorilor de Munte)",
+        "MLVM"
+      ],
+      "file": "MLVM.jpg"
+    },
+    "#000349": {
+      "offence": 20,
+      "defence": 15,
+      "names": [
+        "Pansarbandvagn 302 (pbv 302)",
+        "Pansarbandvagn 302",
+        "PBV-302",
+        ""
+      ],
+      "file": "PBV-302.jpg"
+    },
+    "#000350": {
+      "offence": 20,
+      "defence": 15,
+      "names": [
+        "Type-60 (60式装甲車)",
+        "Type 60",
+        ""
+      ],
+      "file": "Type-60.jpg"
+    },
+    "#000351": {
+      "offence": 25,
+      "defence": 15,
+      "names": [
+        "Type-63",
+        "YW531",
+        ""
+      ],
+      "file": "Type-63.jpg"
+    },
+    "#000352": {
+      "offence": 250,
+      "defence": 70,
+      "names": [
+        "Boxer CRV",
+        "CRV",
+        ""
+      ],
+      "file": "Boxer CRV.jpg"
+    },
+    "#000353": {
+      "offence": 300,
+      "defence": 70,
+      "names": [
+        "Vilkas (Boxer)",
+        "Vilkas",
+        "Wolf",
+        ""
+      ],
+      "file": "Vilkas Boxer.jpg"
+    },
+    "#000354": {
+      "offence": 220,
+      "defence": 70,
+      "names": [
+        "Skyranger-30"
+      ],
+      "file": "Skyranger 30.jpg"
+    },
+    "#000355": {
+      "offence": 350,
+      "defence": 70,
+      "names": [
+        "Remote control howitzer 155MM (RCH155)",
+        "RCH-155"
+      ],
+      "file": "RCH-155.jpg"
+    },
+    "#000356": {
+      "offence": 220,
+      "defence": 70,
+      "names": [
+        "Skyranger-35"
+      ],
+      "file": "skyranger 35.jpg"
+    },
+    "#000357": {
+      "offence": 450,
+      "defence": 130,
+      "names": [
+        "M10 Booker",
+        "Booker",
+        "M10"
+      ],
+      "file": "m10-booker.jpg"
+    },
+    "#000358": {
+      "offence": 450,
+      "defence": 130,
+      "names": [
+        "Kaplan MT /Harimau",
+        "Kaplan MT",
+        "Harimau"
+      ],
+      "file": "kaplan mt.jpg"
+    },
+    "#000359": {
+      "offence": 500,
+      "defence": 160,
+      "names": [
+        "M1128 Mobile gun system (MGS)",
+        "M1128 MGS",
+        "M1128",
+        "M1128 stryker"
+      ],
+      "file": "m1128.jpg"
+    },
+    "#000360": {
+      "offence": 450,
+      "defence": 160,
+      "names": [
+        "Type 15 Black Panther",
+        "ZTQ 15",
+        "VT-5",
+        "Black panther"
+      ],
+      "file": "type15.jpg"
+    },
+    "#000361": {
+      "offence": 190,
+      "defence": 30,
+      "names": [
+        "FV101 Scorpion",
+        "FV101",
+        "Scorpion",
+        "FV101 CVRT",
+        "CVRT",
+        "Scorpion CVRT"
+      ],
+      "file": "FV101.jpg"
+    },
+    "#000362": {
+      "offence": 210,
+      "defence": 40,
+      "names": [
+        "K-21",
+        "K-300",
+        "XK-21"
+      ],
+      "file": "K-21.jpg"
+    },
+    "#000363": {
+      "offence": 210,
+      "defence": 70,
+      "names": [
+        "Otokar Tulpar",
+        "Tulpar"
+      ],
+      "file": "tulpar.jpg"
+    },
+    "#000364": {
+      "offence": 230,
+      "defence": 20,
+      "names": [
+        "2P27"
+      ],
+      "file": "2P-27.jpg"
+    },
+    "#000365": {
+      "offence": 30,
+      "defence": 20,
+      "names": [
+        "OT-62 Topas",
+        "OT-62",
+        "Topas"
+      ],
+      "file": "OT-62 topas.jpg"
+    },
+    "#000366": {
+      "offence": 40,
+      "defence": 23,
+      "names": [
+        "OT-64 Skot",
+        "OT-64",
+        "Skot"
+      ],
+      "file": "1280px-OT-64_SKOT.jpg"
+    },
+    "#000367": {
+      "offence": 300,
+      "defence": 20,
+      "names": [
+        " Samohybná Kanónová Húfnica vzor 77 ShKH vz. 77",
+        " DANA (Dělo automobilní nabíjené automaticky)",
+        "DANA",
+        "ShKH vz. 77"
+      ],
+      "file": "DANA.jpg"
+    },
+    "#000368": {
+      "offence": 230,
+      "defence": 35,
+      "names": [
+        "M120 Rak",
+        "Rak",
+        "M120"
+      ],
+      "file": "m120 RAK.jpg"
+    },
+    "#000369": {
+      "offence": 190,
+      "defence": 40,
+      "names": [
+        "BTR-94"
+      ],
+      "file": "BTR-94.jpg"
+    },
+    "#000370": {
+      "offence": 190,
+      "defence": 40,
+      "names": [
+        "DefTech AV8 Gempita",
+        "AV8",
+        "Gempita"
+      ],
+      "file": "AV_8_Gempita_on_the_way_in_NDP_2023_in_Kuantan.jpg"
+    },
+    "#000371": {
+      "offence": 190,
+      "defence": 40,
+      "names": [
+        "FNSS Pars III",
+        "Pars III",
+        "Pars"
+      ],
+      "file": "FNSS PARS.jpg"
+    },
+    "#000372": {
+      "offence": 350,
+      "defence": 35,
+      "names": [
+        "Otaman 6X6",
+        "Otaman"
+      ],
+      "file": "otoman 6x6.jpg"
+    },
+    "#000373": {
+      "offence": 180,
+      "defence": 35,
+      "names": [
+        "RN-94"
+      ],
+      "file": "RN-94.jpg"
+    },
+    "#000374": {
+      "offence": 15,
+      "defence": 35,
+      "names": [
+        "RN-94"
+      ],
+      "file": "SAUR 1.jpg"
+    },
+    "#000375": {
+      "offence": 200,
+      "defence": 35,
+      "names": [
+        "TATA Kestrel IPMV",
+        "IPMV",
+        "Kestrel"
+      ],
+      "file": "tata kestrel.jpg"
     }
   }
 }

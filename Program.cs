@@ -1,34 +1,4 @@
-﻿using System;
-using System.Timers;
-using System.Reflection;
-using Discord;
-using Discord.Audio;
-using Discord.Audio.Streams;
-using Discord.Commands;
-using Discord.Commands.Builders;
-using Discord.Interactions;
-using Discord.Interactions.Builders;
-using Discord.Net;
-using Discord.Net.Converters;
-using Discord.Net.ED25519;
-using Discord.Net.ED25519.Ed25519Ref10;
-using Discord.Net.Queue;
-using Discord.Net.Rest;
-using Discord.Net.Udp;
-using Discord.Net.WebSockets;
-using Discord.Rest;
-using Discord.Utils;
-using Discord.Webhook;
-using Discord.WebSocket;
-using Newtonsoft.Json;
-using System.Threading;
-using System.Threading.Channels;
-using System.Drawing;
-using System.Runtime.InteropServices;
-using System.Security.AccessControl;
-using Microsoft.VisualBasic;
-
-
+﻿#pragma warning disable IDE0079
 #pragma warning disable CS1998
 #pragma warning disable CS8600
 #pragma warning disable CS8601
@@ -38,6 +8,30 @@ using Microsoft.VisualBasic;
 #pragma warning disable CS8618
 #pragma warning disable CS8622
 #pragma warning disable CS8629
+#pragma warning disable SYSLIB0014
+#pragma warning disable IDE0050
+#pragma warning disable IDE0090
+#pragma warning disable IDE0063
+#pragma warning disable IDE0044
+#pragma warning disable IDE0017
+#pragma warning disable IDE0052
+#pragma warning disable IDE0079
+#pragma warning disable IDE0060
+#pragma warning disable IDE0063
+#pragma warning disable IDE0059
+
+using System;
+using System.Timers;
+using Discord;
+using Discord.Commands;
+using Discord.Rest;
+using Discord.WebSocket;
+using Newtonsoft.Json;
+using System.Text.RegularExpressions;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.IO.Compression;
 
 // Perm: 277025778752
 // link: https://discord.com/oauth2/authorize?client_id=1182017101897154621&permissions=277025778752&scope=bot+applications.commands
@@ -48,11 +42,12 @@ namespace TankDex
     {
         private DiscordSocketClient _client;
         private CommandService _commands;
-        private IServiceProvider _services;
+        //private IServiceProvider _services;
 
         private data data = new data();
         private config cfg = new config();
         private index index = new index();
+        private cache cache = new cache();
 
         private ulong cdnid = ulong.MaxValue;
         private ulong cdnchid = ulong.MaxValue;
@@ -61,41 +56,90 @@ namespace TankDex
         private volatile static List<activequestion> activequestions = new List<activequestion>();
         private volatile static List<activequery> activequeries = new List<activequery>();
         private volatile static List<activegiving> activegivings = new List<activegiving>();
+        private volatile static List<activeinfo> activeinfos = new List<activeinfo>();
+        private volatile static List<SocketGuild> _guilds = new List<SocketGuild>();
+        private volatile static List<gldcfg> guilds = new List<gldcfg>();
+        private volatile static List<KeyValuePair<ulong,DateTime>> blocked = new List<KeyValuePair<ulong, DateTime>>();
+
+        public static Dictionary<string, string> paths = new Dictionary<string, string>();
 
         private System.Timers.Timer buttonTimer;
+        private System.Timers.Timer spawnTimer;
+        private System.Timers.Timer cacheTimer;
 
-        List<gldcfg> guilds = new List<gldcfg>();
-
+        private FileUploader fileUploader = new FileUploader();
 
         static void Main(string[] args)
-        => new Program().RunBotAsync().GetAwaiter().GetResult();
+        {
+            try
+            {
+                new Program().RunBotAsync().GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+                string logFilePath = "crashlog.txt";
 
+                // Write the exception details to a log file
+                using (StreamWriter writer = new StreamWriter(logFilePath, true))
+                {
+                    DateTime now = DateTime.UtcNow;
+                    Int32 unixTimestamp = (int)now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                    writer.WriteLine($"[{unixTimestamp}]");
+                    writer.WriteLine($"Exception occurred at {DateTime.Now}");
+                    writer.WriteLine($"   Message: {ex.Message}");
+                    writer.WriteLine($"   Stack Trace:");
+                    writer.WriteLine($"   {ex.StackTrace}");
+                    writer.WriteLine(new string('-', 30));
+                    Console.WriteLine($"[{unixTimestamp}]");
+                    Console.WriteLine($"Exception occurred at {DateTime.Now}");
+                    Console.WriteLine($"   Message: {ex.Message}");
+                    Console.WriteLine($"   Stack Trace:");
+                    Console.WriteLine($"   {ex.StackTrace}");
+                }
+            }
+        }
         public async Task RunBotAsync()
         {
             _client = new DiscordSocketClient(
             new DiscordSocketConfig
             {
                 GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent,
-                UseInteractionSnowflakeDate = false
-            }) ;
+                UseInteractionSnowflakeDate = false,
+                LogLevel = LogSeverity.Info
+            });
             _commands = new CommandService();
-            cfg.load(out cfg);
-            index = index.Deserialize(File.ReadAllText("tanks\\index.json"));
+            config.load(out cfg);
+            if ((bool)cfg.Windows) paths.Add("index", "tanks\\index.json"); else paths.Add("index", "tanks/index.json");
+            if ((bool)cfg.Windows) paths.Add("tempdir", "tanks\\temp"); else paths.Add("tempdir", "tanks/temp");
+            if ((bool)cfg.Windows) paths.Add("images", "tanks\\images"); else paths.Add("images", "tanks/images");
+            if ((bool)cfg.Windows) paths.Add("images2", "tanks\\images\\"); else paths.Add("images2", "tanks/images/");
+            if ((bool)cfg.Windows) paths.Add("inddest", $"{paths["tempdir"]}\\index.zip"); else paths.Add("inddest", $"{paths["tempdir"]}/index.zip");
+            if ((bool)cfg.Windows) paths.Add("old", $"tanks\\old"); else paths.Add("old", $"tanks/old");
+            index = index.Deserialize(File.ReadAllText(paths["index"]));
             guilds = gldcfg.load().ToList();
             data.load(index);
+            cache = cache.Deserialize(File.ReadAllText("cache.json"));
             string[] cdnstr = File.ReadAllText("cdn.txt").Split(';');
             cdnid = ulong.Parse(cdnstr[0]);
             cdnchid = ulong.Parse(cdnstr[1]);
-            Directory.CreateDirectory("tanks\\temp");
-
+            Directory.CreateDirectory(paths["tempdir"]);
+            Directory.CreateDirectory(paths["old"]);
+            DirectoryInfo di = new DirectoryInfo(paths["tempdir"]);
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
 
             _client.Log += Log;
             _client.Ready += Client_Ready;
             _client.SlashCommandExecuted += SlashCommandHandler;
             _client.GuildAvailable += GuildAvailable;
-            _client.GuildAvailable += GuildAvailable;
             _client.MessageReceived += MessageReceived;
+            _client.ReactionAdded += ReactionAdded;
+
             
+            //chidsock.SendMessageAsync();
+           
             //_client.ButtonExecuted += ButtonExecuted;
             //_client.InteractionCreated += InteractionCreated;
             
@@ -103,9 +147,34 @@ namespace TankDex
             buttonTimer.Elapsed += OnButtonTimedEvent;
             buttonTimer.AutoReset = true;
             buttonTimer.Enabled = true;
+            
+            spawnTimer = new System.Timers.Timer(30*60000);
+            spawnTimer.Elapsed += SpawnTimerEvent;
+            spawnTimer.AutoReset = true;
+            spawnTimer.Enabled = true;
 
-            await _client.LoginAsync(TokenType.Bot, cfg.Token);
-            await _client.StartAsync();
+            cacheTimer = new System.Timers.Timer(10000);
+            cacheTimer.Elapsed += CacheTimerEvent;
+            cacheTimer.AutoReset = true;
+            cacheTimer.Enabled = true;
+
+            if ((bool)cfg.DevMode)
+            {
+                _client.LoginAsync(TokenType.Bot, cfg.DevToken).Wait();
+            }
+            else
+            {
+                _client.LoginAsync(TokenType.Bot, cfg.Token).Wait();
+            }
+            _client.StartAsync().Wait();
+
+            //var chidsock = _client.GetGuild(cdnid).GetChannel(cdnchid) as SocketTextChannel;
+            string mentions = "";
+            foreach (ulong id in cfg.Developers)
+            {
+                mentions += $"<@{id}>\n";
+            }
+            mentions += "";
 
             await Task.Delay(-1);
         }
@@ -122,9 +191,11 @@ namespace TankDex
         {
             if (!gldcfg.contains(guilds.ToArray(), guild.Id))
             {
-                guilds.Add(new gldcfg(guild.Id, ulong.MaxValue, false, ulong.MaxValue, ulong.MaxValue));
+                guilds.Add(new gldcfg(guild.Id, ulong.MaxValue, true, ulong.MaxValue, ulong.MaxValue));
                 gldcfg.write(guilds.ToArray());
             }
+            _guilds.RemoveAll(x => x == guild);
+            _guilds.Add(guild);
         }
         private async Task SlashCommandHandler(SocketSlashCommand command)
         {
@@ -152,10 +223,10 @@ namespace TankDex
                     }
                     break;
                 case "trigger":
-                    if (cfg.Developers.Contains(command.User.Id) & util.isAdmin(_client.GetGuild((ulong)command.GuildId).GetUser(command.User.Id)))
+                    if (cfg.Developers.ToArray().Contains(command.User.Id) & util.isAdmin(_client.GetGuild((ulong)command.GuildId).GetUser(command.User.Id)))
                     {
                         await command.RespondAsync($"Triggered! ||(Developer only)||", null, false, true); 
-                        Random rnd = new Random(DateTime.Now.Millisecond); 
+                        Random rnd = new Random(); 
                         await Spawn(command.Channel, rnd.Next(0, index.tanks.Count)); 
                     }
                     else
@@ -176,7 +247,7 @@ namespace TankDex
                     }
                     else
                     {
-                        await command.RespondAsync("You are not an admin!", null, false, true);
+                        await command.RespondAsync("You do not have the administrator permission!", null, false, true);
                     }
                     break;
                 case "disable":
@@ -191,19 +262,26 @@ namespace TankDex
                     }
                     else
                     {
-                        await command.RespondAsync("You are not an admin!", null, false, true);
+                        await command.RespondAsync("You do not have the administrator permission!", null, false, true);
                     }
             break;
                 case "completion":
                     EmbedBuilder eb = new EmbedBuilder();
-                    eb.Title = $"Tank completion of {command.User.GlobalName}";
-                    eb.Description = $"{command.User.GlobalName} owns {data.ama(command.User.Id)} unique tanks.\n" +
-                        $"And {data.tot(command.User.Id)} tanks in total.\n";
-                    eb.AddField("Completion", $"%{data.cml(command.User.Id, index)}\n{data.ama(command.User.Id)}/{index.tanks.Count}", false);
-                    eb.AddField("Offence", data.pow(command.User.Id), true);
-                    eb.AddField("Defence", data.def(command.User.Id), true);
-                    eb.ThumbnailUrl = command.User.GetAvatarUrl();
-                    await command.RespondAsync(null, embed:eb.Build());
+                    if (data._data.ContainsKey(command.User.Id))
+                    {
+                        eb.Title = $"Tank completion of {command.User.GlobalName}";
+                        eb.Description = $"{command.User.GlobalName} owns {data.ama(command.User.Id)} unique tanks.\n" +
+                            $"And {data.tot(command.User.Id)} tanks in total.\n";
+                        eb.AddField("Completion", $"%{data.cml(command.User.Id, index)}\n{data.ama(command.User.Id)}/{index.tanks.Count}", false);
+                        eb.AddField("Offence", data.pow(command.User.Id), true);
+                        eb.AddField("Defence", data.def(command.User.Id), true);
+                        eb.ThumbnailUrl = command.User.GetAvatarUrl();
+                        await command.RespondAsync(null, embed: eb.Build());
+                    }
+                    else
+                    {
+                        await command.RespondAsync("You do not own any tanks!", null, false, true);
+                    }
                     break;
                 case "setcdn":
                     if (cfg.Developers.Contains(command.User.Id) & util.isAdmin(_client.GetGuild((ulong)command.GuildId).GetUser(command.User.Id)))
@@ -263,8 +341,8 @@ namespace TankDex
                     EmbedBuilder ___eb = new EmbedBuilder();
                     ___eb.WithAuthor(command.User.GlobalName, command.User.GetDisplayAvatarUrl());
                     ___eb.WithTitle("Who would you like to gift a tank to?");
-                    ___eb.WithDescription($"@ the user and the ID of the tank, like this: \"<@{_client.CurrentUser.Id}> #000001\"\nMind the space!");
-                    ___eb.WithFooter($"You can do this from the info menu if you would like to see the tank before you trade it\nExpires: <t:{_unixTimestamp}:R>");
+                    ___eb.WithDescription($"@ the user and the ID of the tank, like this: \"*<@{_client.CurrentUser.Id}>:#000001*\"\nMind the colon!\nExpires <t:{_unixTimestamp}:R>");
+                    ___eb.WithFooter($"You can do this from the info menu if you would like to see the tank before you trade it");
 
                     await command.RespondAsync(embed: ___eb.Build());
                     var _messages = await command.Channel.GetMessagesAsync(1).FlattenAsync();
@@ -275,12 +353,14 @@ namespace TankDex
 
                     break;
             }
+            data.write(index);
         }
         private async Task MessageReceived(SocketMessage message)
         {
             if (message is not IUserMessage userMessage || message.Author.IsBot)
                 return;
 
+            Random rnd = new Random();
             IGuild guild = (userMessage.Channel as IGuildChannel)?.Guild;
 
             var msg2 = message as IUserMessage;
@@ -299,8 +379,247 @@ namespace TankDex
                 await message.AddReactionAsync(new Emoji("✅"));
                 return;
             }
+            else if (Regex.IsMatch(message.Content, "\\$\\$addtank\\$\\$\\[[^\\]]*\\]") && cfg.Developers.Contains(message.Author.Id))
+            {
+                string content = Regex.Match(message.Content, "\\$\\$addtank\\$\\$\\[[^\\]]*\\]").Value;
+                if (message.Attachments.Count != 1)
+                {
+                    await msg3.ReplyAsync("Invalid attachments");
+                }
+                else
+                {
+                    chunk ch = new chunk();
+                    try
+                    {
+                        string content2 = message.Content.Replace("$$addtank$$[", "");
+                        content2 = content2.Replace("\"}]", "\"}");
+                        Console.WriteLine(content2);
+                        ch = chunk.Deserialize(content2);
+                        tank t = new tank();
+                        t.names = ch.names;
+                        t.offence = ch.offence;
+                        t.defence = ch.defence;
+                        t.file = ch.file;
+                        index.tanks.Add(ch.tkey, t);
+                        string url = message.Attachments.FirstOrDefault().Url;
+                        using (WebClient client = new WebClient())
+                        {
+                            try
+                            {
+                                string fileName = Path.Join(paths["images"],ch.file);
+                                client.DownloadFile(url, fileName);
+                                await msg3.AddReactionAsync(new Emoji("✅"));
+                            }
+                            catch (Exception ex)
+                            {
+                                await msg3.ReplyAsync($"Couldnt download image\n{ex.Message}");
+                            }
+                        }
+                        File.WriteAllText(paths["index"], index.Serialize(index));
+                        await _client.SetGameAsync($"{index.tanks.Count} tanks!", null, ActivityType.Watching);
+                    }
+                    catch (Exception ex)
+                    {
+                        await msg3.ReplyAsync($"Invalid JSON\n{ex.Message}");
+                    }
+                }
+            }
+            else if (Regex.IsMatch(message.Content, "\\$\\$remtank\\$\\$\\[[^\\]]*\\]") && cfg.Developers.Contains(message.Author.Id))
+            {
+                string content2 = message.Content.Replace("$$remtank$$[", "");
+                content2 = content2.Replace("\"}]", "\"}");
+                foreach (KeyValuePair<ulong, Dictionary<tank, uint>> kvp in data._data)
+                {
+                    data._data[kvp.Key].Remove(index.fromId(content2));
+                }
+                index.tanks.Remove(content2);
+                File.WriteAllText(paths["index"], index.Serialize(index));
+                await _client.SetGameAsync($"{index.tanks.Count} tanks!", null, ActivityType.Watching);
+                await message.AddReactionAsync(new Emoji("✅"));
+            }
+            else if (Regex.IsMatch(message.Content, "\\$\\$gettank\\$\\$\\[[^\\]]*\\]") && cfg.Developers.Contains(message.Author.Id))
+            {
+                string content2 = message.Content.Replace("$$gettank$$[", "");
+                content2 = content2.Replace("\"}]", "\"}");
+                chunk ch = new chunk();
+                if (index.tanks.ContainsKey(content2))
+                {
+                    tank t = index.fromId(content2);
+                    ch.tkey = content2;
+                    ch.names = t.names;
+                    ch.offence = t.offence;
+                    ch.defence = t.defence;
+                    ch.file = t.file;
 
-            Random rnd = new Random(DateTime.Now.Millisecond);
+                    await msg2.ReplyAsync(chunk.Serialize2(ch));
+                }
+                ch.tkey = content2;
+                
+                await _client.SetGameAsync($"{index.tanks.Count} tanks!", null, ActivityType.Watching);
+            }
+            else if (Regex.IsMatch(message.Content, "\\$\\$index\\$\\$") && cfg.Developers.Contains(message.Author.Id))
+            {
+                try
+                {
+                    await message.AddReactionAsync(new Emoji("⏳"));
+                    ZipFile.CreateFromDirectory("tanks", paths["inddest"],CompressionLevel.SmallestSize,false);
+                    int highest = 0;
+                    foreach (string tkey in index.tanks.Keys)
+                    {
+                        if ((int)util.ExctractNumberFromId(tkey).response > highest) highest = (int)util.ExctractNumberFromId(tkey).response;
+                    }
+                    string response = fileUploader.UploadFile(paths["inddest"]).Result;
+                    Console.WriteLine(response);
+                    msg2.ReplyAsync(response).Wait();
+                    /*message.Channel.SendFileAsync(paths["inddest"],
+                        $"<@{message.Author.Id}>\n" +
+                        $"Highest id: {util.convertNumberToId(highest).response}").Wait();*/
+
+                    File.Delete(paths["inddest"]);
+                    await message.AddReactionAsync(new Emoji("✅"));
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
+                
+            }
+            else if (Regex.IsMatch(message.Content, "\\$\\$setindex\\$\\$") && cfg.Developers.Contains(message.Author.Id))
+            {
+                try
+                {
+                    await message.AddReactionAsync(new Emoji("⏳"));
+                    if (message.Attachments.Count >0)
+                    {
+                        using (WebClient client = new WebClient())
+                        {
+                            try
+                            {
+                                File.Move(paths["index"], Path.Combine(paths["old"], $"oldIndex{DateTime.Now}.json"));
+                                string fileName = Path.Join(paths["index"]);
+                                client.DownloadFile(message.Attachments.FirstOrDefault().Url, fileName);
+                                index = index.Deserialize(File.ReadAllText(paths["index"]));
+                                await msg3.AddReactionAsync(new Emoji("✅"));
+                            }
+                            catch (Exception ex)
+                            {
+                                await msg3.ReplyAsync($"Couldnt download image\n{ex.Message}");
+                            }
+                        }
+                    }
+                    await message.AddReactionAsync(new Emoji("✅"));
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            else if (Regex.IsMatch(message.Content, "\\$\\$settank\\$\\$\\[[^\\]]*\\]") && cfg.Developers.Contains(message.Author.Id))
+            {
+                try
+                {
+                    string content = Regex.Match(message.Content, "\\$\\$settank\\$\\$\\[[^\\]]*\\]").Value;
+
+                    chunk ch = new chunk();
+                    string content2 = message.Content.Replace("$$settank$$[", "");
+                    content2 = content2.Replace("\"}]", "\"}");
+                    ch = chunk.Deserialize(content2);
+                    tank t = new tank();
+                    t.names = ch.names;
+                    t.offence = ch.offence;
+                    t.defence = ch.defence;
+                    t.file = ch.file;
+                    if (message.Attachments.Count == 0)
+                    {
+                        string url = message.Attachments.FirstOrDefault().Url;
+                        File.Delete(Path.Combine(paths["images"], index.fromId(ch.tkey).file));
+                        using (WebClient client = new WebClient())
+                        {
+                            try
+                            {
+                                string fileName = Path.Join(paths["images"], ch.file);
+                                client.DownloadFile(url, fileName);
+                                t.file = ch.file;
+                                await msg3.AddReactionAsync(new Emoji("⬇️"));
+                            }
+                            catch (Exception ex)
+                            {
+                                await msg3.ReplyAsync($"Couldnt download image\n{ex.Message}");
+                            }
+                        }
+                    }
+                    index.tanks[ch.tkey] = t;
+                    File.WriteAllText(paths["index"], index.Serialize(index));
+                    await message.AddReactionAsync(new Emoji("✅"));
+                }
+                catch (Exception ex)
+                {
+                    await msg3.ReplyAsync($"Idk bro something went wrong figure it out yourself\n{ex.Message}\n{ex.StackTrace}");
+                }
+
+            }
+            else if (Regex.IsMatch(message.Content, "\\$\\$removecache\\$\\$") && cfg.Developers.Contains(message.Author.Id))
+            {
+                var chan = _client.GetChannel(message.Channel.Id);
+                try
+                {
+                    if (!message.Reference.FailIfNotExists.Value)
+                    {
+                        var msg = await message.Channel.GetMessageAsync(message.Reference.MessageId.Value);
+                        if (msg.Author.Id == _client.CurrentUser.Id)
+                        {
+                            int i = 0;
+                            foreach (string cacheitem in cache._cache.Values)
+                            {
+                                if (cacheitem == msg.Embeds.FirstOrDefault().Image.Value.Url)
+                                {
+                                    cache._cache.Remove(cache._cache.Keys.ToArray()[i]);
+                                    break;
+                                }
+                                i++;
+                            }
+                            await message.AddReactionAsync(new Emoji("✅"));
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await msg3.ReplyAsync($"Idk bro something went wrong figure it out yourself\n{ex.Message}\n{ex.StackTrace}");
+                }
+            }
+            else if (message.CleanContent == "$$fixcoms$$" && cfg.Developers.Contains(message.Author.Id))
+            {
+                await message.AddReactionAsync(new Emoji("⏳"));
+                foreach (var command in guild.GetApplicationCommandsAsync().Result.ToArray())
+                {
+                    await command.DeleteAsync();
+                }
+
+                SocketApplicationCommand[] commands = _client.GetGlobalApplicationCommandsAsync().Result.ToArray();
+                foreach (SocketApplicationCommand command in commands)
+                {
+                    await command.DeleteAsync();
+                }
+                foreach (KeyValuePair<string,string> kvp in cfg.Commands)
+                {
+                    var command = new Discord.SlashCommandBuilder();
+                    command.IsNsfw = false;
+                    command.Name = kvp.Key;
+                    command.Description = kvp.Value;
+                    await _client.CreateGlobalApplicationCommandAsync(command.Build());
+                }
+                await message.AddReactionAsync(new Emoji("✅"));
+            }
+            else if (Regex.IsMatch(message.Content, "\\$\\$zhirik\\$\\$"))
+            {
+                string[] zhirik = new string[] {
+                    "https://tenor.com/view/%D0%B6%D0%B8%D1%80%D0%B8%D0%BA%D0%BF%D0%B0%D0%BB-%D0%BF%D0%B0%D0%BB-%D0%B6%D0%B8%D1%80%D0%B8%D0%BA-%D0%B6%D0%B8%D1%80%D0%B8%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%D0%B8%D0%B9-gif-20787105",
+                    "https://tenor.com/view/polacy-gif-23665279",
+                    "https://media.discordapp.net/attachments/1201155300439371946/1202001189886246952/image0.gif?ex=661eec57&is=660c7757&hm=a7edc7fa2ea20ff4f224ccdf6e8e76feaeeaa1b1fe1aafea3e79be251346017e&"};
+                await msg2.ReplyAsync(zhirik[rnd.Next(0, 2)]);
+            }
+
             gldcfg curcfg = guilds[gldcfg.find(guilds.ToArray(), guild.Id)];
             Console.WriteLine($"Message received {{{msg2.CleanContent}}}");
             try
@@ -334,7 +653,7 @@ namespace TankDex
                         {
                             await msg2.AddReactionAsync(new Emoji("❌"));
                         }
-                    }
+                    } //guess
                     else if (activequery.Contains(msg2.ReferencedMessage.Id, activequeries.ToArray()))
                     {
                         if (Int32.TryParse(msg2.CleanContent, out int number))
@@ -350,7 +669,7 @@ namespace TankDex
                                 Int32 unixTimestamp = (int)expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                                 activequery aq = new activequery();
                                 _eb.Title = $"Tank info for {message.Author.GlobalName}";
-                                _eb.Description = $"Page {acq.page}/{util.CalculatePagesNeeded(data.ama(message.Author.Id), 25)}\n{util.CalculateItemsOnPage(data.ama(message.Author.Id), 25, acq.page)}/25 per page" +
+                                _eb.Description = $"Page {acq.page+1}/{util.CalculatePagesNeeded(data.ama(message.Author.Id), 25)}\n{util.CalculateItemsOnPage(data.ama(message.Author.Id), 25, acq.page)}/25 per page" +
                                     $"\nType \"next\" for next page. \"previous\" for previous page, or page number. And tank ID for info\n" +
                                     $"Will timeout <t:{unixTimestamp}:R>";
                                 List<string> allItems = new List<string>();
@@ -385,11 +704,17 @@ namespace TankDex
                                 activequery acq = activequeries[activequery.Find(msg2.ReferencedMessage.Id, activequeries.ToArray())];
                                 tank t = index.tanks[msg2.CleanContent];
                                 EmbedBuilder eb = new EmbedBuilder();
-                                eb.ImageUrl = util.cdnget($@"tanks\images\{t.file}", cdnid, cdnchid, _client);
+                                activeinfo ai = new activeinfo();
+                                DateTime expiry = DateTime.UtcNow.AddMinutes(1);
+                                Int32 unixTimestamp = (int)expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                                ai.tkey = index.fromTank(t);
+                                ai.expirationtime = expiry;
+                                ai.msg = acq.msg;
+                                eb.ImageUrl = util.cdnget($@"{paths["images2"]}{t.file}", cdnid, cdnchid, _client, ref cache);
                                 eb.Title = t.names[0];
                                 eb.AddField("Offence", t.offence, true);
                                 eb.AddField("Defence", t.defence, true);
-                                eb.Description = "Valid names:";
+                                eb.Description = $"Will timeout <t:{unixTimestamp}:R>\n**Valid names:**";
                                 foreach (string name in t.names)
                                 {
                                     eb.Description += $"\n*{name}*";
@@ -401,6 +726,7 @@ namespace TankDex
                                 });
                                 await message.DeleteAsync();
                                 activequeries.Remove(acq);
+                                activeinfos.Add(ai);
                             }
                             else
                             {
@@ -489,25 +815,91 @@ namespace TankDex
                         {
                             await msg2.AddReactionAsync(new Emoji("❌"));
                         }
-                    }
+                    } //                 menu
+                    else if (activeinfo.Contains(msg2.ReferencedMessage.Id, activeinfos.ToArray()))
+                    {
+                        if (Regex.IsMatch(msg2.Content, "<@(\\d+)>"))
+                        {
+                            string id = Regex.Match(msg2.Content, "<@[0-9]+>").Value.Replace("<@","").Replace(">","");
+                            int actinf = activeinfo.Find(msg2.ReferencedMessage.Id, activeinfos.ToArray());
+                            string tkey = activeinfos[actinf].tkey;
+                            if (ulong.TryParse(id, out ulong u_id))
+                            {
+                                data.add(u_id, index.fromId(tkey));
+                                data.rem(msg2.Author.Id, index.fromId(tkey));
+                                await message.Channel.SendMessageAsync($"<@{message.Author.Id}> has given <@{id}> **1** \"*{index.fromId(tkey).names[0]}*\"!");
+                                EmbedBuilder old_eb = activeinfos[actinf].msg.Embeds.FirstOrDefault().ToEmbedBuilder();
+                                Int32 unixTimestamp = (int)activeinfos[actinf].expirationtime.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                                old_eb.Description = old_eb.Description.Replace($"Will timeout <t:{unixTimestamp}:R>", "__Expired__");
+                                await activeinfos[actinf].msg.ModifyAsync(msg =>
+                                {
+                                    msg.Embed = old_eb.Build();
+                                });
+                                activeinfos.Remove(activeinfos[actinf]);
+                            }
+                            else
+                            {
+                                Console.WriteLine($"couldnt parse {id}");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"no match on {msg2.Content}");
+                        }
+                    } //                    info
+                    else if (activegiving.Contains(msg2.ReferencedMessage.Id, activegivings.ToArray()))//                    give
+                    {
+                        string[] bits = msg2.Content.Split(':');
+                        if (bits.Length == 2 )
+                        {
+                            try
+                            {
+                                ulong id = ulong.Parse(Regex.Match(bits[0], "<@[0-9]+>").Value.Replace("<@", "").Replace(">", ""));
+                                int actgiv = activegiving.Find(msg2.ReferencedMessage.Id, activegivings.ToArray());
+                                string tkey = bits[1];
+                                if (index.tanks.ContainsKey(tkey) && data.has(msg2.Author.Id, index.fromId(tkey)))
+                                {
+                                    data.add(id, index.fromId(tkey));
+                                    data.rem(msg2.Author.Id, index.fromId(tkey));
+                                    await message.Channel.SendMessageAsync($"<@{message.Author.Id}> has given <@{id}> **1** \"*{index.fromId(tkey).names[0]}*\"!");
+                                    EmbedBuilder old_eb = activegivings[actgiv].msg.Embeds.FirstOrDefault().ToEmbedBuilder();
+                                    Int32 unixTimestamp = (int)activegivings[actgiv].expirationtime.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                                    old_eb.Description = old_eb.Description.Replace($"Expires <t:{unixTimestamp}:R>", "__Expired__");
+                                    await activegivings[actgiv].msg.ModifyAsync(msg =>
+                                    {
+                                        msg.Embed = old_eb.Build();
+                                    });
+                                    activegivings.Remove(activegivings[actgiv]);
+                                }
+                            }
+                            catch
+                            {
+                                await msg2.AddReactionAsync(new Emoji("❗"));
+                                await msg2.AddReactionAsync(new Emoji("❌"));
+                            }
+                        }
+                        else
+                        {
+                            await msg2.AddReactionAsync(new Emoji("❌"));
+                        }
+                    } //                give
                     else
                     {
-                        Console.WriteLine("Suicide");
+                        Console.WriteLine($"no matching ref");
                     }
                 }
                 else
                 {
                     Console.WriteLine("no ref");
                 }
+                data.write(index);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
-                await msg2.AddReactionAsync(new Emoji("❗"));
             }
 
-            Console.WriteLine(curcfg.active);
             var a = rnd.Next(0, 50);
             if (a == 1 && curcfg.active)
             {
@@ -519,7 +911,8 @@ namespace TankDex
         {
             Random rnd = new Random(DateTime.Now.Millisecond); 
             ComponentBuilder builder = new ComponentBuilder(); 
-            DateTime expiry = DateTime.UtcNow.AddMinutes(1); 
+            DateTime expiry = DateTime.UtcNow.AddMinutes(2);
+            DateTime expiry2 = DateTime.UtcNow.AddMinutes(5);
             Int32 unixTimestamp = (int)expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds; 
             IGuild guild = (channel as IGuildChannel)?.Guild; 
             gldcfg cfg = guilds[gldcfg.find(guilds.ToArray(), guild.Id)]; 
@@ -529,9 +922,10 @@ namespace TankDex
                 $"{rnd.Next(-10000, 10000)}", 
                 ButtonStyle.Success); 
 
+
             EmbedBuilder eb = new EmbedBuilder();
             eb.Title = $"**A tank has appeared!** *Expires <t:{unixTimestamp}:R>*"; 
-            eb.WithImageUrl(util.cdnget($@"tanks\images\{index.tanks[index.tanks.Keys.ToArray()[randtank]].file}", cdnid, cdnchid, _client));
+            eb.WithImageUrl(util.cdnget($"{paths["images2"]}{index.tanks[index.tanks.Keys.ToArray()[randtank]].file}", cdnid, cdnchid, _client, ref cache));
 
             RestUserMessage msg = await channel.SendMessageAsync(embed:eb.Build());
 
@@ -539,6 +933,7 @@ namespace TankDex
                 $@"tanks\images\{index.tanks[index.tanks.Keys.ToArray()[randtank]].file}",
                 $"**A tank has appeared!** *Expires <t:{unixTimestamp}:R>*");*/
 
+            blocked.Add(new KeyValuePair<ulong, DateTime>(guild.Id, expiry2));
             activebuttons.Add(new activebtn(
                 msg,
                 channel.Id,
@@ -557,24 +952,23 @@ namespace TankDex
                     expiry),
                 index.fromTank(t)));
         }
-        
-        private void OnButtonTimedEvent(Object source, ElapsedEventArgs e)
+        private async void OnButtonTimedEvent(Object source, ElapsedEventArgs e)    
         {
-            foreach (activequestion qst in activequestions)
+            foreach (activequestion qst in activequestions.ToArray())
             { 
                 if (DateTime.Compare(qst.btn.expirationtime, DateTime.UtcNow) < 0)
                 {
                     EmbedBuilder oldEmbed = qst.btn.msg.Embeds.FirstOrDefault().ToEmbedBuilder();
                     oldEmbed.WithTitle($"~~A tank has appeared!~~ ***Expired***");
-                    qst.btn.msg.ModifyAsync(msg =>
+                    await qst.btn.msg.ModifyAsync(msg =>
                     {
                         msg.Embed = oldEmbed.Build();
                     });
-                    activequestions.Remove(activequestions[activequestion.Find(qst.btn.msg.Id, activequestions.ToArray())]);
+                    activequestions.Remove(qst);
                     activebuttons.Remove(qst.btn);
                 }
             }
-            foreach (activequery acq in activequeries)
+            foreach (activequery acq in activequeries.ToArray())
             {
                 if (DateTime.Compare(acq.expirationtime, DateTime.UtcNow) < 0)
                 {
@@ -583,13 +977,112 @@ namespace TankDex
                         $"~~Page {acq.page}/{util.CalculatePagesNeeded(data.ama((ulong)acq.userid), 25)}\n{util.CalculateItemsOnPage(data.ama((ulong)acq.userid), 25, 0)}/25 per page~~" +
                         $"\n~~Type \"next\" for next page. \"previous\" for previous page, or page number. And tank ID for info~~\n" +
                         $"# __Timed Out__");
-                    acq.msg.ModifyAsync(msg =>
+                    await acq.msg.ModifyAsync(msg =>
                     {
                         msg.Embed = oldEmbed.Build();
                     });
                     activequeries.Remove(acq);
                 }
             }
+            foreach (activeinfo aci in activeinfos.ToArray())
+            {
+                if (DateTime.Compare(aci.expirationtime, DateTime.UtcNow) < 0)
+                {
+                    int actinf = activeinfo.Find(aci.msg.Id, activeinfos.ToArray());
+                    EmbedBuilder old_eb = activeinfos[actinf].msg.Embeds.FirstOrDefault().ToEmbedBuilder();
+                    Int32 unixTimestamp = (int)activeinfos[actinf].expirationtime.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                    old_eb.Description = old_eb.Description.Replace($"Will timeout <t:{unixTimestamp}:R>", "__Expired__");
+                    await activeinfos[actinf].msg.ModifyAsync(msg =>
+                    {
+                        msg.Embed = old_eb.Build();
+                    });
+                }
+            }
+            foreach (activegiving aci in activegivings.ToArray())
+            {
+                if (DateTime.Compare(aci.expirationtime, DateTime.UtcNow) < 0)
+                {
+                    int actinf = activegiving.Find(aci.msg.Id, activegivings.ToArray());
+                    EmbedBuilder old_eb = activegivings[actinf].msg.Embeds.FirstOrDefault().ToEmbedBuilder();
+                    Int32 unixTimestamp = (int)activegivings[actinf].expirationtime.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                    old_eb.Description = old_eb.Description.Replace($"Expires <t:{unixTimestamp}:R>", "__Expired__");
+                    await activegivings[actinf].msg.ModifyAsync(msg =>
+                    {
+                        msg.Embed = old_eb.Build();
+                    });
+                }
+            }
+            foreach (KeyValuePair<ulong, DateTime> kvp in blocked.ToArray())
+            {
+                if (DateTime.Compare(kvp.Value, DateTime.UtcNow) < 0)
+                {
+                    blocked.Remove(kvp);
+                }
+            }
+            GC.Collect();
+        }
+        private async void SpawnTimerEvent(Object source, ElapsedEventArgs e)
+        {
+            foreach (SocketGuild gld in _guilds)
+            {
+                gldcfg cfg = guilds[gldcfg.find(guilds.ToArray(), gld.Id)];
+                if (cfg.active)
+                {
+                    ISocketMessageChannel chn = (ISocketMessageChannel)gld.GetChannel(cfg.channelid);
+                    Random rnd = new Random();
+                    await Spawn(chn, rnd.Next(0, index.tanks.Count - 1));
+                }
+            }
+        }
+        private async void CacheTimerEvent(Object source, ElapsedEventArgs e)
+        {
+            cache.checkAll();
+            File.WriteAllText("cache.json", cache.Serialize());
+        }
+        private async Task ReactionAdded(Cacheable<IUserMessage, ulong> message, Cacheable<IMessageChannel, ulong> channel, SocketReaction react)
+        {
+            var _message = await message.GetOrDownloadAsync();
+            if (_message == null) return;
+            if (react.Emote.Name == new Emoji("🚡").Name)
+            {
+                try
+                {
+                    chunk ch = new chunk();
+                    string content2 = _message.Content.Replace("$$addtank$$[", "");
+                    content2 = content2.Replace("\"}]", "\"}");
+                    Console.WriteLine(content2);
+                    ch = chunk.Deserialize(content2);
+                    tank t = new tank();
+                    t.names = ch.names;
+                    t.offence = ch.offence;
+                    t.defence = ch.defence;
+                    t.file = ch.file;
+                    index.tanks.Add(ch.tkey, t);
+                    string url = _message.Attachments.FirstOrDefault().Url;
+                    using (WebClient client = new WebClient())
+                    {
+                        try
+                        {
+                            string fileName = Path.Join(paths["images"], ch.file);
+                            client.DownloadFile(url, fileName);
+                            await _message.AddReactionAsync(new Emoji("✅"));
+                        }
+                        catch (Exception ex)
+                        {
+                            await _message.ReplyAsync($"Couldnt download image\n{ex.Message}");
+                        }
+                    }
+                    File.WriteAllText(paths["index"], index.Serialize(index));
+
+                    await _message.AddReactionAsync(new Emoji("👍"));
+                }
+                catch (Exception ex)
+                {
+                    await _message.AddReactionAsync(new Emoji("❌"));
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            
         }
     }
 }

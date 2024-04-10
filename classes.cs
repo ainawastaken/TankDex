@@ -17,16 +17,23 @@ using Discord.Rest;
 using Discord.Utils;
 using Discord.Webhook;
 using Discord.WebSocket;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using YamlDotNet.Serialization;
 
+
+#pragma warning disable IDE0079
+#pragma warning disable IDE1006
 #pragma warning disable CS1998
 #pragma warning disable CS8600
 #pragma warning disable CS8602
@@ -36,6 +43,8 @@ using YamlDotNet.Serialization;
 #pragma warning disable CS8622
 #pragma warning disable CS8625
 #pragma warning disable CS8629
+#pragma warning disable SYSLIB0014
+#pragma warning disable IDE0090
 
 namespace TankDex
 {
@@ -59,10 +68,21 @@ namespace TankDex
             foreach (string line in lines)
             {
                 ulong id = ulong.Parse(line.Split(';')[0]);
+                //Console.WriteLine(id);
                 Dictionary<tank, uint> tanks = new Dictionary<tank, uint>();
                 foreach (string tank in line.Split(';')[1].Split('/'))
                 {
-                    tanks.Add(ind.fromId(tank.Split('^')[0]), uint.Parse(tank.Split('^')[1]));
+                    if (!string.IsNullOrEmpty(tank))
+                    {
+                        try
+                        {
+                            tanks.Add(ind.fromId(tank.Split('^')[0]), uint.Parse(tank.Split('^')[1]));
+                        }
+                        catch
+                        {
+                            Console.WriteLine($"Couldnt parse \"{tank}\"");
+                        }
+                    }
                 }
                 this._data.Add(id, tanks);
             }
@@ -84,9 +104,9 @@ namespace TankDex
                 {
                     line += $"{ind.fromTank(tank.Key)}^{tank.Value}/";
                 }
-                if (line[line.Length - 1] == '/')
+                if (line[^1] == '/')
                 {
-                    line = line.Substring(0, line.Length - 1);
+                    line = line[..^1];
                 }
                 lines.Add(line);
             }
@@ -115,8 +135,10 @@ namespace TankDex
             }
             else
             {
-                var a = new Dictionary<tank, uint>();
-                a.Add(t,1);
+                var a = new Dictionary<tank, uint>
+                {
+                    { t, 1 }
+                };
                 this._data.Add(id, a);
             }
         }
@@ -280,9 +302,17 @@ namespace TankDex
 
         [YamlMember(Alias = "developers")]
         public ulong[]? Developers { get; set; }
+        [YamlMember(Alias = "windows")]
+        public bool? Windows { get; set; }
 
         [YamlMember(Alias = "commands")]
         public Dictionary<string, string>? Commands { get; set; }
+        [YamlMember(Alias = "devtoken")]
+        public string? DevToken { get; set; }
+        [YamlMember(Alias = "devlink")]
+        public string? DevLink { get; set; }
+        [YamlMember(Alias = "devmode")]
+        public bool? DevMode { get; set; }
 
         /// <Summary>
         /// Loads the config file
@@ -290,7 +320,7 @@ namespace TankDex
         /// <param name="cfg">The target config object</param>
         /// <param name="path">The target config file path</param>
         /// <returns>void</returns>
-        public void load(out config cfg, string path = "config.yaml")
+        public static void load(out config cfg, string path = "config.yaml")
         {
             string yamlstr = File.ReadAllText(path);
             var deserializer = new DeserializerBuilder().Build();
@@ -507,8 +537,12 @@ namespace TankDex
         {
             foreach (activequestion qst in target)
             {
+                Console.WriteLine($"    {msid}\n    {qst.msg.Id}");
                 if (qst.msg.Id == msid)
+                {
+                    Console.WriteLine("    yes");
                     return true;
+                }
             }
             return false;
         }
@@ -561,9 +595,57 @@ namespace TankDex
     }
     public class activegiving
     {
+        public static bool Contains(ulong msid, activegiving[] target)
+        {
+            foreach (activegiving qst in target)
+            {
+                if (qst.msg.Id == msid)
+                    return true;
+            }
+            return false;
+        }
+        public static int Find(ulong msid, activegiving[] target)
+        {
+            int ind = 0;
+            foreach (activegiving qst in target)
+            {
+                if (qst.msg.Id == msid)
+                    return ind;
+                else
+                    ind++;
+            }
+            return -1;
+        }
         public string tkey;
         public ulong user;
         public ulong subject;
+        public RestUserMessage msg;
+        public DateTime expirationtime;
+    }
+    public class activeinfo
+    {
+        public static bool Contains(ulong msid, activeinfo[] target)
+        {
+            foreach (activeinfo qst in target)
+            {
+                if (qst.msg.Id == msid)
+                    return true;
+            }
+            return false;
+        }
+        public static int Find(ulong msid, activeinfo[] target)
+        {
+            int ind = 0;
+            foreach (activeinfo qst in target)
+            {
+                if (qst.msg.Id == msid)
+                    return ind;
+                else
+                    ind++;
+            }
+            return -1;
+        }
+        public string tkey;
         public RestUserMessage msg;
         public DateTime expirationtime;
     }
@@ -579,6 +661,37 @@ namespace TankDex
     }
     public static class util
     {
+        static string FindClosestMatch(string userInput, List<string> options)
+        {
+            // Find the option with the smallest Levenshtein distance
+            var closestMatch = options.OrderBy(option => ComputeLevenshteinDistance(userInput, option)).First();
+            return closestMatch;
+        }
+
+        static int ComputeLevenshteinDistance(string s, string t)
+        {
+            int[,] distance = new int[s.Length + 1, t.Length + 1];
+
+            for (int i = 0; i <= s.Length; i++)
+                distance[i, 0] = i;
+
+            for (int j = 0; j <= t.Length; j++)
+                distance[0, j] = j;
+
+            for (int j = 1; j <= t.Length; j++)
+            {
+                for (int i = 1; i <= s.Length; i++)
+                {
+                    int cost = (s[i - 1] == t[j - 1]) ? 0 : 1;
+                    distance[i, j] = Math.Min(Math.Min(
+                        distance[i - 1, j] + 1,
+                        distance[i, j - 1] + 1),
+                        distance[i - 1, j - 1] + cost);
+                }
+            }
+
+            return distance[s.Length, t.Length];
+        }
         public static string[] GetItemsOnPage(string[] allItems, int itemsPerPage, int pageNumber)
         {
             // Calculate the starting index of the items on the specified page
@@ -605,7 +718,7 @@ namespace TankDex
                     }
                 }
 
-                string numberString = id.Substring(1);
+                string numberString = id[1..];
                 int number = int.Parse(numberString);
                 if (number < 100000)
                 {
@@ -629,7 +742,7 @@ namespace TankDex
         {
             if (id.StartsWith("#"))
             {
-                string numberString = id.Substring(1);
+                string numberString = id[1..];
                 if (int.TryParse(numberString, out int number))
                 {
                     return new tryParseResponse(number, true);
@@ -692,7 +805,6 @@ namespace TankDex
             return pagesNeeded;
         }
         private static readonly DateTimeOffset UnixEpoch = new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero);
-
         public static long ToUnixTime(this DateTimeOffset timestamp)
         {
             TimeSpan duration = timestamp - UnixEpoch;
@@ -721,15 +833,189 @@ namespace TankDex
         {
             return user.GuildPermissions.Administrator;
         }
-        public static string cdnget(string file, ulong cdngld, ulong channelid, DiscordSocketClient client)
+        public static string cdnget(string file, ulong cdngld, ulong channelid, DiscordSocketClient client, ref cache _cache)
         {
-            SocketGuild cdn = client.GetGuild(cdngld);
-            SocketTextChannel cdnchn = cdn.GetTextChannel(channelid);
-            string temp_path = Path.Combine(Directory.GetParent(file).ToString(), $"tank{Path.GetExtension(file)}");
-            File.Copy(file, temp_path);
-            RestUserMessage msg = cdnchn.SendFileAsync(temp_path).Result;
-            File.Delete(temp_path);
-            return msg.Attachments.ToArray()[0].Url;
+            if (_cache._cache.ContainsKey(file))
+            {
+                if (_cache.checkSingle(file))
+                {
+                    return _cache.get(file);
+                }
+                else
+                {
+                    SocketGuild cdn = client.GetGuild(cdngld);
+                    SocketTextChannel cdnchn = cdn.GetTextChannel(channelid);
+                    string temp_path = Path.Combine(Directory.GetParent(file).ToString(), $"tank{Path.GetExtension(file)}");
+                    if (File.Exists(temp_path))
+                    {
+                        File.Delete(temp_path);
+                    }
+                    File.Copy(file, temp_path);
+                    RestUserMessage msg = cdnchn.SendFileAsync(temp_path).Result;
+                    File.Delete(temp_path);
+                    _cache.add(file, msg.Attachments.ToArray()[0].Url);
+                    File.WriteAllText("cache.json", _cache.Serialize());
+                    return msg.Attachments.ToArray()[0].Url;
+                }
+            }
+            else
+            {
+                SocketGuild cdn = client.GetGuild(cdngld);
+                SocketTextChannel cdnchn = cdn.GetTextChannel(channelid);
+                string temp_path = Path.Combine(Directory.GetParent(file).ToString(), $"tank{Path.GetExtension(file)}");
+                if (File.Exists(temp_path))
+                {
+                    File.Delete(temp_path);
+                }
+                File.Copy(file, temp_path);
+                RestUserMessage msg = cdnchn.SendFileAsync(temp_path).Result;
+                File.Delete(temp_path);
+                _cache.add(file, msg.Attachments.ToArray()[0].Url);
+                File.WriteAllText("cache.json", _cache.Serialize());
+                return msg.Attachments.ToArray()[0].Url;
+            }
+        }
+    }
+    public class chunk
+    {
+        public static chunk Deserialize(string json)
+        {
+            return JsonConvert.DeserializeObject<chunk>(json);
+        }
+        public static string Serialize(chunk obj)
+        {
+            return JsonConvert.SerializeObject(obj, Formatting.Indented);
+        }
+        public static string Serialize2(chunk obj)
+        {
+            return JsonConvert.SerializeObject(obj, Formatting.None);
+        }
+        public int? offence { get; set; }
+        public int? defence { get; set; }
+        public List<string> names { get; set; }
+        public string? file { get; set; }
+        public string? tkey { get; set; }
+    }
+    public class cache
+    {
+        // file, url
+        public Dictionary<string, string> _cache = new Dictionary<string, string>();
+
+        public string get(string file)
+        {
+            foreach (KeyValuePair<string, string> kvp in this._cache)
+            {
+                if (kvp.Key == file)
+                {
+                    return kvp.Value;
+                }
+            }
+            return null;
+        }
+        public void add(string file, string url)
+        {
+            if (!this._cache.ContainsKey(file))
+            {
+                this._cache.Add(file, url);
+            }
+        }
+        public bool checkSingle(string file)
+        {
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(this.get(file));
+                request.Method = "HEAD"; // Use HEAD method to only get headers, not full content
+
+                using HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                // Check if the response status code indicates success
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    _cache.Remove(file);
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public void checkAll()
+        {
+            foreach (string file in this._cache.Keys.ToArray())
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(this.get(file));
+                request.Method = "HEAD"; // Use HEAD method to only get headers, not full content
+
+                using HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                // Check if the response status code indicates success
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    _cache.Remove(file);
+                    Console.WriteLine($"Removed {file}");
+                }
+            }
+        }
+        public static cache Deserialize(string json)
+        {
+            return JsonConvert.DeserializeObject<cache>(json);
+        }
+        public string Serialize()
+        {
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
+        }
+    }
+    public class FileUploader
+    {
+        private readonly HttpClient _httpClient;
+
+        public FileUploader()
+        {
+            _httpClient = new HttpClient();
+        }
+
+        public async Task<string> UploadFile(string filePath)
+        {
+            try
+            {
+                string apiUrl = "https://tmpfiles.org/api/v1/upload";
+
+                // Create multipart form data content
+                using var formData = new MultipartFormDataContent();
+
+                // Read the file data
+                byte[] fileBytes = await File.ReadAllBytesAsync(filePath);
+                var fileContent = new ByteArrayContent(fileBytes);
+
+                // Add the file content to the form data
+                formData.Add(fileContent, "file", Path.GetFileName(filePath));
+
+                // Send the POST request to the API endpoint
+                var response = await _httpClient.PostAsync(apiUrl, formData);
+
+                // Check if the request was successful
+                if (response.IsSuccessStatusCode)
+                {
+                    // Read the response content
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(responseBody);
+                    return responseBody;
+                }
+                else
+                {
+                    // Handle request failure
+                    Console.WriteLine($"Failed to upload file. Status code: {response.StatusCode}");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error uploading file: {ex.Message}");
+                return null;
+            }
         }
     }
 }
