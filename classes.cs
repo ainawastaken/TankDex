@@ -48,6 +48,54 @@ using YamlDotNet.Serialization;
 
 namespace TankDex
 {
+    public class bindreact
+    {
+        public bindreact(RestUserMessage m, ReactionMetadata r, Emoji em, DateTime e)
+        {
+            this.msg = m;
+            this.rct = new KeyValuePair<Emoji, ReactionMetadata?>[] 
+            { 
+                new KeyValuePair<Emoji, ReactionMetadata?>(em,r) 
+            };
+            this.expirationtime = e;
+            Int32 unixTimestamp = (int)(e.ToUniversalTime().Subtract(new DateTime(1970, 1, 1)).TotalSeconds);
+            this.unixEpiryTime = unixTimestamp;
+        }
+        public bindreact(RestUserMessage m, KeyValuePair<Emoji, ReactionMetadata?> r, DateTime e)
+        {
+            this.msg = m;
+            this.rct = new KeyValuePair<Emoji, ReactionMetadata?>[]
+            {
+                r
+            };
+            this.expirationtime = e;
+            Int32 unixTimestamp = (int)e.ToUniversalTime().Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            this.unixEpiryTime = unixTimestamp;
+        }
+        public bindreact(RestUserMessage m, KeyValuePair<Emoji, ReactionMetadata?>[] r, DateTime e)
+        {
+            this.msg = m;
+            this.rct = r;
+            this.expirationtime = e;
+            Int32 unixTimestamp = (int)e.ToUniversalTime().Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            this.unixEpiryTime = unixTimestamp;
+        }
+        public void Fire(RestUserMessage m, KeyValuePair<Emoji, ReactionMetadata?> r)
+        {
+            this.func.Invoke(m, r, this);
+        }
+        public bool Check()
+        {
+            Int32 unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            if (this.unixEpiryTime == 0) return false;
+            if (this.unixEpiryTime < unixTimestamp) return true; else return false;
+        }
+        public Action<RestUserMessage, KeyValuePair<Emoji, ReactionMetadata?>, bindreact>? func;
+        public RestUserMessage msg;
+        public KeyValuePair<Emoji, ReactionMetadata?>[] rct;
+        public DateTime? expirationtime;
+        public readonly Int32? unixEpiryTime;
+    }
     public class data
     {
         public Dictionary<ulong, Dictionary<tank,uint>>? _data;
@@ -661,13 +709,24 @@ namespace TankDex
     }
     public static class util
     {
+        public static void logError(Exception ex, string path)
+        {
+            using StreamWriter writer = new StreamWriter(path, true);
+            DateTime now = DateTime.UtcNow;
+            Int32 unixTimestamp = (int)now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            writer.WriteLine($"[{unixTimestamp}]");
+            writer.WriteLine($"Exception occurred at {DateTime.Now}");
+            writer.WriteLine($"   Message: {ex.Message}");
+            writer.WriteLine($"   Stack Trace:");
+            writer.WriteLine($"   {ex.StackTrace}");
+            writer.WriteLine(new string('-', 30));
+        }
         static string FindClosestMatch(string userInput, List<string> options)
         {
             // Find the option with the smallest Levenshtein distance
             var closestMatch = options.OrderBy(option => ComputeLevenshteinDistance(userInput, option)).First();
             return closestMatch;
         }
-
         static int ComputeLevenshteinDistance(string s, string t)
         {
             int[,] distance = new int[s.Length + 1, t.Length + 1];

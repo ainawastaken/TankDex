@@ -60,6 +60,7 @@ namespace TankDex
         private volatile static List<SocketGuild> _guilds = new List<SocketGuild>();
         private volatile static List<gldcfg> guilds = new List<gldcfg>();
         private volatile static List<KeyValuePair<ulong,DateTime>> blocked = new List<KeyValuePair<ulong, DateTime>>();
+        private volatile static List<bindreact> activereactions = new List<bindreact>();
 
         public static Dictionary<string, string> paths = new Dictionary<string, string>();
 
@@ -71,6 +72,9 @@ namespace TankDex
 
         static void Main(string[] args)
         {
+            #if DEBUG
+            new Program().RunBotAsync().GetAwaiter().GetResult();
+            #else
             try
             {
                 new Program().RunBotAsync().GetAwaiter().GetResult();
@@ -97,9 +101,40 @@ namespace TankDex
                     Console.WriteLine($"   {ex.StackTrace}");
                 }
             }
+            #endif
         }
         public async Task RunBotAsync()
         {
+            #region paths
+            config.load(out cfg);
+            if ((bool)cfg.Windows) paths.Add("index", "tanks\\index.json"); else paths.Add("index", "tanks/index.json");
+            if ((bool)cfg.Windows) paths.Add("tempdir", "tanks\\temp"); else paths.Add("tempdir", "tanks/temp");
+            if ((bool)cfg.Windows) paths.Add("images", "tanks\\images"); else paths.Add("images", "tanks/images");
+            if ((bool)cfg.Windows) paths.Add("images2", "tanks\\images\\"); else paths.Add("images2", "tanks/images/");
+            if ((bool)cfg.Windows) paths.Add("images3", "images\\"); else paths.Add("images3", "images/");
+            if ((bool)cfg.Windows) paths.Add("inddest", $"{paths["tempdir"]}\\index.zip"); else paths.Add("inddest", $"{paths["tempdir"]}/index.zip");
+            if ((bool)cfg.Windows) paths.Add("old", $"tanks\\old"); else paths.Add("old", $"tanks/old");
+            if ((bool)cfg.Windows) paths.Add("crashlog", $"crashlog.txt"); else paths.Add("crashlog", $"crashlog.txt");
+            if ((bool)cfg.Windows) paths.Add("errorlog", $"errorlog.txt"); else paths.Add("errorlog", $"errorlog.txt");
+            #endregion
+            #region config and data
+            index = index.Deserialize(File.ReadAllText(paths["index"]));
+            guilds = gldcfg.load().ToList();
+            data.load(index);
+            cache = cache.Deserialize(File.ReadAllText("cache.json"));
+            string[] cdnstr = File.ReadAllText("cdn.txt").Split(';');
+            cdnid = ulong.Parse(cdnstr[0]);
+            cdnchid = ulong.Parse(cdnstr[1]);
+            #endregion
+            #region directory setup
+            Directory.CreateDirectory(paths["tempdir"]);
+            Directory.CreateDirectory(paths["old"]);
+            DirectoryInfo di = new DirectoryInfo(paths["tempdir"]);
+            foreach (FileInfo file in di.GetFiles()) file.Delete();
+            if (!File.Exists(paths["errorlog"])) File.Create(paths["errorlog"]);
+            if (!File.Exists(paths["crashlog"])) File.Create(paths["crashlog"]);
+            #endregion
+            #region bot setup
             _client = new DiscordSocketClient(
             new DiscordSocketConfig
             {
@@ -108,41 +143,14 @@ namespace TankDex
                 LogLevel = LogSeverity.Info
             });
             _commands = new CommandService();
-            config.load(out cfg);
-            if ((bool)cfg.Windows) paths.Add("index", "tanks\\index.json"); else paths.Add("index", "tanks/index.json");
-            if ((bool)cfg.Windows) paths.Add("tempdir", "tanks\\temp"); else paths.Add("tempdir", "tanks/temp");
-            if ((bool)cfg.Windows) paths.Add("images", "tanks\\images"); else paths.Add("images", "tanks/images");
-            if ((bool)cfg.Windows) paths.Add("images2", "tanks\\images\\"); else paths.Add("images2", "tanks/images/");
-            if ((bool)cfg.Windows) paths.Add("inddest", $"{paths["tempdir"]}\\index.zip"); else paths.Add("inddest", $"{paths["tempdir"]}/index.zip");
-            if ((bool)cfg.Windows) paths.Add("old", $"tanks\\old"); else paths.Add("old", $"tanks/old");
-            index = index.Deserialize(File.ReadAllText(paths["index"]));
-            guilds = gldcfg.load().ToList();
-            data.load(index);
-            cache = cache.Deserialize(File.ReadAllText("cache.json"));
-            string[] cdnstr = File.ReadAllText("cdn.txt").Split(';');
-            cdnid = ulong.Parse(cdnstr[0]);
-            cdnchid = ulong.Parse(cdnstr[1]);
-            Directory.CreateDirectory(paths["tempdir"]);
-            Directory.CreateDirectory(paths["old"]);
-            DirectoryInfo di = new DirectoryInfo(paths["tempdir"]);
-            foreach (FileInfo file in di.GetFiles())
-            {
-                file.Delete();
-            }
-
             _client.Log += Log;
             _client.Ready += Client_Ready;
             _client.SlashCommandExecuted += SlashCommandHandler;
             _client.GuildAvailable += GuildAvailable;
             _client.MessageReceived += MessageReceived;
             _client.ReactionAdded += ReactionAdded;
-
-            
-            //chidsock.SendMessageAsync();
-           
-            //_client.ButtonExecuted += ButtonExecuted;
-            //_client.InteractionCreated += InteractionCreated;
-            
+            #endregion
+            #region timer setup
             buttonTimer = new System.Timers.Timer(1000);
             buttonTimer.Elapsed += OnButtonTimedEvent;
             buttonTimer.AutoReset = true;
@@ -157,7 +165,8 @@ namespace TankDex
             cacheTimer.Elapsed += CacheTimerEvent;
             cacheTimer.AutoReset = true;
             cacheTimer.Enabled = true;
-
+            #endregion
+            #region devmode
             if ((bool)cfg.DevMode)
             {
                 _client.LoginAsync(TokenType.Bot, cfg.DevToken).Wait();
@@ -166,16 +175,8 @@ namespace TankDex
             {
                 _client.LoginAsync(TokenType.Bot, cfg.Token).Wait();
             }
+            #endregion
             _client.StartAsync().Wait();
-
-            //var chidsock = _client.GetGuild(cdnid).GetChannel(cdnchid) as SocketTextChannel;
-            string mentions = "";
-            foreach (ulong id in cfg.Developers)
-            {
-                mentions += $"<@{id}>\n";
-            }
-            mentions += "";
-
             await Task.Delay(-1);
         }
         private Task Log(LogMessage arg)
@@ -196,6 +197,41 @@ namespace TankDex
             }
             _guilds.RemoveAll(x => x == guild);
             _guilds.Add(guild);
+            if (guild.Id == cdnid)
+            {
+                RegexOptions options = RegexOptions.Multiline | RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline;
+                Match[] crashlog = Regex.Matches(File.ReadAllText(paths["crashlog"]), @"\[\d+\].*?-{30,}", options).ToArray<Match>();
+                string mentions = "";
+                foreach (ulong id in cfg.Developers)
+                {
+                    mentions += $"<@{id}>\n";
+                }
+                Regex squareContents = new Regex("\\[[^\\]]*\\]", RegexOptions.IgnoreCase);
+                Dictionary<Int32, string> crashes = new Dictionary<int, string>();
+                foreach (Match match in crashlog)
+                {
+                    string smatch = match.Value;
+                    Int32 unixTime = Int32.Parse(squareContents.Match(smatch).Value.Replace("[","").Replace("]",""));
+                    crashes.Add(unixTime, smatch);
+                }
+                if (crashes.Count != 0)
+                {
+                    KeyValuePair<Int32, string> latest = new KeyValuePair<Int32, string>( 0, "" );
+                    foreach (Int32 time in crashes.Keys)
+                    {
+                        if (time > latest.Key) latest = new KeyValuePair<Int32, string>(time, crashes[time]);
+                    }
+                    mentions += $"# Latest crash at <t:{latest.Key}:F>\n```{latest.Value}```";
+
+                    var ch = guild.GetTextChannel(cdnchid);
+                    RestUserMessage msg = await ch.SendMessageAsync(mentions);
+                    msg.AddReactionAsync(new Emoji("🗑️")).Wait();
+                    ReactionMetadata rct = msg.Reactions.FirstOrDefault().Value;
+                    bindreact br = new bindreact(msg, rct, new Emoji("🗑️"), DateTime.MinValue);
+                    br.func += reactions.crashLogDeleteHandler;
+                    activereactions.Add(br);
+                }
+            }
         }
         private async Task SlashCommandHandler(SocketSlashCommand command)
         {
@@ -413,6 +449,7 @@ namespace TankDex
                             catch (Exception ex)
                             {
                                 await msg3.ReplyAsync($"Couldnt download image\n{ex.Message}");
+                                util.logError(ex, paths["errorlog"]);
                             }
                         }
                         File.WriteAllText(paths["index"], index.Serialize(index));
@@ -421,6 +458,7 @@ namespace TankDex
                     catch (Exception ex)
                     {
                         await msg3.ReplyAsync($"Invalid JSON\n{ex.Message}");
+                        util.logError(ex, paths["errorlog"]);
                     }
                 }
             }
@@ -462,7 +500,16 @@ namespace TankDex
                 try
                 {
                     await message.AddReactionAsync(new Emoji("⏳"));
-                    ZipFile.CreateFromDirectory("tanks", paths["inddest"],CompressionLevel.SmallestSize,false);
+                    File.Delete(paths["inddest"]);
+                    using (var zip = ZipFile.Open(paths["inddest"], ZipArchiveMode.Create))
+                    {
+                        //zip.CreateEntry("tanks", CompressionLevel.SmallestSize);
+                        zip.CreateEntryFromFile(paths["index"], "index.json", CompressionLevel.SmallestSize);
+                        foreach (string fi in Directory.GetFiles(paths["images"]))
+                        {
+                            zip.CreateEntryFromFile(paths["images3"] + Path.GetFileName(fi), paths["images3"] + Path.GetFileName(fi), CompressionLevel.SmallestSize);
+                        }
+                    }
                     int highest = 0;
                     foreach (string tkey in index.tanks.Keys)
                     {
@@ -471,32 +518,29 @@ namespace TankDex
                     string response = fileUploader.UploadFile(paths["inddest"]).Result;
                     Console.WriteLine(response);
                     msg2.ReplyAsync(response).Wait();
-                    /*message.Channel.SendFileAsync(paths["inddest"],
-                        $"<@{message.Author.Id}>\n" +
-                        $"Highest id: {util.convertNumberToId(highest).response}").Wait();*/
-
                     File.Delete(paths["inddest"]);
                     await message.AddReactionAsync(new Emoji("✅"));
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.Message);
+                    util.logError(ex, paths["errorlog"]);
+                    Console.WriteLine(ex);
                 }
-
-                
             }
             else if (Regex.IsMatch(message.Content, "\\$\\$setindex\\$\\$") && cfg.Developers.Contains(message.Author.Id))
             {
                 try
                 {
                     await message.AddReactionAsync(new Emoji("⏳"));
-                    if (message.Attachments.Count >0)
+                    if (message.Attachments.Count > 0)
                     {
                         using (WebClient client = new WebClient())
                         {
                             try
                             {
-                                File.Move(paths["index"], Path.Combine(paths["old"], $"oldIndex{DateTime.Now}.json"));
+                                Int32 unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                                File.Create(Path.Combine(paths["old"], $"oldIndex{unixTimestamp}.json")).Dispose();
+;                               File.Move(paths["index"], Path.Combine(paths["old"], $"oldIndex{unixTimestamp}.json"));
                                 string fileName = Path.Join(paths["index"]);
                                 client.DownloadFile(message.Attachments.FirstOrDefault().Url, fileName);
                                 index = index.Deserialize(File.ReadAllText(paths["index"]));
@@ -504,6 +548,7 @@ namespace TankDex
                             }
                             catch (Exception ex)
                             {
+                                util.logError(ex, paths["errorlog"]);
                                 await msg3.ReplyAsync($"Couldnt download image\n{ex.Message}");
                             }
                         }
@@ -512,6 +557,7 @@ namespace TankDex
                 }
                 catch (Exception ex)
                 {
+                    util.logError(ex, paths["errorlog"]);
                     Console.WriteLine(ex.Message);
                 }
             }
@@ -545,6 +591,7 @@ namespace TankDex
                             }
                             catch (Exception ex)
                             {
+                                util.logError(ex, paths["errorlog"]);
                                 await msg3.ReplyAsync($"Couldnt download image\n{ex.Message}");
                             }
                         }
@@ -555,6 +602,7 @@ namespace TankDex
                 }
                 catch (Exception ex)
                 {
+                    util.logError(ex, paths["errorlog"]);
                     await msg3.ReplyAsync($"Idk bro something went wrong figure it out yourself\n{ex.Message}\n{ex.StackTrace}");
                 }
 
@@ -585,6 +633,7 @@ namespace TankDex
                 }
                 catch (Exception ex)
                 {
+                    util.logError(ex, paths["errorlog"]);
                     await msg3.ReplyAsync($"Idk bro something went wrong figure it out yourself\n{ex.Message}\n{ex.StackTrace}");
                 }
             }
@@ -617,7 +666,69 @@ namespace TankDex
                     "https://tenor.com/view/%D0%B6%D0%B8%D1%80%D0%B8%D0%BA%D0%BF%D0%B0%D0%BB-%D0%BF%D0%B0%D0%BB-%D0%B6%D0%B8%D1%80%D0%B8%D0%BA-%D0%B6%D0%B8%D1%80%D0%B8%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%D0%B8%D0%B9-gif-20787105",
                     "https://tenor.com/view/polacy-gif-23665279",
                     "https://media.discordapp.net/attachments/1201155300439371946/1202001189886246952/image0.gif?ex=661eec57&is=660c7757&hm=a7edc7fa2ea20ff4f224ccdf6e8e76feaeeaa1b1fe1aafea3e79be251346017e&"};
-                await msg2.ReplyAsync(zhirik[rnd.Next(0, 2)]);
+                await msg2.ReplyAsync(zhirik[rnd.Next(0, zhirik.Length)]);
+            }
+            else if (Regex.IsMatch(message.Content, "\\$\\$crashlog\\$\\$") && cfg.Developers.Contains(message.Author.Id))
+            {
+                await msg3.Channel.SendFileAsync(paths["crashlog"], $"<@{message.Author.Id}>");
+            }
+            else if (Regex.IsMatch(message.Content, "\\$\\$errorlog\\$\\$") && cfg.Developers.Contains(message.Author.Id))
+            {
+                await msg3.Channel.SendFileAsync(paths["crashlog"], $"<@{message.Author.Id}>");
+            }
+            else if (Regex.IsMatch(message.Content, "\\$\\$lastindex\\$\\$") && cfg.Developers.Contains(message.Author.Id))
+            {
+                int highest = 0;
+                foreach (string tkey in index.tanks.Keys)
+                {
+                    if ((int)util.ExctractNumberFromId(tkey).response > highest) highest = (int)util.ExctractNumberFromId(tkey).response;
+                }
+                await msg2.ReplyAsync($"Highest ID was: {util.convertNumberToId(highest).response}");
+            }
+            else if (Regex.IsMatch(message.Content, "\\$\\$testreact\\$\\$") && cfg.Developers.Contains(message.Author.Id))
+            {
+                DateTime expiry = DateTime.UtcNow.AddSeconds(30);
+                Int32 unixTimestamp = (int)expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                Int32 unixTimestamp2 = (int)new DateTime(1970, 1, 1).Subtract(DateTime.Now).TotalSeconds;
+                var msg = await msg2.ReplyAsync("Testing bindable reactions.\n" +
+                    $"{new Emoji("✅")} will expire <t:{unixTimestamp}:R>\n" +
+                    $"{new Emoji("❌")} will not expire (<t:{unixTimestamp2}:R>)");
+
+                await msg.AddReactionsAsync(new Emoji[] { new Emoji("✅"), new Emoji("❌") });
+                KeyValuePair<Emoji, ReactionMetadata?>[] emojis = new KeyValuePair<Emoji, ReactionMetadata?>[]
+                {
+                    new KeyValuePair<Emoji, ReactionMetadata?>(new Emoji("✅"), null),
+                    new KeyValuePair<Emoji, ReactionMetadata?>(new Emoji("❌"), null)
+                };
+                var bi1 = new bindreact(msg as RestUserMessage, emojis[0], expiry);
+                var bi2 = new bindreact(msg as RestUserMessage, emojis[1], DateTime.MinValue);
+                bi1.func += reactions.crashLogDeleteHandler;
+                bi2.func += reactions.crashLogDeleteHandler;
+                activereactions.Add(bi1);
+                activereactions.Add(bi2);
+            }
+            else if (Regex.IsMatch(message.Content, "\\$\\$crash\\$\\$") && cfg.Developers.Contains(message.Author.Id))
+            {
+                try
+                {
+                    int numerator = 0;
+                    int denominator = 0;
+                    int result = numerator / denominator;
+                }
+                catch (Exception ex)
+                {
+                    using (StreamWriter writer = new StreamWriter(paths["crashlog"], true))
+                    {
+                        DateTime now = DateTime.UtcNow;
+                        Int32 unixTimestamp = (int)now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                        writer.WriteLine($"[{unixTimestamp}]");
+                        writer.WriteLine($"Exception occurred at {DateTime.Now}");
+                        writer.WriteLine($"   Message: {ex.Message}");
+                        writer.WriteLine($"   Stack Trace:");
+                        writer.WriteLine($"   {ex.StackTrace}");
+                        writer.WriteLine(new string('-', 30));
+                    }
+                }
             }
 
             gldcfg curcfg = guilds[gldcfg.find(guilds.ToArray(), guild.Id)];
@@ -872,8 +983,9 @@ namespace TankDex
                                     activegivings.Remove(activegivings[actgiv]);
                                 }
                             }
-                            catch
+                            catch (Exception ex)
                             {
+                                util.logError(ex, paths["errorlog"]);
                                 await msg2.AddReactionAsync(new Emoji("❗"));
                                 await msg2.AddReactionAsync(new Emoji("❌"));
                             }
@@ -898,10 +1010,15 @@ namespace TankDex
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
+                util.logError(ex, paths["errorlog"]);
             }
 
             var a = rnd.Next(0, 50);
-            if (a == 1 && curcfg.active)
+            if (
+                a == 1 && 
+                curcfg.active &&
+                blocked.FirstOrDefault(pair => pair.Key == guild.Id, new KeyValuePair<ulong, DateTime>(0, DateTime.UnixEpoch)).Key
+                == new KeyValuePair<ulong, DateTime>(0, DateTime.UnixEpoch).Key)
             {
                 await Spawn(message.Channel, rnd.Next(0, index.tanks.Count));
             }
@@ -954,20 +1071,23 @@ namespace TankDex
         }
         private async void OnButtonTimedEvent(Object source, ElapsedEventArgs e)    
         {
+            bool _break = false;
             foreach (activequestion qst in activequestions.ToArray())
             { 
                 if (DateTime.Compare(qst.btn.expirationtime, DateTime.UtcNow) < 0)
                 {
                     EmbedBuilder oldEmbed = qst.btn.msg.Embeds.FirstOrDefault().ToEmbedBuilder();
                     oldEmbed.WithTitle($"~~A tank has appeared!~~ ***Expired***");
-                    await qst.btn.msg.ModifyAsync(msg =>
+                    qst.btn.msg.ModifyAsync(msg =>
                     {
                         msg.Embed = oldEmbed.Build();
-                    });
+                    }).Wait();
                     activequestions.Remove(qst);
                     activebuttons.Remove(qst.btn);
+                    _break = true;
                 }
             }
+            if (_break) return;
             foreach (activequery acq in activequeries.ToArray())
             {
                 if (DateTime.Compare(acq.expirationtime, DateTime.UtcNow) < 0)
@@ -977,13 +1097,15 @@ namespace TankDex
                         $"~~Page {acq.page}/{util.CalculatePagesNeeded(data.ama((ulong)acq.userid), 25)}\n{util.CalculateItemsOnPage(data.ama((ulong)acq.userid), 25, 0)}/25 per page~~" +
                         $"\n~~Type \"next\" for next page. \"previous\" for previous page, or page number. And tank ID for info~~\n" +
                         $"# __Timed Out__");
-                    await acq.msg.ModifyAsync(msg =>
+                    acq.msg.ModifyAsync(msg =>
                     {
                         msg.Embed = oldEmbed.Build();
-                    });
+                    }).Wait();
                     activequeries.Remove(acq);
+                    _break = true;
                 }
             }
+            if (_break) return;
             foreach (activeinfo aci in activeinfos.ToArray())
             {
                 if (DateTime.Compare(aci.expirationtime, DateTime.UtcNow) < 0)
@@ -992,12 +1114,14 @@ namespace TankDex
                     EmbedBuilder old_eb = activeinfos[actinf].msg.Embeds.FirstOrDefault().ToEmbedBuilder();
                     Int32 unixTimestamp = (int)activeinfos[actinf].expirationtime.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                     old_eb.Description = old_eb.Description.Replace($"Will timeout <t:{unixTimestamp}:R>", "__Expired__");
-                    await activeinfos[actinf].msg.ModifyAsync(msg =>
+                    activeinfos[actinf].msg.ModifyAsync(msg =>
                     {
                         msg.Embed = old_eb.Build();
-                    });
+                    }).Wait();
+                    _break = true;
                 }
             }
+            if (_break) return;
             foreach (activegiving aci in activegivings.ToArray())
             {
                 if (DateTime.Compare(aci.expirationtime, DateTime.UtcNow) < 0)
@@ -1006,12 +1130,26 @@ namespace TankDex
                     EmbedBuilder old_eb = activegivings[actinf].msg.Embeds.FirstOrDefault().ToEmbedBuilder();
                     Int32 unixTimestamp = (int)activegivings[actinf].expirationtime.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                     old_eb.Description = old_eb.Description.Replace($"Expires <t:{unixTimestamp}:R>", "__Expired__");
-                    await activegivings[actinf].msg.ModifyAsync(msg =>
+                    activegivings[actinf].msg.ModifyAsync(msg =>
                     {
                         msg.Embed = old_eb.Build();
-                    });
+                    }).Wait();
+                    _break = true;
                 }
             }
+            if (_break) return;
+            foreach (bindreact bi in activereactions.ToArray())
+            {
+                if (DateTime.Compare((DateTime)bi.expirationtime, DateTime.UtcNow) < 0 && bi.expirationtime != DateTime.MinValue)
+                {
+                    foreach (KeyValuePair<Emoji, ReactionMetadata?> kvp in bi.rct)
+                    {
+                        bi.msg.RemoveAllReactionsForEmoteAsync(kvp.Key).Wait();
+                    }
+                    _break = true;
+                }
+            }
+            if (_break) return;
             foreach (KeyValuePair<ulong, DateTime> kvp in blocked.ToArray())
             {
                 if (DateTime.Compare(kvp.Value, DateTime.UtcNow) < 0)
@@ -1026,23 +1164,36 @@ namespace TankDex
             foreach (SocketGuild gld in _guilds)
             {
                 gldcfg cfg = guilds[gldcfg.find(guilds.ToArray(), gld.Id)];
-                if (cfg.active)
+                if (
+                    cfg.active && 
+                    blocked.FirstOrDefault(pair => pair.Key == gld.Id, new KeyValuePair<ulong, DateTime>(0,DateTime.UnixEpoch)).Key
+                    == new KeyValuePair<ulong, DateTime>(0, DateTime.UnixEpoch).Key
+                    )
                 {
                     ISocketMessageChannel chn = (ISocketMessageChannel)gld.GetChannel(cfg.channelid);
                     Random rnd = new Random();
-                    await Spawn(chn, rnd.Next(0, index.tanks.Count - 1));
+                    Spawn(chn, rnd.Next(0, index.tanks.Count - 1)).Wait();
                 }
             }
         }
         private async void CacheTimerEvent(Object source, ElapsedEventArgs e)
         {
-            cache.checkAll();
-            File.WriteAllText("cache.json", cache.Serialize());
+            try
+            {
+                cache.checkAll();
+                File.WriteAllText("cache.json", cache.Serialize());
+            }
+            catch (Exception ex)
+            {
+                util.logError(ex, paths["errorlog"]);
+            }
         }
         private async Task ReactionAdded(Cacheable<IUserMessage, ulong> message, Cacheable<IMessageChannel, ulong> channel, SocketReaction react)
         {
             var _message = await message.GetOrDownloadAsync();
             if (_message == null) return;
+            var _channel = await channel.GetOrDownloadAsync();
+            if (_channel == null) return;
             if (react.Emote.Name == new Emoji("🚡").Name)
             {
                 try
@@ -1069,6 +1220,7 @@ namespace TankDex
                         }
                         catch (Exception ex)
                         {
+                            util.logError(ex, paths["errorlog"]);
                             await _message.ReplyAsync($"Couldnt download image\n{ex.Message}");
                         }
                     }
@@ -1078,11 +1230,28 @@ namespace TankDex
                 }
                 catch (Exception ex)
                 {
+                    util.logError(ex, paths["errorlog"]);
                     await _message.AddReactionAsync(new Emoji("❌"));
                     Console.WriteLine(ex.Message);
                 }
             }
-            
+            if (react.UserId != _client.CurrentUser.Id)
+            {
+                foreach (bindreact bind in activereactions.ToArray())
+                {
+                    if (_message.Id == bind.msg.Id)
+                    {
+                        foreach (KeyValuePair<Emoji, ReactionMetadata?> em in bind.rct)
+                        {
+                            if (em.Key.Name == react.Emote.Name)
+                            {
+                                bind.Fire(_message as RestUserMessage, em);
+                                await _message.RemoveReactionAsync(react.Emote, react.User.Value);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
