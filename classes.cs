@@ -25,34 +25,25 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using YamlDotNet.Serialization;
+using System.Security.Cryptography;
+using System.Runtime.CompilerServices;
 
-
-#pragma warning disable IDE0079
-#pragma warning disable IDE1006
-#pragma warning disable CS1998
-#pragma warning disable CS8600
-#pragma warning disable CS8602
-#pragma warning disable CS8603
-#pragma warning disable CS8604
-#pragma warning disable CS8618
-#pragma warning disable CS8622
-#pragma warning disable CS8625
-#pragma warning disable CS8629
-#pragma warning disable SYSLIB0014
-#pragma warning disable IDE0090
+#pragma warning disable 
 
 namespace TankDex
 {
     public class bindreact
     {
-        public bindreact(RestUserMessage m, ReactionMetadata r, Emoji em, DateTime e)
+        public bindreact(RestUserMessage m, ReactionMetadata r, Emoji em, DateTime e, ulong[] usrid)
         {
             this.msg = m;
+            this.userid = usrid;
             this.rct = new KeyValuePair<Emoji, ReactionMetadata?>[] 
             { 
                 new KeyValuePair<Emoji, ReactionMetadata?>(em,r) 
@@ -61,7 +52,7 @@ namespace TankDex
             Int32 unixTimestamp = (int)(e.ToUniversalTime().Subtract(new DateTime(1970, 1, 1)).TotalSeconds);
             this.unixEpiryTime = unixTimestamp;
         }
-        public bindreact(RestUserMessage m, KeyValuePair<Emoji, ReactionMetadata?> r, DateTime e)
+        public bindreact(RestUserMessage m, KeyValuePair<Emoji, ReactionMetadata?> r, DateTime e, ulong[] usrid)
         {
             this.msg = m;
             this.rct = new KeyValuePair<Emoji, ReactionMetadata?>[]
@@ -69,13 +60,15 @@ namespace TankDex
                 r
             };
             this.expirationtime = e;
+            this.userid = usrid;
             Int32 unixTimestamp = (int)e.ToUniversalTime().Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             this.unixEpiryTime = unixTimestamp;
         }
-        public bindreact(RestUserMessage m, KeyValuePair<Emoji, ReactionMetadata?>[] r, DateTime e)
+        public bindreact(RestUserMessage m, KeyValuePair<Emoji, ReactionMetadata?>[] r, DateTime e, ulong[] usrid)
         {
             this.msg = m;
             this.rct = r;
+            this.userid = usrid;
             this.expirationtime = e;
             Int32 unixTimestamp = (int)e.ToUniversalTime().Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             this.unixEpiryTime = unixTimestamp;
@@ -95,6 +88,7 @@ namespace TankDex
         public KeyValuePair<Emoji, ReactionMetadata?>[] rct;
         public DateTime? expirationtime;
         public readonly Int32? unixEpiryTime;
+        public ulong[]? userid;
     }
     public class data
     {
@@ -348,6 +342,9 @@ namespace TankDex
         [YamlMember(Alias = "link")]
         public string? Link { get; set; }
 
+        [YamlMember(Alias = "master")]
+        public ulong? Master { get; set; }
+
         [YamlMember(Alias = "developers")]
         public ulong[]? Developers { get; set; }
         [YamlMember(Alias = "windows")]
@@ -361,6 +358,8 @@ namespace TankDex
         public string? DevLink { get; set; }
         [YamlMember(Alias = "devmode")]
         public bool? DevMode { get; set; }
+        [YamlMember(Alias = "VERSION")]
+        public float? VERSION { get; set; }
 
         /// <Summary>
         /// Loads the config file
@@ -613,6 +612,11 @@ namespace TankDex
     }
     public class activequery
     {
+        public bool IsOwner(ulong usrid)
+        {
+            if (usrid == this.userid) return true;
+            return false;
+        }
         public static bool Contains(ulong msid, activequery[] target)
         {
             foreach (activequery qst in target)
@@ -681,6 +685,7 @@ namespace TankDex
             }
             return false;
         }
+        public ulong user;
         public static int Find(ulong msid, activeinfo[] target)
         {
             int ind = 0;
@@ -709,6 +714,31 @@ namespace TankDex
     }
     public static class util
     {
+        public static string GetFileNameFromUrl(string url)
+        {
+            // Use Uri to parse the URL
+            Uri uri = new Uri(url);
+
+            // Get the file name and extension from the URL
+            string fileName = Path.GetFileName(uri.LocalPath);
+
+            return fileName;
+        }
+        public static string CalculateSHA256(string input)
+        {
+            using SHA256 sha256 = SHA256.Create();
+            // Convert the input string to a byte array and compute the hash.
+            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+            byte[] hashBytes = sha256.ComputeHash(inputBytes);
+
+            // Convert the byte array to a hexadecimal string.
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < hashBytes.Length; i++)
+            {
+                builder.Append(hashBytes[i].ToString("x2")); // "x2" formats byte to hexadecimal
+            }
+            return builder.ToString();
+        }
         public static void logError(Exception ex, string path)
         {
             using StreamWriter writer = new StreamWriter(path, true);
@@ -721,13 +751,13 @@ namespace TankDex
             writer.WriteLine($"   {ex.StackTrace}");
             writer.WriteLine(new string('-', 30));
         }
-        static string FindClosestMatch(string userInput, List<string> options)
+        public static string FindClosestMatch(string userInput, List<string> options)
         {
             // Find the option with the smallest Levenshtein distance
             var closestMatch = options.OrderBy(option => ComputeLevenshteinDistance(userInput, option)).First();
             return closestMatch;
         }
-        static int ComputeLevenshteinDistance(string s, string t)
+        public static int ComputeLevenshteinDistance(string s, string t)
         {
             int[,] distance = new int[s.Length + 1, t.Length + 1];
 
@@ -934,6 +964,33 @@ namespace TankDex
                 return msg.Attachments.ToArray()[0].Url;
             }
         }
+        public static void WriteArray(object[] input)
+        {
+            Console.Write($"{{ ");
+            foreach (object item in input)
+            {
+                Console.Write($"{item}, ");
+            }
+            Console.Write($" }}\n");
+        }
+        public static void WriteArray(List<object> input)
+        {
+            Console.Write($"{{ ");
+            foreach (object item in input)
+            {
+                Console.Write($"{item}, ");
+            }
+            Console.Write($" }}\n");
+        }
+        public static void WriteArray(List<string> input)
+        {
+            Console.Write($"{{ ");
+            foreach (object item in input)
+            {
+                Console.Write($"{item}, ");
+            }
+            Console.Write($" }}\n");
+        }
     }
     public class chunk
     {
@@ -1006,12 +1063,20 @@ namespace TankDex
         {
             foreach (string file in this._cache.Keys.ToArray())
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(this.get(file));
-                request.Method = "HEAD"; // Use HEAD method to only get headers, not full content
+                try
+                {
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(this.get(file));
+                    request.Method = "HEAD"; // Use HEAD method to only get headers, not full content
 
-                using HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                // Check if the response status code indicates success
-                if (response.StatusCode != HttpStatusCode.OK)
+                    using HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                    // Check if the response status code indicates success
+                    if (response.StatusCode != HttpStatusCode.OK)
+                    {
+                        _cache.Remove(file);
+                        Console.WriteLine($"Removed {file}");
+                    }
+                }
+                catch
                 {
                     _cache.Remove(file);
                     Console.WriteLine($"Removed {file}");
@@ -1074,6 +1139,50 @@ namespace TankDex
             {
                 Console.WriteLine($"Error uploading file: {ex.Message}");
                 return null;
+            }
+        }
+    }
+    public class ApiResponse
+    {
+        public string Status { get; set; }
+        public ApiData Data { get; set; }
+    }
+    public class ApiData
+    {
+        public string Url { get; set; }
+    }
+    public class DisconnectLog
+    {
+        public readonly List<Exception> errors = new List<Exception>();
+        public void Add(Exception ex, string path)
+        {
+            errors.Add(ex);
+            File.WriteAllText(path, JsonConvert.SerializeObject(this, Formatting.Indented));
+        }
+        public void Load(string path)
+        {
+            DisconnectLog deserializedConfig = null;
+            try
+            {
+                deserializedConfig = JsonConvert.DeserializeObject<DisconnectLog>(File.ReadAllText(path));
+            }
+            catch
+            {
+                File.WriteAllText(path, "");
+                deserializedConfig.errors.Clear();
+                deserializedConfig.errors.Add(null);
+                File.WriteAllText(path, JsonConvert.SerializeObject(this, Formatting.Indented));
+            }
+
+            PropertyInfo[] properties = typeof(DisconnectLog).GetProperties();
+            foreach (PropertyInfo property in properties)
+            {
+                if (property.CanWrite)
+                {
+                    PropertyInfo deserializedProperty = typeof(DisconnectLog).GetProperty(property.Name);
+                    object value = deserializedProperty.GetValue(deserializedConfig);
+                    property.SetValue(this, value);
+                }
             }
         }
     }
