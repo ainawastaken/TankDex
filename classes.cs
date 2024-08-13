@@ -33,6 +33,7 @@ using System.Threading.Tasks;
 using YamlDotNet.Serialization;
 using System.Security.Cryptography;
 using System.Runtime.CompilerServices;
+using System.Xml.Linq;
 
 #pragma warning disable 
 
@@ -138,11 +139,11 @@ namespace TankDex
         public void write(index ind, string path = "data.txt")
         {
             List<string> lines = new List<string>();
-            foreach (KeyValuePair<ulong, Dictionary<tank,uint>> kvp in this._data)
+            foreach (KeyValuePair<ulong, Dictionary<tank, uint>> kvp in this._data)
             {
                 string line = "";
                 line += $"{kvp.Key};";
-                foreach(KeyValuePair<tank, uint> tank in kvp.Value)
+                foreach (KeyValuePair<tank, uint> tank in kvp.Value)
                 {
                     line += $"{ind.fromTank(tank.Key)}^{tank.Value}/";
                 }
@@ -153,6 +154,18 @@ namespace TankDex
                 lines.Add(line);
             }
             File.WriteAllLines(path, lines.ToArray());
+        }
+        /// <Summary>
+        /// Caches a user
+        /// </Summary>
+        /// <param name="id">The ID of the target user</param>
+        /// <returns>void</returns>
+        public void cch(ulong id)
+        {
+            if (!this._data.ContainsKey(id))
+            {
+                this._data.Add(id, new Dictionary<tank, uint>());
+            }
         }
         /// <Summary>
         /// Adds tank to the specified user ID
@@ -757,6 +770,89 @@ namespace TankDex
             var closestMatch = options.OrderBy(option => ComputeLevenshteinDistance(userInput, option)).First();
             return closestMatch;
         }
+        public static (bool, tank) FindClosestMatch2(string userInput, List<tank> availableOptions, index ind)
+        {
+            if (string.IsNullOrEmpty(userInput))
+            {
+                return (false, null);
+            }
+
+            Dictionary<string, tank> allOptions = new Dictionary<string, tank>();
+            foreach (tank t in availableOptions)
+            {
+                try
+                {
+                    foreach (string name in t.names)
+                    {
+                        string lowerName = Replacements(name.ToLower(), ind);
+                        if (!allOptions.ContainsKey(lowerName))
+                        {
+                            allOptions.Add(lowerName, t);
+                        }
+                    }
+                }
+                catch { }
+
+                string uniqueId = ind.fromTank(t);
+                if (!allOptions.ContainsKey(uniqueId))
+                {
+                    allOptions.Add(uniqueId, t);
+                }
+            }
+
+            List<KeyValuePair<int, tank>> foundOptions = new List<KeyValuePair<int, tank>>();
+            foreach (string name in allOptions.Keys)
+            {
+                int matches = AmountOfMatches(name, Replacements(userInput.ToLower(), ind));
+                if (matches > 0)
+                {
+                    foundOptions.Add(new KeyValuePair<int, tank>(matches, allOptions[name]));
+                }
+            }
+
+            if (foundOptions.Count > 0)
+            {
+                tank mostMatchedTank = null;
+                int mostMatches = 0;
+                foreach (KeyValuePair<int, tank> kvp in foundOptions)
+                {
+                    if (kvp.Key > mostMatches)
+                    {
+                        mostMatches = kvp.Key;
+                        mostMatchedTank = kvp.Value;
+                    }
+                }
+                return (true, mostMatchedTank);
+            }
+            else
+            {
+                return (false, null);
+            }
+        }
+        public static int AmountOfMatches(string reference, string input)
+        {
+            var found = 0;
+            var index = 0;
+            var amount = reference.Length;
+
+            for (int i = 0; i < amount; i++)
+            {
+                char current_c = reference[i];
+                if (current_c == input[index])
+                {
+                    found++;
+                    index++;
+                    if (index == input.Length - 1) break;
+                    continue;
+                }
+                else
+                {
+                    if (i == amount - 1) break;
+                    else continue;
+                }
+            }
+            return found;
+        }
         public static int ComputeLevenshteinDistance(string s, string t)
         {
             int[,] distance = new int[s.Length + 1, t.Length + 1];
@@ -899,6 +995,13 @@ namespace TankDex
             TimeSpan duration = timestamp - UnixEpoch;
             // There are 10 ticks per microsecond.
             return duration.Ticks;
+        }
+        public static string Replacements(string input, index i)
+        {
+            string actualg = input.ToLower();
+            foreach (KeyValuePair<string, string> kvp in i.replace)
+                actualg = actualg.Replace(kvp.Key, kvp.Value);
+            return actualg;
         }
         public static bool CheckValidity(string guess, tank t, index i, activequestion qst)
         {

@@ -1,7 +1,7 @@
 token:                     "MTIzNTQzNjg2Mjg2MTA4NjcyMA.G1c147.aI8nj4dnutiJj6vxetkN5qjcQPaoARX8X9HdXY"
-devtoken:                  "MTIyNjgxNzg3NDUwOTk1NTE4Mw.GBCjM8.XUiQSdfvlgXdsUs2DqiFbxFzr2cP8KN5pkk8Hw"
+devtoken:                  "MTI2MTk5MTk4NjY4MTA5MDEwMA.G_lynm.9_DJFgv_1JTJqJ5MIvfgXFM5LTPlKpdKYs_FCg"
 link:                      "https://discord.com/oauth2/authorize?client_id=1235436862861086720&permissions=277025778752&scope=bot+applications.commands"
-devlink:                   "https://discord.com/oauth2/authorize?client_id=1226817874509955183&permissions=277025778752&scope=bot+applications.commands"
+devlink:                   "https://discord.com/oauth2/authorize?client_id=1261991986681090100&permissions=277025778752&scope=bot+applications.commands"
 devmode:                   false
 windows:                   false
 master: 658384793708527626 # ainamk2
@@ -20,12 +20,15 @@ commands:
 #    "reload":              "Reload tanks (requires developer)"
 #    "getcfg":              "Gets config of current guild (requires developer)"
 #    "trigger":             "Triggers a spawn (requires developer)"
-    "activate":            "Activate the bot"
-    "disable":             "Disable the bot"
+    "activate":            "Activate the bot (requires role with administrator)"
+    "disable":             "Disable the bot (requires role with administrator)"
     "completion":          "Shows your tank completion"
 #    "setcdn":              "Sets CDN channel of bot"
     "info":                "Gets the info of all your tanks"
     "give":                "Gives tank to target user"
     "invite":              "Gets the bot invite link"
     "help":                "Displays the list of command"
-VERSION:                   1.8
+    "leaderboard":         "Leaderboard of this server"
+    "globalleaderboard":   "Global leaderboard"
+    "serverleaderboard":   "Global server leaderboard"
+VERSION:                   2.1
