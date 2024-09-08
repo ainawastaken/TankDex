@@ -1,1 +1,12 @@
-﻿This is the default changelog
+## New additions and fixes!
+### First of all, here is everything added in the latest update:
+- This fancy new changelog announcement!
+- You can now simply write the name of the tank in the menu when you're trying to pick it! Instead of writing out the ID
+- New commands such as */leaderboard, /serverleaderboard, and /globalleaderboard*!. **Check them out!**
+- And lastly, when a tank spawns in the chat. It is blocked from spawning for 5 minutes. So it no longer spams the chat.
+- All users seen by the bot are now being cached.
+### Bug fixes and other stuff:
+- A bug where the page select reactions would stay when you looked at the info of a tank has been fixed.
+- A bug where the bot would crash if you opened the info window due to complicated time out reasons has been fixed.
+- Some minor spelling errors have been fixed.
+**As always, DM ainamk2 for requests or issues. Or if you would like to contribute**

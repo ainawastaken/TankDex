@@ -57,6 +57,10 @@ namespace TankDex
 
         private FileUploader fileUploader = new FileUploader();
 
+        public bool isReady = false;
+
+        Random rnd = new Random();
+
         static void Main(string[] args)
         {
 #if DEBUG
@@ -123,6 +127,7 @@ namespace TankDex
             if (!File.Exists("changelog.txt")) File.Create("changelog.txt").Dispose();
             #endregion
             #region config and data
+            cache.Deserialize(File.ReadAllText("cache.json"));
             disconnectLog.Load(paths["disconnectlog"]);
             index = index.Deserialize(File.ReadAllText(paths["index"]));
             guilds = gldcfg.load().ToList();
@@ -212,6 +217,7 @@ namespace TankDex
                 }
             }
             data.write(index);
+            isReady = true;
         }
         public async Task GuildAvailable(SocketGuild guild)
         {
@@ -279,7 +285,7 @@ namespace TankDex
             switch (command.Data.Name)
             {
                 case "activate":
-                    if (util.isAdmin(_client.GetGuild((ulong)command.GuildId).GetUser(command.User.Id)))
+                    if (util.isAdmin(_client.GetGuild((ulong)command.GuildId).GetUser(command.User.Id)) || cfg.Developers.Contains(command.User.Id))
                     {
                         int a = gldcfg.find(guilds.ToArray(), command.GuildId);
                         gldcfg b = guilds[a];
@@ -521,7 +527,6 @@ namespace TankDex
             if (message is not IUserMessage userMessage || message.Author.IsBot)
                 return;
 
-            Random rnd = new Random();
             IGuild guild = (userMessage.Channel as IGuildChannel)?.Guild;
 
             var msg2 = message as IUserMessage;
@@ -1563,10 +1568,18 @@ namespace TankDex
         }
         private void CacheTimerEvent(Object source, ElapsedEventArgs e)
         {
+            if (cache == null)
+            {
+                Console.WriteLine("its null retard");
+                cache = new cache();
+            }
             try
             {
-                cache.checkAll();
-                File.WriteAllText("cache.json", cache.Serialize());
+                if (isReady)
+                {
+                    cache.checkAll();
+                    File.WriteAllText("cache.json", cache.Serialize());
+                }
             }
             catch (Exception ex)
             {

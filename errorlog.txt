@@ -1,0 +1,636 @@
+[1724664969]
+Exception occurred at 08/26/2024 09:36:09
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724664979]
+Exception occurred at 08/26/2024 09:36:19
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724664989]
+Exception occurred at 08/26/2024 09:36:29
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724664999]
+Exception occurred at 08/26/2024 09:36:39
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665009]
+Exception occurred at 08/26/2024 09:36:49
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665019]
+Exception occurred at 08/26/2024 09:36:59
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665029]
+Exception occurred at 08/26/2024 09:37:09
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665039]
+Exception occurred at 08/26/2024 09:37:19
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665049]
+Exception occurred at 08/26/2024 09:37:29
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665059]
+Exception occurred at 08/26/2024 09:37:39
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665069]
+Exception occurred at 08/26/2024 09:37:49
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665079]
+Exception occurred at 08/26/2024 09:37:59
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665089]
+Exception occurred at 08/26/2024 09:38:09
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665099]
+Exception occurred at 08/26/2024 09:38:19
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665109]
+Exception occurred at 08/26/2024 09:38:29
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665132]
+Exception occurred at 08/26/2024 09:38:52
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665142]
+Exception occurred at 08/26/2024 09:39:02
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665152]
+Exception occurred at 08/26/2024 09:39:12
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665162]
+Exception occurred at 08/26/2024 09:39:22
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665172]
+Exception occurred at 08/26/2024 09:39:32
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665182]
+Exception occurred at 08/26/2024 09:39:42
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665192]
+Exception occurred at 08/26/2024 09:39:52
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665202]
+Exception occurred at 08/26/2024 09:40:02
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665212]
+Exception occurred at 08/26/2024 09:40:12
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665222]
+Exception occurred at 08/26/2024 09:40:22
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665232]
+Exception occurred at 08/26/2024 09:40:32
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665242]
+Exception occurred at 08/26/2024 09:40:42
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665252]
+Exception occurred at 08/26/2024 09:40:52
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665262]
+Exception occurred at 08/26/2024 09:41:02
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665272]
+Exception occurred at 08/26/2024 09:41:12
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665292]
+Exception occurred at 08/26/2024 09:41:32
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665302]
+Exception occurred at 08/26/2024 09:41:42
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665312]
+Exception occurred at 08/26/2024 09:41:52
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665322]
+Exception occurred at 08/26/2024 09:42:02
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665332]
+Exception occurred at 08/26/2024 09:42:12
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665342]
+Exception occurred at 08/26/2024 09:42:22
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665352]
+Exception occurred at 08/26/2024 09:42:32
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665362]
+Exception occurred at 08/26/2024 09:42:42
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665372]
+Exception occurred at 08/26/2024 09:42:52
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665382]
+Exception occurred at 08/26/2024 09:43:02
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665392]
+Exception occurred at 08/26/2024 09:43:12
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665402]
+Exception occurred at 08/26/2024 09:43:22
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665412]
+Exception occurred at 08/26/2024 09:43:32
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665422]
+Exception occurred at 08/26/2024 09:43:42
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665432]
+Exception occurred at 08/26/2024 09:43:52
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665442]
+Exception occurred at 08/26/2024 09:44:02
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665452]
+Exception occurred at 08/26/2024 09:44:12
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665462]
+Exception occurred at 08/26/2024 09:44:22
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665472]
+Exception occurred at 08/26/2024 09:44:32
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665482]
+Exception occurred at 08/26/2024 09:44:42
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665492]
+Exception occurred at 08/26/2024 09:44:52
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665502]
+Exception occurred at 08/26/2024 09:45:02
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665512]
+Exception occurred at 08/26/2024 09:45:12
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665522]
+Exception occurred at 08/26/2024 09:45:22
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665532]
+Exception occurred at 08/26/2024 09:45:32
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665542]
+Exception occurred at 08/26/2024 09:45:42
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665552]
+Exception occurred at 08/26/2024 09:45:52
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665562]
+Exception occurred at 08/26/2024 09:46:02
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665572]
+Exception occurred at 08/26/2024 09:46:12
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665582]
+Exception occurred at 08/26/2024 09:46:22
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665592]
+Exception occurred at 08/26/2024 09:46:32
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665602]
+Exception occurred at 08/26/2024 09:46:42
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665612]
+Exception occurred at 08/26/2024 09:46:52
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665622]
+Exception occurred at 08/26/2024 09:47:02
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665632]
+Exception occurred at 08/26/2024 09:47:12
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665642]
+Exception occurred at 08/26/2024 09:47:22
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665652]
+Exception occurred at 08/26/2024 09:47:32
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665662]
+Exception occurred at 08/26/2024 09:47:42
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665672]
+Exception occurred at 08/26/2024 09:47:52
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665682]
+Exception occurred at 08/26/2024 09:48:02
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665692]
+Exception occurred at 08/26/2024 09:48:12
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665702]
+Exception occurred at 08/26/2024 09:48:22
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665712]
+Exception occurred at 08/26/2024 09:48:32
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665722]
+Exception occurred at 08/26/2024 09:48:42
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665732]
+Exception occurred at 08/26/2024 09:48:52
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665742]
+Exception occurred at 08/26/2024 09:49:02
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665752]
+Exception occurred at 08/26/2024 09:49:12
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665762]
+Exception occurred at 08/26/2024 09:49:22
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665772]
+Exception occurred at 08/26/2024 09:49:32
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665782]
+Exception occurred at 08/26/2024 09:49:42
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665792]
+Exception occurred at 08/26/2024 09:49:52
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665802]
+Exception occurred at 08/26/2024 09:50:02
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665812]
+Exception occurred at 08/26/2024 09:50:12
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665822]
+Exception occurred at 08/26/2024 09:50:22
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665832]
+Exception occurred at 08/26/2024 09:50:32
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665842]
+Exception occurred at 08/26/2024 09:50:42
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665852]
+Exception occurred at 08/26/2024 09:50:52
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665862]
+Exception occurred at 08/26/2024 09:51:02
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665872]
+Exception occurred at 08/26/2024 09:51:12
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665882]
+Exception occurred at 08/26/2024 09:51:22
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665892]
+Exception occurred at 08/26/2024 09:51:32
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665902]
+Exception occurred at 08/26/2024 09:51:42
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665912]
+Exception occurred at 08/26/2024 09:51:52
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665922]
+Exception occurred at 08/26/2024 09:52:02
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665932]
+Exception occurred at 08/26/2024 09:52:12
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665942]
+Exception occurred at 08/26/2024 09:52:22
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665952]
+Exception occurred at 08/26/2024 09:52:32
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665962]
+Exception occurred at 08/26/2024 09:52:42
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665972]
+Exception occurred at 08/26/2024 09:52:52
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665982]
+Exception occurred at 08/26/2024 09:53:02
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724665992]
+Exception occurred at 08/26/2024 09:53:12
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724666002]
+Exception occurred at 08/26/2024 09:53:22
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724666012]
+Exception occurred at 08/26/2024 09:53:32
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724666022]
+Exception occurred at 08/26/2024 09:53:42
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724666032]
+Exception occurred at 08/26/2024 09:53:52
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
+[1724666042]
+Exception occurred at 08/26/2024 09:54:02
+   Message: Object reference not set to an instance of an object.
+   Stack Trace:
+      at TankDex.Program.CacheTimerEvent(Object source, ElapsedEventArgs e)
+------------------------------
